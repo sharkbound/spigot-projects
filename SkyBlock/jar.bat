@@ -1,0 +1,1 @@
+copy /Y "build\libs\SkyBlock-1.0.jar" "C:\Users\lapto\Desktop\jars\server\plugins"
