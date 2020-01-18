@@ -1,5 +1,6 @@
 package sharkbound.spigot.skyblock
 
+import org.bukkit.ChatColor
 import org.bukkit.command.CommandExecutor
 import org.bukkit.event.Listener
 import sharkbound.spigot.skyblock.plugin.commands.CommandSkyBlock
@@ -17,3 +18,6 @@ fun registerAllCommands() {
 fun registerAllEventListeners() {
     allEventListeners += JoinListener()
 }
+
+fun colorFormat(message: String, char: Char = '&') =
+    ChatColor.translateAlternateColorCodes(char, message)
