@@ -1,11 +1,17 @@
 package sharkbound.spigot.skyblock.plugin
 
 import org.bukkit.plugin.java.JavaPlugin
-import sharkbound.spigot.skyblock.plugin.commands.HelloWorld
+import sharkbound.spigot.skyblock.plugin
+import sharkbound.spigot.skyblock.registerAllCommands
+import sharkbound.spigot.skyblock.registerAllEventListeners
 
 class SkyBlock : JavaPlugin() {
     override fun onEnable() {
-        HelloWorld(this)
+        plugin = this
+
+        registerAllCommands()
+        registerAllEventListeners()
+        
         println("SkyBlock loaded!")
     }
 }
