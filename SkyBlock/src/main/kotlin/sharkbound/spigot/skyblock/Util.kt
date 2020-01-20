@@ -3,6 +3,7 @@ package sharkbound.spigot.skyblock
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.World
+import org.bukkit.WorldCreator
 import org.bukkit.command.CommandExecutor
 import org.bukkit.event.Listener
 import sharkbound.commonutils.extensions.use
@@ -10,6 +11,7 @@ import sharkbound.spigot.skyblock.plugin.commands.CommandDTP
 import sharkbound.spigot.skyblock.plugin.commands.CommandListWorlds
 import sharkbound.spigot.skyblock.plugin.commands.CommandSkyBlock
 import sharkbound.spigot.skyblock.plugin.commands.CommandStop
+import sharkbound.spigot.skyblock.plugin.generators.VoidChunkGenerator
 import sharkbound.spigot.skyblock.plugin.listeners.TntListener
 import java.lang.Exception
 import java.nio.file.Files
@@ -48,3 +50,6 @@ fun deleteWorld(worldName: String): Boolean {
     }
     return false
 }
+
+fun createVoidWorld(name: String) =
+    Bukkit.createWorld(WorldCreator(name).generator(VoidChunkGenerator()))

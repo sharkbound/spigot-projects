@@ -11,7 +11,7 @@ import org.bukkit.entity.Player
 import sharkbound.commonutils.extensions.len
 import sharkbound.spigot.skyblock.deleteWorld
 import sharkbound.spigot.skyblock.getWorld
-import sharkbound.spigot.skyblock.plugin.generators.SkyBlockChunkGenerator
+import sharkbound.spigot.skyblock.plugin.generators.VoidChunkGenerator
 import sharkbound.spigot.skyblock.register
 import sharkbound.spigot.skyblock.sendColored
 
@@ -29,7 +29,10 @@ class CommandSkyBlock : CommandExecutor, TabCompleter {
 
         val (mode, name) = args.map { it.toLowerCase() }
         when (mode) {
-            "create" -> Bukkit.createWorld(WorldCreator(name).generator(SkyBlockChunkGenerator()))
+            "create" -> {
+                Bukkit.createWorld(WorldCreator(name).generator(VoidChunkGenerator()))
+                caller.sendColored("&acreated world: $name")
+            }
             "join" -> caller.teleport(
                 Location(
                     getWorld(name),

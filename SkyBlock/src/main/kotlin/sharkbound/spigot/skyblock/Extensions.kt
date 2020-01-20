@@ -28,7 +28,7 @@ val Material.idByte get() = id.toByte()
 inline fun <reified T> World.spawnEntityCast(location: Location, entityType: EntityType) =
     spawnEntity(location, entityType) as? T
 
-fun Player.sendColored(message: String, char: Char = '&') = colorFormat(message, char)
+fun Player.sendColored(message: String, char: Char = '&') = sendMessage(colorFormat(message, char))
 
 fun deleteWorld(path: File): Boolean {
     if (path.exists()) {
