@@ -9,6 +9,7 @@ import java.util.*
 
 class VoidChunkGenerator : ChunkGenerator() {
 
+    @Suppress("UNCHECKED_CAST")
     override fun generateBlockSections(
         world: World?,
         random: Random?,
@@ -17,13 +18,12 @@ class VoidChunkGenerator : ChunkGenerator() {
         biomes: BiomeGrid?
     ): Array<ByteArray> {
         val result = arrayOfNulls<ByteArray>(world!!.maxHeight / 16)
-//        for (ix in 0..15) {
-//            for (iy in 0..15) {
-//                for (iz in 0..15) {
-//                    result.block(ix, iy, iz, Material.AIR)
-//                }
-//            }
-//        }
+        for (ix in 0..15) {
+            for (iz in 0..15) {
+                result.block(ix, 66, iz, Material.GLASS)
+            }
+        }
+
         return result as Array<ByteArray>
     }
 

@@ -13,7 +13,7 @@ import sharkbound.spigot.skyblock.*
 
 class TntListener : Listener {
     init {
-        register()
+//        register()
     }
 
     @EventHandler

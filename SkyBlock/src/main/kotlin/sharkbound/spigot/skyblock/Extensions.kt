@@ -7,7 +7,6 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
-import java.io.File
 
 
 fun CommandExecutor.register(name: String) {
@@ -30,17 +29,10 @@ inline fun <reified T> World.spawnEntityCast(location: Location, entityType: Ent
 
 fun Player.sendColored(message: String, char: Char = '&') = sendMessage(colorFormat(message, char))
 
-fun deleteWorld(path: File): Boolean {
-    if (path.exists()) {
-        path.listFiles()?.let { files ->
-            for (i in files.indices) {
-                if (files[i].isDirectory) {
-                    deleteWorld(files[i]!!)
-                } else {
-                    files[i]?.delete()
-                }
-            }
-        }
-    }
-    return path.delete()
+val Player.skyBlockWorldName get() = "skyblock_${RE_REMOVE_NON_ALPHA.replace(name, "")}"
+
+val Player.skyBlockWorld: World? get() = getWorld(skyBlockWorldName)
+
+fun World.delete() {
+    deleteWorld(name)
 }
