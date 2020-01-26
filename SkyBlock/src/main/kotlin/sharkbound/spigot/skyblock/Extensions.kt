@@ -39,3 +39,6 @@ fun World.delete() {
 
 fun Sequence<String>.filterContainsSubstring(substr: String) =
     filter { substr.toLowerCase() in it.toLowerCase() }
+
+fun Collection<String>.filterContainsSubstring(substr: String) =
+    filter { substr.toLowerCase() in it.toLowerCase() }

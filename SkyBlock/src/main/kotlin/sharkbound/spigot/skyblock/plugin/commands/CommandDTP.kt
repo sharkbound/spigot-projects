@@ -35,10 +35,10 @@ class CommandDTP : CommandExecutor, TabCompleter {
     override fun onTabComplete(
         sender: CommandSender?, command: Command?, alias: String?, args: Array<out String>
     ): MutableList<String> {
-        val worldNames = allWorlds.asSequence().map { it.name }
+        val worldNames = allWorlds.asSequence().map { it.name }.toMutableList()
 
         return when {
-            args.isEmpty() -> worldNames.toMutableList()
+            args.isEmpty() -> worldNames
             else -> worldNames.filterContainsSubstring(args[0]).toMutableList()
         }
 
