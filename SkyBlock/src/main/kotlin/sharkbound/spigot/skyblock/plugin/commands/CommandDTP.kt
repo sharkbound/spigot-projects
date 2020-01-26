@@ -7,20 +7,21 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import sharkbound.commonutils.extensions.len
-import sharkbound.spigot.skyblock.getWorld
-import sharkbound.spigot.skyblock.register
-import sharkbound.spigot.skyblock.allWorlds
-import java.util.*
+import sharkbound.spigot.skyblock.*
 
 class CommandDTP : CommandExecutor, TabCompleter {
     init {
-//        println("\n----------------------------\nDIM TP COMMAND\n${javaClass.name}\nDISABLE AFTER DONE\n----------------------------")
         register("dtp")
     }
 
     override fun onCommand(caller: CommandSender, cmd: Command, label: String, args: Array<out String>): Boolean {
-        if (caller !is Player || args.len != 1)
-            return true
+        if (caller !is Player) {
+            return cannotBeCalledFromConsole()
+        }
+
+        if (args.len != 1) {
+            return args.wrongArgsLength(1, usage = "<world name>")
+        }
 
         caller.location.apply {
             caller.teleport(
@@ -34,8 +35,12 @@ class CommandDTP : CommandExecutor, TabCompleter {
     override fun onTabComplete(
         sender: CommandSender?, command: Command?, alias: String?, args: Array<out String>
     ): MutableList<String> {
-        return allWorlds.asSequence().map { it.name }.toMutableList()
+        val worldNames = allWorlds.asSequence().map { it.name }
+
+        return when {
+            args.isEmpty() -> worldNames.toMutableList()
+            else -> worldNames.filterContainsSubstring(args[0]).toMutableList()
+        }
+
     }
-
-
 }

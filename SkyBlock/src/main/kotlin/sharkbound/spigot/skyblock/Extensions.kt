@@ -36,3 +36,6 @@ val Player.skyBlockWorld: World? get() = getWorld(skyBlockWorldName)
 fun World.delete() {
     deleteWorld(name)
 }
+
+fun Sequence<String>.filterContainsSubstring(substr: String) =
+    filter { substr.toLowerCase() in it.toLowerCase() }

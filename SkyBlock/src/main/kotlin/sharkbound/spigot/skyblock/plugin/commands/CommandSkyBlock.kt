@@ -20,7 +20,10 @@ class CommandSkyBlock : CommandExecutor, TabCompleter {
     }
 
     override fun onCommand(caller: CommandSender, cmd: Command, label: String, args: Array<out String>): Boolean {
-        if (caller !is Player) return false
+        if (caller !is Player) {
+            return cannotBeCalledFromConsole()
+        }
+
         if (args.len != 1) {
             caller.sendMessage("required args: <join | reset>")
             return false

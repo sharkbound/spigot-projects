@@ -2,13 +2,13 @@ package sharkbound.spigot.skyblock
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.World
 import org.bukkit.WorldCreator
 import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.generator.ChunkGenerator
 import org.bukkit.plugin.PluginManager
+import sharkbound.commonutils.extensions.len
 import sharkbound.commonutils.extensions.use
 import sharkbound.spigot.skyblock.plugin.SkyBlock
 import sharkbound.spigot.skyblock.plugin.commands.CommandDTP
@@ -92,3 +92,17 @@ fun getWorld(name: String) = Bukkit.getWorld(name)
 fun getWorld(id: UUID) = Bukkit.getWorld(id)
 
 fun createSkyBlockWorld(player: Player) = createVoidWorld(player.skyBlockWorldName)
+
+fun cannotBeCalledFromConsole(): Boolean {
+    println("this command cannot be called from console")
+    return false;
+}
+
+fun Array<out String>.wrongArgsLength(required: Int, msg: String? = null, usage: String? = null): Boolean {
+    when {
+        msg != null -> println("missing required arguments, required: $required, actual: $len, message: $msg")
+        usage != null -> println("missing required arguments, required: $required, actual: $len, usage: $usage")
+        else -> println("missing required arguments, required: $required, actual: $len")
+    }
+    return false
+}
