@@ -1,9 +1,5 @@
-package sharkbound.spigot.skyblock
+package sharkbound.spigot.skyblock.utils
 
-import com.sk89q.worldedit.CuboidClipboard
-import com.sk89q.worldedit.Vector
-import com.sk89q.worldedit.WorldEdit
-import com.sk89q.worldedit.regions.CuboidRegion
 import org.bukkit.*
 import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.Player
@@ -12,13 +8,15 @@ import org.bukkit.generator.ChunkGenerator
 import org.bukkit.plugin.PluginManager
 import sharkbound.commonutils.extensions.len
 import sharkbound.commonutils.extensions.use
+import sharkbound.spigot.skyblock.*
+import sharkbound.spigot.skyblock.extensions.skyBlockWorldName
 import sharkbound.spigot.skyblock.plugin.SkyBlock
 import sharkbound.spigot.skyblock.plugin.commands.CommandDTP
 import sharkbound.spigot.skyblock.plugin.commands.CommandListWorlds
 import sharkbound.spigot.skyblock.plugin.commands.CommandSkyBlock
 import sharkbound.spigot.skyblock.plugin.commands.CommandStop
 import sharkbound.spigot.skyblock.plugin.generators.VoidChunkGenerator
-import sharkbound.spigot.skyblock.plugin.listeners.TntListener
+import sharkbound.spigot.skyblock.plugin.listeners.WorldChangeListener
 import java.io.File
 import java.lang.Exception
 import java.util.*
@@ -38,7 +36,11 @@ fun registerAllCommands() {
 }
 
 fun registerAllEventListeners() {
-    allEventListeners += TntListener()
+    allEventListeners.addAll(
+        listOf(
+            WorldChangeListener()
+        )
+    )
 }
 
 fun colorFormat(message: String, char: Char = '&') =
@@ -63,12 +65,12 @@ fun createVoidWorld(name: String): World =
 
 fun deleteWorld(path: File): Boolean {
     if (path.exists()) {
-        path.listFiles()?.let { files ->
-            for (i in files.indices) {
-                if (files[i].isDirectory) {
-                    deleteWorld(files[i]!!)
+        path.listFiles()?.let {
+            for (file in it) {
+                if (file.isDirectory) {
+                    deleteWorld(file)
                 } else {
-                    files[i]?.delete()
+                    file.delete()
                 }
             }
         }
@@ -95,20 +97,13 @@ fun getWorld(id: UUID): World? = Bukkit.getWorld(id)
 
 @Suppress("DEPRECATION")
 fun createSkyBlockWorld(player: Player): World {
-    val world = createVoidWorld(player.skyBlockWorldName)
-    println("pre-edit-session")
-    worldEdit.createEditSession(player).also {
-        println("pre-create-schem")
-        val schem = CuboidClipboard.loadSchematic(File(cfg.getString(ConfigKeys.SKY_ISLAND_SCHEMATIC)))
-        println("pre-place-schem, schem: $schem")
-        schem.place(it, Vector(0.0, Coords.SKY_ISLAND_SCHEMATIC_Y, 0.0), false)
-    }
-    return world
+    skyIslandGenerationQueue[player.uniqueId] = PlayerSkyIslandGen(player)
+    return createVoidWorld(player.skyBlockWorldName)
 }
 
 fun cannotBeCalledFromConsole(): Boolean {
     println("this command cannot be called from console")
-    return false;
+    return false
 }
 
 fun Array<out String>.wrongArgsLength(required: Int, msg: String? = null, usage: String? = null): Boolean {

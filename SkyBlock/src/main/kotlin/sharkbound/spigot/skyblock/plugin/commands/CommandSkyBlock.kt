@@ -1,9 +1,6 @@
 package sharkbound.spigot.skyblock.plugin.commands
 
-import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.Location
-import org.bukkit.WorldCreator
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -11,8 +8,11 @@ import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import sharkbound.commonutils.extensions.len
 import sharkbound.spigot.skyblock.*
-import sharkbound.spigot.skyblock.plugin.generators.VoidChunkGenerator
-import javax.swing.plaf.metal.MetalIconFactory
+import sharkbound.spigot.skyblock.extensions.*
+import sharkbound.spigot.skyblock.utils.cannotBeCalledFromConsole
+import sharkbound.spigot.skyblock.utils.createSkyBlockWorld
+import sharkbound.spigot.skyblock.utils.getWorld
+import sharkbound.spigot.skyblock.utils.worldExists
 
 class CommandSkyBlock : CommandExecutor, TabCompleter {
     init {

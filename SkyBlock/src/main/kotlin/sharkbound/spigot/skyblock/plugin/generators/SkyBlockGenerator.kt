@@ -3,7 +3,7 @@ package sharkbound.spigot.skyblock.plugin.generators
 import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.generator.ChunkGenerator
-import sharkbound.spigot.skyblock.idByte
+import sharkbound.spigot.skyblock.extensions.idByte
 import java.util.*
 
 

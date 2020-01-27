@@ -3,8 +3,8 @@ package sharkbound.spigot.skyblock.plugin
 import org.bukkit.plugin.java.JavaPlugin
 import sharkbound.spigot.skyblock.cwd
 import sharkbound.spigot.skyblock.skyBlockInstance
-import sharkbound.spigot.skyblock.registerAllCommands
-import sharkbound.spigot.skyblock.registerAllEventListeners
+import sharkbound.spigot.skyblock.utils.registerAllCommands
+import sharkbound.spigot.skyblock.utils.registerAllEventListeners
 
 class SkyBlock : JavaPlugin() {
     override fun onEnable() {
@@ -12,6 +12,8 @@ class SkyBlock : JavaPlugin() {
 
         registerAllCommands()
         registerAllEventListeners()
+        
+        saveDefaultConfig()
 
         println("SkyBlock loaded!, CWD: $cwd")
     }

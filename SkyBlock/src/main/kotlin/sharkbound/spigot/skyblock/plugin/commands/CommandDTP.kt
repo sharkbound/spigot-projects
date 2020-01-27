@@ -6,8 +6,13 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
-import sharkbound.commonutils.extensions.len
 import sharkbound.spigot.skyblock.*
+import sharkbound.spigot.skyblock.extensions.filterContainsSubstring
+import sharkbound.spigot.skyblock.extensions.isLenLessThan
+import sharkbound.spigot.skyblock.extensions.isLenOrGreater
+import sharkbound.spigot.skyblock.extensions.register
+import sharkbound.spigot.skyblock.utils.cannotBeCalledFromConsole
+import sharkbound.spigot.skyblock.utils.wrongArgsLength
 
 class CommandDTP : CommandExecutor, TabCompleter {
     init {
@@ -19,17 +24,17 @@ class CommandDTP : CommandExecutor, TabCompleter {
             return cannotBeCalledFromConsole()
         }
 
-        if (args isLenOrGreater 1) {
+        if (args isLenLessThan 1) {
             return args.wrongArgsLength(1, usage = "<world name>")
         }
 
         caller.location.apply {
             caller.teleport(
-                Location(getWorld(args[0]), x, y, z, yaw, pitch)
+                Location(sharkbound.spigot.skyblock.utils.getWorld(args[0]), x, y, z, yaw, pitch)
             )
         }
 
-        return false
+        return true
     }
 
     override fun onTabComplete(
