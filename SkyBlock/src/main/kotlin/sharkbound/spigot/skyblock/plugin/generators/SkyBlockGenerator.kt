@@ -18,11 +18,11 @@ class VoidChunkGenerator : ChunkGenerator() {
         biomes: BiomeGrid?
     ): Array<ByteArray> {
         val result = arrayOfNulls<ByteArray>(world!!.maxHeight / 16)
-        for (ix in 0..15) {
-            for (iz in 0..15) {
-                result.block(ix, 66, iz, Material.GLASS)
-            }
-        }
+//        for (ix in 0..15) {
+//            for (iz in 0..15) {
+//                result.block(ix, 66, iz, Material.GLASS)
+//            }
+//        }
 
         return result as Array<ByteArray>
     }

@@ -19,7 +19,7 @@ class CommandDTP : CommandExecutor, TabCompleter {
             return cannotBeCalledFromConsole()
         }
 
-        if (args.len != 1) {
+        if (args isLenOrGreater 1) {
             return args.wrongArgsLength(1, usage = "<world name>")
         }
 
@@ -34,13 +34,9 @@ class CommandDTP : CommandExecutor, TabCompleter {
 
     override fun onTabComplete(
         sender: CommandSender?, command: Command?, alias: String?, args: Array<out String>
-    ): MutableList<String> {
-        val worldNames = allWorlds.asSequence().map { it.name }.toMutableList()
-
-        return when {
-            args.isEmpty() -> worldNames
-            else -> worldNames.filterContainsSubstring(args[0]).toMutableList()
-        }
-
-    }
+    ): MutableList<String> =
+        when {
+            args.isEmpty() -> allWorldNames
+            else -> allWorldNames filterContainsSubstring args[0]
+        }.toMutableList()
 }

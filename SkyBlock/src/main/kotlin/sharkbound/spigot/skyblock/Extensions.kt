@@ -7,14 +7,15 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
+import sharkbound.commonutils.extensions.len
 
 
 fun CommandExecutor.register(name: String) {
-    plugin.getCommand(name).executor = this
+    skyBlockInstance.getCommand(name).executor = this
 }
 
 fun <T : Listener> T.register() {
-    pluginManager.registerEvents(this, plugin)
+    pluginManager.registerEvents(this, skyBlockInstance)
 }
 
 fun Player.target(distance: Int = 5000, materials: Set<Material> = setOf(Material.AIR)) =
@@ -22,7 +23,9 @@ fun Player.target(distance: Int = 5000, materials: Set<Material> = setOf(Materia
 
 val Player.lookLocation get() = target().location
 
-val Material.idByte get() = id.toByte()
+@Suppress("DEPRECATION")
+val Material.idByte
+    get() = id.toByte()
 
 inline fun <reified T> World.spawnEntityCast(location: Location, entityType: EntityType) =
     spawnEntity(location, entityType) as? T
@@ -37,8 +40,11 @@ fun World.delete() {
     deleteWorld(name)
 }
 
-fun Sequence<String>.filterContainsSubstring(substr: String) =
+infix fun Sequence<String>.filterContainsSubstring(substr: String) =
     filter { substr.toLowerCase() in it.toLowerCase() }
 
-fun Collection<String>.filterContainsSubstring(substr: String) =
+infix fun Collection<String>.filterContainsSubstring(substr: String) =
     filter { substr.toLowerCase() in it.toLowerCase() }
+
+infix fun Array<out String>.isLenOrGreater(minLength: Int) = len >= minLength
+infix fun Array<out String>.isLen(length: Int) = len == length

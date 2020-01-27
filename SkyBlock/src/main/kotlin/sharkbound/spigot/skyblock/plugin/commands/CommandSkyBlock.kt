@@ -38,7 +38,7 @@ class CommandSkyBlock : CommandExecutor, TabCompleter {
                     Location(
                         getWorld(caller.skyBlockWorldName),
                         0.0,
-                        68.0,
+                        Coords.SKY_ISLAND_SCHEMATIC_Y + 10,
                         0.0,
                         caller.location.yaw,
                         caller.location.pitch
