@@ -1,10 +1,10 @@
 package sharkbound.spigot.skyblock.plugin.listeners
 
-import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerChangedWorldEvent
-import sharkbound.spigot.skyblock.extensions.*
+import sharkbound.spigot.skyblock.extensions.register
+import sharkbound.spigot.skyblock.extensions.skyBlockWorldName
 import sharkbound.spigot.skyblock.skyIslandGenerationQueue
 
 class WorldChangeListener : Listener {
@@ -14,12 +14,16 @@ class WorldChangeListener : Listener {
 
     @EventHandler
     fun onWorldChanged(e: PlayerChangedWorldEvent) {
-        if (e.player.uniqueId !in skyIslandGenerationQueue || e.player.world.name.toLowerCase() != e.player.skyBlockWorldName) {
+        val id = e.player.uniqueId
+
+//      was the skyblock world just generated?
+        if (id !in skyIslandGenerationQueue) {
             return
         }
 
-        skyIslandGenerationQueue[e.player.uniqueId].generate()
-        e.player.world.setBlock(e.player.location.add(-.5, LocationAddMode.Y), Material.GLASS)
-        skyIslandGenerationQueue.remove(e.player.uniqueId)
+        if (e.player.world.name == e.player.skyBlockWorldName) {
+            skyIslandGenerationQueue[id].generate()
+            skyIslandGenerationQueue.remove(id)
+        }
     }
 }

@@ -9,10 +9,7 @@ import org.bukkit.entity.Player
 import sharkbound.commonutils.extensions.len
 import sharkbound.spigot.skyblock.*
 import sharkbound.spigot.skyblock.extensions.*
-import sharkbound.spigot.skyblock.utils.cannotBeCalledFromConsole
-import sharkbound.spigot.skyblock.utils.createSkyBlockWorld
-import sharkbound.spigot.skyblock.utils.getWorld
-import sharkbound.spigot.skyblock.utils.worldExists
+import sharkbound.spigot.skyblock.utils.*
 
 class CommandSkyBlock : CommandExecutor, TabCompleter {
     init {
@@ -31,18 +28,18 @@ class CommandSkyBlock : CommandExecutor, TabCompleter {
 
         when (args[0].toLowerCase()) {
             "join" -> {
-                if (!worldExists(caller.skyBlockWorldName)) {
+                if (caller.skyBlockWorld == null) {
                     createSkyBlockWorld(caller)
                 }
                 caller.teleport(
                     Location(
                         caller.skyBlockWorld,
                         0.0,
-                        Coords.SKY_ISLAND_SCHEMATIC_Y + 10,
+                        Coords.SKY_ISLAND_SCHEMATIC_Y,
                         0.0,
                         caller.location.yaw,
                         caller.location.pitch
-                    )
+                    ).add(Coords.skyIslandSpawnOffset)
                 )
             }
             "reset" -> {
@@ -59,12 +56,16 @@ class CommandSkyBlock : CommandExecutor, TabCompleter {
         return false
     }
 
+    private val options = mutableListOf("join", "reset", "del")
+
     override fun onTabComplete(
         sender: CommandSender?,
         command: Command?,
         alias: String?,
         args: Array<out String>
-    ): MutableList<String> {
-        return mutableListOf("join", "reset")
-    }
+    ): MutableList<String> =
+        when (args.len) {
+            0 -> options
+            else -> options.filterContainsSubstring(args[0]).toMutableList()
+        }
 }
