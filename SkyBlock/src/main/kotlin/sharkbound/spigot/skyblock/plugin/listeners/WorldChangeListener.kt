@@ -1,10 +1,10 @@
 package sharkbound.spigot.skyblock.plugin.listeners
 
+import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerChangedWorldEvent
-import sharkbound.spigot.skyblock.extensions.register
-import sharkbound.spigot.skyblock.extensions.skyBlockWorldName
+import sharkbound.spigot.skyblock.extensions.*
 import sharkbound.spigot.skyblock.skyIslandGenerationQueue
 
 class WorldChangeListener : Listener {
@@ -19,6 +19,7 @@ class WorldChangeListener : Listener {
         }
 
         skyIslandGenerationQueue[e.player.uniqueId].generate()
+        e.player.world.setBlock(e.player.location.add(-.5, LocationAddMode.Y), Material.GLASS)
         skyIslandGenerationQueue.remove(e.player.uniqueId)
     }
 }

@@ -10,12 +10,13 @@ import sharkbound.commonutils.collections.nonNullableMutableMapOf
 import sharkbound.spigot.skyblock.plugin.SkyBlock
 import java.io.File
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 val pluginManager: PluginManager
     get() = Bukkit.getPluginManager()
 
 lateinit var skyBlockInstance: SkyBlock
-val overworld get() = Bukkit.getWorld("world")!!
+//val overworld get() = Bukkit.getWorld("world")!!
 val allWorlds get() = Bukkit.getWorlds()
 val allWorldNames get() = allWorlds.asSequence().map { it.name }
 val RE_REMOVE_NON_ALPHA = """[^\w]""".toRegex()

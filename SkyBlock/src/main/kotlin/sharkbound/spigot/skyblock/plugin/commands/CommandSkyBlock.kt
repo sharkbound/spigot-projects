@@ -29,14 +29,14 @@ class CommandSkyBlock : CommandExecutor, TabCompleter {
             return false
         }
 
-        when (args[0]) {
+        when (args[0].toLowerCase()) {
             "join" -> {
                 if (!worldExists(caller.skyBlockWorldName)) {
                     createSkyBlockWorld(caller)
                 }
                 caller.teleport(
                     Location(
-                        getWorld(caller.skyBlockWorldName),
+                        caller.skyBlockWorld,
                         0.0,
                         Coords.SKY_ISLAND_SCHEMATIC_Y + 10,
                         0.0,

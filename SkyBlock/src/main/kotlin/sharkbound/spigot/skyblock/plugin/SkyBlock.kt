@@ -1,6 +1,7 @@
 package sharkbound.spigot.skyblock.plugin
 
 import org.bukkit.plugin.java.JavaPlugin
+import sharkbound.spigot.skyblock.cfg
 import sharkbound.spigot.skyblock.cwd
 import sharkbound.spigot.skyblock.skyBlockInstance
 import sharkbound.spigot.skyblock.utils.registerAllCommands
@@ -12,9 +13,10 @@ class SkyBlock : JavaPlugin() {
 
         registerAllCommands()
         registerAllEventListeners()
-        
+
         saveDefaultConfig()
 
         println("SkyBlock loaded!, CWD: $cwd")
+        println(cfg.getString("sky_island_schematic"))
     }
 }
