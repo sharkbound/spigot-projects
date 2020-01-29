@@ -1,4 +1,4 @@
-package sharkbound.spigot.skyblock.extensions
+package sharkbound.spigot.skyblock.plugin.extensions
 
 import sharkbound.commonutils.extensions.len
 

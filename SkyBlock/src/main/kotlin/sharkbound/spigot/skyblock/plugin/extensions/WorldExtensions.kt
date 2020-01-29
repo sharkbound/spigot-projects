@@ -1,11 +1,11 @@
-package sharkbound.spigot.skyblock.extensions
+package sharkbound.spigot.skyblock.plugin.extensions
 
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.block.Block
 import org.bukkit.entity.EntityType
-import sharkbound.spigot.skyblock.utils.deleteWorld
+import sharkbound.spigot.skyblock.plugin.utils.deleteWorld
 
 fun World.setBlock(x: Int, y: Int, z: Int, new: Material) {
     getBlockAt(x, y, z).type = new

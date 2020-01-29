@@ -1,10 +1,10 @@
-package sharkbound.spigot.skyblock.extensions
+package sharkbound.spigot.skyblock.plugin.extensions
 
 import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.entity.Player
-import sharkbound.spigot.skyblock.RE_REMOVE_NON_ALPHA
-import sharkbound.spigot.skyblock.utils.colorFormat
+import sharkbound.spigot.skyblock.plugin.RE_REMOVE_NON_ALPHA
+import sharkbound.spigot.skyblock.plugin.utils.colorFormat
 
 fun Player.target(
     distance: Int = 5000, materials: Set<Material> = setOf(
@@ -23,4 +23,5 @@ fun Player.sendColored(message: String, char: Char = '&') =
     )
 
 val Player.skyBlockWorldName get() = "skyblock_${RE_REMOVE_NON_ALPHA.replace(name, "")}"
-val Player.skyBlockWorld: World? get() = sharkbound.spigot.skyblock.utils.getWorld(skyBlockWorldName)
+val Player.skyBlockWorld: World? get() = sharkbound.spigot.skyblock.plugin.utils.getWorld(skyBlockWorldName)
+

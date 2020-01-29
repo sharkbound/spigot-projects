@@ -3,8 +3,8 @@ package sharkbound.spigot.skyblock.plugin.commands
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
-import sharkbound.spigot.skyblock.extensions.register
-import sharkbound.spigot.skyblock.allWorlds
+import sharkbound.spigot.skyblock.plugin.allWorlds
+import sharkbound.spigot.skyblock.plugin.extensions.register
 
 class CommandListWorlds : CommandExecutor {
     init {

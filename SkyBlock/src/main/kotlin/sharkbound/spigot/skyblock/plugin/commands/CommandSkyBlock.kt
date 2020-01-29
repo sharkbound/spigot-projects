@@ -7,9 +7,10 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import sharkbound.commonutils.extensions.len
-import sharkbound.spigot.skyblock.*
-import sharkbound.spigot.skyblock.extensions.*
-import sharkbound.spigot.skyblock.utils.*
+import sharkbound.spigot.skyblock.plugin.Coords
+import sharkbound.spigot.skyblock.plugin.extensions.*
+import sharkbound.spigot.skyblock.plugin.utils.cannotBeCalledFromConsole
+import sharkbound.spigot.skyblock.plugin.utils.createSkyBlockWorld
 
 class CommandSkyBlock : CommandExecutor, TabCompleter {
     init {

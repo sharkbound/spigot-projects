@@ -1,8 +1,11 @@
-package sharkbound.spigot.skyblock.utils
+package sharkbound.spigot.skyblock.plugin.utils
 
 import com.sk89q.worldedit.EditSession
 import com.sk89q.worldedit.bukkit.BukkitWorld
-import org.bukkit.*
+import org.bukkit.Bukkit
+import org.bukkit.ChatColor
+import org.bukkit.World
+import org.bukkit.WorldCreator
 import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
@@ -11,18 +14,18 @@ import org.bukkit.plugin.PluginManager
 import org.bukkit.util.Vector
 import sharkbound.commonutils.extensions.len
 import sharkbound.commonutils.extensions.use
-import sharkbound.spigot.skyblock.*
-import sharkbound.spigot.skyblock.enums.LocationAddMode
-import sharkbound.spigot.skyblock.extensions.skyBlockWorldName
-import sharkbound.spigot.skyblock.plugin.SkyBlock
+import sharkbound.spigot.skyblock.plugin.*
 import sharkbound.spigot.skyblock.plugin.commands.CommandDTP
 import sharkbound.spigot.skyblock.plugin.commands.CommandListWorlds
 import sharkbound.spigot.skyblock.plugin.commands.CommandSkyBlock
 import sharkbound.spigot.skyblock.plugin.commands.CommandStop
+import sharkbound.spigot.skyblock.plugin.enums.CoordPosition
+import sharkbound.spigot.skyblock.plugin.extensions.sendColored
+import sharkbound.spigot.skyblock.plugin.extensions.skyBlockWorldName
+import sharkbound.spigot.skyblock.plugin.generators.PlayerSkyIslandGenerator
 import sharkbound.spigot.skyblock.plugin.generators.VoidChunkGenerator
 import sharkbound.spigot.skyblock.plugin.listeners.WorldChangeListener
 import java.io.File
-import java.lang.Exception
 import java.util.*
 
 val allCommands = mutableListOf<CommandExecutor>()
@@ -104,7 +107,8 @@ fun getWorld(id: UUID): World? =
 
 @Suppress("DEPRECATION")
 fun createSkyBlockWorld(player: Player): World {
-    skyIslandGenerationQueue[player.uniqueId] = PlayerSkyIslandGen(player)
+    skyIslandGenerationQueue[player.uniqueId] =
+        PlayerSkyIslandGenerator(player)
     return createVoidWorld(player.skyBlockWorldName)
 }
 
@@ -122,24 +126,38 @@ fun Array<out String>.wrongArgsLength(required: Int, msg: String? = null, usage:
     return false
 }
 
-fun vect(x: Int, y: Int, z: Int) =
+fun Array<out String>.wrongArgsLength(
+    caller: Player,
+    required: Int,
+    msg: String? = null,
+    usage: String? = null
+): Boolean {
+    when {
+        msg != null -> caller.sendColored("&4missing required arguments, required: $required, actual: $len, message: $msg")
+        usage != null -> caller.sendColored("&4missing required arguments, required: $required, actual: $len, usage: $usage")
+        else -> caller.sendColored("&4missing required arguments, required: $required, actual: $len")
+    }
+    return false
+}
+
+fun vect(x: Int = 0, y: Int = 0, z: Int = 0) =
     Vector(x, y, z)
 
-fun vect(x: Double, y: Double, z: Double) =
+fun vect(x: Double = 0.0, y: Double = 0.0, z: Double = 0.0) =
     Vector(x, y, z)
 
-fun vect(value: Int, mode: LocationAddMode) =
+fun vect(value: Int, mode: CoordPosition) =
     when (mode) {
-        LocationAddMode.X -> vect(value, 0, 0)
-        LocationAddMode.Y -> vect(0, value, 0)
-        LocationAddMode.Z -> vect(0, 0, value)
+        CoordPosition.X -> vect(value, 0, 0)
+        CoordPosition.Y -> vect(0, value, 0)
+        CoordPosition.Z -> vect(0, 0, value)
     }
 
-fun vect(value: Double, mode: LocationAddMode) =
+fun vect(value: Double, mode: CoordPosition) =
     when (mode) {
-        LocationAddMode.X -> vect(value, 0.0, 0.0)
-        LocationAddMode.Y -> vect(0.0, value, 0.0)
-        LocationAddMode.Z -> vect(0.0, 0.0, value)
+        CoordPosition.X -> vect(value, 0.0, 0.0)
+        CoordPosition.Y -> vect(0.0, value, 0.0)
+        CoordPosition.Z -> vect(0.0, 0.0, value)
     }
 
 @Suppress("DEPRECATION")

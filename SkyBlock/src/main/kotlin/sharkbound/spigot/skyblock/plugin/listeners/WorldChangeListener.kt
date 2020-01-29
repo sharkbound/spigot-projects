@@ -3,9 +3,9 @@ package sharkbound.spigot.skyblock.plugin.listeners
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerChangedWorldEvent
-import sharkbound.spigot.skyblock.extensions.register
-import sharkbound.spigot.skyblock.extensions.skyBlockWorldName
-import sharkbound.spigot.skyblock.skyIslandGenerationQueue
+import sharkbound.spigot.skyblock.plugin.extensions.register
+import sharkbound.spigot.skyblock.plugin.extensions.skyBlockWorldName
+import sharkbound.spigot.skyblock.plugin.skyIslandGenerationQueue
 
 class WorldChangeListener : Listener {
     init {
