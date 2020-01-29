@@ -41,7 +41,6 @@ data class PlayerSkyIslandGenerator(val player: Player) {
                 modifyMeta {
                     displayName = cfg.getString(ConfigKeys.cowSpawnEggName).colorFormat()
                 }
-
             },
             ItemStack(Material.SEEDS)
         )
@@ -50,11 +49,8 @@ data class PlayerSkyIslandGenerator(val player: Player) {
         try {
             for (chunk in world.loadedChunks) {
                 for (entity in chunk.tileEntities) {
-                    if (entity.type == Material.CHEST) {
-                        (entity.block.state as Chest).inventory.apply {
-                            addItem(*items())
-                        }
-                        //                  we found the chest, so return and exit the loop
+                    if (entity.isChest) {
+                        entity.asChest!!.inventory.addItem(*items())
                         return
                     }
                 }

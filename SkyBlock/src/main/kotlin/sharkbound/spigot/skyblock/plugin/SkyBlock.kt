@@ -12,7 +12,7 @@ class SkyBlock : JavaPlugin() {
         registerAllEventListeners()
 
         saveDefaultConfig()
-
-        println("SkyBlock loaded!, CWD: $cwd")
+        
+        println("SkyBlock loaded!")
     }
 }

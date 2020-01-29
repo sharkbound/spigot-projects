@@ -49,6 +49,11 @@ class CommandSkyBlock : CommandExecutor, TabCompleter {
                 caller.sendColored("&ayour skyblock world as been reset!")
             }
             "del" -> {
+                if (caller.skyBlockWorld?.players?.isEmpty() == true) {
+
+                    return false
+                }
+
                 caller.skyBlockWorld?.delete()
                 caller.sendColored("&ayour skyblock world as been deleted!")
             }
