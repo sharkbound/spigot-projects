@@ -15,12 +15,7 @@ fun Player.target(
 
 val Player.lookLocation get() = target().location
 fun Player.sendColored(message: String, char: Char = '&') =
-    sendMessage(
-        colorFormat(
-            message,
-            char
-        )
-    )
+    sendMessage(colorFormat(message, char))
 
 val Player.skyBlockWorldName get() = "skyblock_${RE_REMOVE_NON_ALPHA.replace(name, "")}"
 val Player.skyBlockWorld: World? get() = sharkbound.spigot.skyblock.plugin.utils.getWorld(skyBlockWorldName)

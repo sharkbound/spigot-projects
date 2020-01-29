@@ -7,10 +7,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.Coords
-import sharkbound.spigot.skyblock.plugin.extensions.delete
-import sharkbound.spigot.skyblock.plugin.extensions.displayName
-import sharkbound.spigot.skyblock.plugin.extensions.sendColored
-import sharkbound.spigot.skyblock.plugin.extensions.skyBlockWorld
+import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.utils.createSkyBlockWorld
 
 
@@ -19,9 +16,9 @@ data class GuiElement(val slot: Int, val material: Material, val name: String) {
 }
 
 object GuiButtons {
-    val delete = "Delete"
-    val join = "Join"
-    val reset = "Reset"
+    val delete = "&4Delete".colorFormat()
+    val join = "&aJoin".colorFormat()
+    val reset = "&4Reset".colorFormat()
 
     val allNames = setOf(delete, join, reset)
 }
@@ -37,8 +34,26 @@ object SkyBlockGui {
         player.openInventory(create(player))
     }
 
+    private fun create(player: Player): Inventory {
+        val items = arrayOf(
+            GuiElement(9 + 1, Material.GRASS, GuiButtons.join),
+            GuiElement(9 + 7, Material.BARRIER, GuiButtons.delete),
+            GuiElement(9 + 6, Material.TNT, GuiButtons.reset)
+        )
+
+        val gui = Bukkit.createInventory(player, 9 * 3, GuiNames.skyBlockGuiMain)
+
+        items.forEach {
+            gui.setItem(it.slot, it.item)
+        }
+
+        return gui
+    }
+
     fun clicked(player: Player, name: String) {
+        println(name)
         when (name) {
+            // region join
             GuiButtons.join -> {
                 if (player.skyBlockWorld == null) {
                     createSkyBlockWorld(player)
@@ -53,36 +68,32 @@ object SkyBlockGui {
                         player.location.pitch
                     ).add(Coords.skyIslandSpawnOffset)
                 )
+                player.sendColored("&awelcome to your skyblock island!")
             }
+            // endregion
+            //region reset
             GuiButtons.reset -> {
+                if (player.skyBlockWorld?.players?.isEmpty() == false) {
+                    player.sendColored("&eyour skyblock island has players in it, so it cannot be reset right now")
+                    return
+                }
+
                 player.skyBlockWorld?.delete()
                 createSkyBlockWorld(player)
                 player.sendColored("&ayour skyblock world as been reset!")
             }
+            //endregion
+            //region delete
             GuiButtons.delete -> {
-                if (player.skyBlockWorld?.players?.isEmpty() == true) {
+                if (player.skyBlockWorld?.players?.isEmpty() == false) {
+                    player.sendColored("&eyour skyblock island has players in it, so it cannot be deleted right now")
                     return
                 }
 
                 player.skyBlockWorld?.delete()
                 player.sendColored("&ayour skyblock world as been deleted!")
             }
+            //endregion
         }
-    }
-
-    private fun create(player: Player): Inventory {
-        val items = arrayOf(
-            GuiElement(0, Material.DIAMOND_PICKAXE, GuiButtons.join),
-            GuiElement(1, Material.BARRIER, GuiButtons.delete),
-            GuiElement(2, Material.TNT, GuiButtons.reset)
-        )
-
-        val gui = Bukkit.createInventory(player, 9 * 3, GuiNames.skyBlockGuiMain)
-
-        items.forEach {
-            gui.setItem(it.slot, it.item)
-        }
-
-        return gui
     }
 }
