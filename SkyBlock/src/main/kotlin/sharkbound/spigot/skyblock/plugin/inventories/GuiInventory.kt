@@ -68,30 +68,30 @@ object SkyBlockGui {
                         player.location.pitch
                     ).add(Coords.skyIslandSpawnOffset)
                 )
-                player.sendColored("&awelcome to your skyblock island!")
+                player.send("&awelcome to your skyblock island!")
             }
             // endregion
             //region reset
             GuiButtons.reset -> {
                 if (player.skyBlockWorld?.players?.isEmpty() == false) {
-                    player.sendColored("&eyour skyblock island has players in it, so it cannot be reset right now")
+                    player.send("&eyour skyblock island has players in it, so it cannot be reset right now")
                     return
                 }
 
                 player.skyBlockWorld?.delete()
                 createSkyBlockWorld(player)
-                player.sendColored("&ayour skyblock world as been reset!")
+                player.send("&ayour skyblock world as been reset!")
             }
             //endregion
             //region delete
             GuiButtons.delete -> {
                 if (player.skyBlockWorld?.players?.isEmpty() == false) {
-                    player.sendColored("&eyour skyblock island has players in it, so it cannot be deleted right now")
+                    player.send("&eyour skyblock island has players in it, so it cannot be deleted right now")
                     return
                 }
 
                 player.skyBlockWorld?.delete()
-                player.sendColored("&ayour skyblock world as been deleted!")
+                player.send("&ayour skyblock world as been deleted!")
             }
             //endregion
         }

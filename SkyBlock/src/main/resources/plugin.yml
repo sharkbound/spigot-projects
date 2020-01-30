@@ -6,9 +6,15 @@ commands:
   skyblock:
     aliases: [sb]
     description: skyblock super commmand
+
   s:
     description: stops the server
+
   listworlds:
     description: list all worlds
+
   dtp:
     description: dimentional teleport
+
+  test:
+    description: debug

@@ -14,7 +14,7 @@ fun Player.target(
     getTargetBlock(materials, distance)
 
 val Player.lookLocation get() = target().location
-fun Player.sendColored(message: String, char: Char = '&') =
+fun Player.send(message: String, char: Char = '&') =
     sendMessage(colorFormat(message, char))
 
 val Player.skyBlockWorldName get() = "skyblock_${RE_REMOVE_NON_ALPHA.replace(name, "")}"

@@ -22,3 +22,7 @@ fun ItemStack.modifyMeta(func: ItemMeta.() -> Unit) =
     apply {
         itemMeta = itemMeta.apply(func)
     }
+
+
+infix fun ItemStack?.displayNameIs(other: String): Boolean =
+    this?.itemMeta?.displayName?.equals(other, ignoreCase = true) ?: false

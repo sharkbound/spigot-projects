@@ -15,12 +15,9 @@ import org.bukkit.util.Vector
 import sharkbound.commonutils.extensions.len
 import sharkbound.commonutils.extensions.use
 import sharkbound.spigot.skyblock.plugin.*
-import sharkbound.spigot.skyblock.plugin.commands.CommandDTP
-import sharkbound.spigot.skyblock.plugin.commands.CommandListWorlds
-import sharkbound.spigot.skyblock.plugin.commands.CommandSkyBlock
-import sharkbound.spigot.skyblock.plugin.commands.CommandStop
+import sharkbound.spigot.skyblock.plugin.commands.*
 import sharkbound.spigot.skyblock.plugin.enums.CoordPosition
-import sharkbound.spigot.skyblock.plugin.extensions.sendColored
+import sharkbound.spigot.skyblock.plugin.extensions.send
 import sharkbound.spigot.skyblock.plugin.extensions.skyBlockWorldName
 import sharkbound.spigot.skyblock.plugin.generators.PlayerSkyIslandGenerator
 import sharkbound.spigot.skyblock.plugin.generators.VoidChunkGenerator
@@ -38,7 +35,8 @@ fun registerAllCommands() {
             CommandSkyBlock(),
             CommandStop(),
             CommandDTP(),
-            CommandListWorlds()
+            CommandListWorlds(),
+            CommandTest()
         )
     )
 }
@@ -135,9 +133,9 @@ fun Array<out String>.wrongArgsLength(
     usage: String? = null
 ): Boolean {
     when {
-        msg != null -> caller.sendColored("&4missing required arguments, required: $required, actual: $len, message: $msg")
-        usage != null -> caller.sendColored("&4missing required arguments, required: $required, actual: $len, usage: $usage")
-        else -> caller.sendColored("&4missing required arguments, required: $required, actual: $len")
+        msg != null -> caller.send("&4missing required arguments, required: $required, actual: $len, message: $msg")
+        usage != null -> caller.send("&4missing required arguments, required: $required, actual: $len, usage: $usage")
+        else -> caller.send("&4missing required arguments, required: $required, actual: $len")
     }
     return false
 }

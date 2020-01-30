@@ -20,6 +20,7 @@ val worldEdit get() = pluginManager.getPlugin("WorldEdit") as WorldEditPlugin
 val cwd get() = File(System.getProperty("user.dir"))
 val cfg get() = skyBlockInstance.config
 val skyIslandGenerationQueue = nonNullableMutableMapOf<UUID, PlayerSkyIslandGenerator>()
+val server get() = Bukkit.getServer()!!
 
 object ConfigKeys {
     const val skyIslandSchematicKey = "sky_island_schematic"
