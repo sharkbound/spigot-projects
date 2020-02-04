@@ -15,7 +15,7 @@ class JoinListener : Listener {
     }
 
     @EventHandler
-    fun onWorldChanged(e: PlayerJoinEvent) {
+    fun onPlayerJoin(e: PlayerJoinEvent) {
         DB.initPlayer(e.player)
         println(DB.playerData(e.player))
     }

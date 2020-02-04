@@ -24,7 +24,7 @@ val Player.skyBlockWorld: World? get() = sharkbound.spigot.skyblock.plugin.utils
 val Player.strId
     get() = id.toString()
 
-val Player.id
+val Player.id: UUID
     get() = uniqueId
 
 
