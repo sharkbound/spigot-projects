@@ -1,17 +1,12 @@
 package sharkbound.spigot.skyblock.plugin.commands
 
-import org.bukkit.Location
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
-import sharkbound.commonutils.extensions.len
-import sharkbound.spigot.skyblock.plugin.Coords
 import sharkbound.spigot.skyblock.plugin.extensions.*
-import sharkbound.spigot.skyblock.plugin.inventories.SkyBlockGui
+import sharkbound.spigot.skyblock.plugin.inventories.SkyBlockMainGui
 import sharkbound.spigot.skyblock.plugin.utils.cannotBeCalledFromConsole
-import sharkbound.spigot.skyblock.plugin.utils.createSkyBlockWorld
 
 class CommandSkyBlock : CommandExecutor/*, TabCompleter*/ {
     init {
@@ -23,7 +18,7 @@ class CommandSkyBlock : CommandExecutor/*, TabCompleter*/ {
             return cannotBeCalledFromConsole()
         }
 
-        SkyBlockGui.show(caller)
+        SkyBlockMainGui.show(caller)
         return true
 
 //        when (args[0].toLowerCase()) {

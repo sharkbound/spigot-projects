@@ -29,7 +29,7 @@ object GuiNames {
     val allNames = setOf(skyBlockGuiMain)
 }
 
-object SkyBlockGui {
+object SkyBlockMainGui {
     fun show(player: Player) {
         player.openInventory(create(player))
     }

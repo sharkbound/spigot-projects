@@ -7,12 +7,13 @@ import sharkbound.spigot.skyblock.plugin.utils.registerAllEventListeners
 class SkyBlock : JavaPlugin() {
     override fun onEnable() {
         skyBlockInstance = this
+        DB.init()
 
         registerAllCommands()
         registerAllEventListeners()
 
         saveDefaultConfig()
-        
+
         println("SkyBlock loaded!")
     }
 }

@@ -69,7 +69,7 @@ else:
 
     import pyautogui
 
-    win = pyautogui.getWindowsWithTitle('minecraft')
+    win = pyautogui.getWindowsWithTitle('minecraft 1.8.8')
     if not win:
         exit()
 
