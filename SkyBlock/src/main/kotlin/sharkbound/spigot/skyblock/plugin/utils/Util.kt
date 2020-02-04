@@ -22,8 +22,9 @@ import sharkbound.spigot.skyblock.plugin.extensions.skyBlockWorldName
 import sharkbound.spigot.skyblock.plugin.generators.PlayerSkyIslandGenerator
 import sharkbound.spigot.skyblock.plugin.generators.VoidChunkGenerator
 import sharkbound.spigot.skyblock.plugin.listeners.InventoryListener
-import sharkbound.spigot.skyblock.plugin.listeners.JoinListener
-import sharkbound.spigot.skyblock.plugin.listeners.WorldChangeListener
+import sharkbound.spigot.skyblock.plugin.listeners.PlayerEventListener
+import sharkbound.spigot.skyblock.plugin.listeners.SkyBlockWorldChangeListener
+import sharkbound.spigot.skyblock.plugin.objects.WorldEditConstants
 import java.io.File
 import java.util.*
 
@@ -45,9 +46,9 @@ fun registerAllCommands() {
 fun registerAllEventListeners() {
     allEventListeners.addAll(
         listOf(
-            WorldChangeListener(),
+            SkyBlockWorldChangeListener(),
             InventoryListener(),
-            JoinListener()
+            PlayerEventListener()
         )
     )
 }

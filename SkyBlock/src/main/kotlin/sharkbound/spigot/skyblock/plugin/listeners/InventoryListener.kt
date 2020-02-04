@@ -17,19 +17,17 @@ class InventoryListener : Listener {
 
     @EventHandler
     fun onItemClicked(e: InventoryClickEvent) {
-        val caller = e.whoClicked as? Player ?: return
-
-        if (e.clickedInventory.name !in GuiNames.allNames) {
+        if (e.clickedInventory?.name !in GuiNames.allNames) {
             return
         }
 
-        e.currentItem.itemMeta.displayName.also {
+        e.currentItem.itemMeta?.displayName?.also {
             if (it !in GuiButtons.allNames) {
                 return
             }
 
             e.cancel()
-            SkyBlockMainGui.clicked(caller, it)
+            SkyBlockMainGui.clicked(e.whoClicked as? Player ?: return, it)
         }
 
     }

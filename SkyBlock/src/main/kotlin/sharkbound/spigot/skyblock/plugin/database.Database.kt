@@ -2,10 +2,10 @@ package sharkbound.spigot.skyblock.plugin
 
 import org.bukkit.entity.Player
 import org.intellij.lang.annotations.Language
-import org.sqlite.SQLiteConfig
 import org.sqlite.SQLiteDataSource
 import sharkbound.commonutils.extensions.closeAfter
 import sharkbound.spigot.skyblock.plugin.extensions.strId
+import sharkbound.spigot.skyblock.plugin.extensions.toUUID
 import java.sql.PreparedStatement
 import java.sql.Statement
 import java.util.*
@@ -29,7 +29,7 @@ object DB {
                     """
                 create table if not exists sky_block(
                     id     integer not null primary key autoincrement,
-                    uuid   text    not null,
+                    uuid   text    not null unique,
                     tokens integer default 0 not null
                 );"""
                 )
@@ -38,17 +38,36 @@ object DB {
         }
     }
 
-    fun playerData(player: Player): PlayerData? {
+    enum class TokenMode {
+        Add, Sub, Set
+    }
+
+    fun modifyTokens(uuid: UUID, newTokens: Int, mode: TokenMode) {
+        val innerQuery = when (mode) {
+            TokenMode.Add -> "tokens + $newTokens"
+            TokenMode.Sub -> "tokens - $newTokens"
+            TokenMode.Set -> "$newTokens"
+        }
+        preparedStatement("update sky_block set tokens = $innerQuery where uuid = ?") {
+            setString(1, uuid.toString())
+        } closeAfter {
+            executeUpdate()
+        }
+    }
+
+
+    fun playerData(uuid: UUID): PlayerData? {
         preparedStatement("select * from sky_block where uuid = ?") {
-            setString(1, player.strId)
+            setString(1, uuid.toString())
         }.executeQuery().apply {
             if (!next()) {
+                close()
                 return null
             }
 
             return PlayerData(
                 getInt("id"),
-                UUID.fromString(getString("uuid")),
+                getString("uuid").toUUID,
                 getInt("tokens")
             ).also {
                 close()
