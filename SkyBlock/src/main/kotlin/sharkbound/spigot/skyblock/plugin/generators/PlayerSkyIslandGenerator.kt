@@ -11,6 +11,7 @@ import sharkbound.spigot.skyblock.plugin.objects.Coords
 import sharkbound.spigot.skyblock.plugin.objects.Schematics
 import sharkbound.spigot.skyblock.plugin.cfg
 import sharkbound.spigot.skyblock.plugin.extensions.*
+import sharkbound.spigot.skyblock.plugin.objects.Config
 import sharkbound.spigot.skyblock.plugin.utils.worldEditSession
 
 data class PlayerSkyIslandGenerator(val player: Player) {
@@ -24,7 +25,6 @@ data class PlayerSkyIslandGenerator(val player: Player) {
         }
         addChestItems()
     }
-
 
 
     @Suppress("DEPRECATION")
@@ -41,7 +41,7 @@ data class PlayerSkyIslandGenerator(val player: Player) {
             ItemStack(Material.MONSTER_EGG).apply {
                 durability = EntityType.COW.typeId
                 modifyMeta {
-                    displayName = cfg.getString(ConfigKeys.cowSpawnEggName).colored()
+                    displayName = Config.cowSpawnEggName.colored()
                 }
             },
             ItemStack(Material.SEEDS)

@@ -29,7 +29,6 @@ def window_titles():
     return titles
 
 
-
 file = Path(r'build\libs\SkyBlock-1.0.jar')
 target = Path(r'C:\Users\lapto\Desktop\jars\server\plugins')
 server = Path(r'C:\Users\lapto\Desktop\minecraft-server.bat.lnk')
@@ -80,6 +79,3 @@ else:
     pyautogui.press('/')
     pyautogui.typewrite('reload')
     pyautogui.press('enter')
-
-
-

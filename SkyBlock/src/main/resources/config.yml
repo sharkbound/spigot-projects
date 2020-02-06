@@ -1,3 +1,4 @@
 sky_island_schematic: plugins/WorldEdit/schematics/sky.schematic
-
-cowSpawnEggName: "&dBetty"
+cow_spawn_egg_name: "&dBetty"
+tokens_on_kill: 5
+token_name: tokens

@@ -1,4 +1,4 @@
-package sharkbound.spigot.skyblock.plugin
+package sharkbound.spigot.skyblock.plugin.database
 
 import org.bukkit.entity.Player
 import org.intellij.lang.annotations.Language
@@ -48,6 +48,7 @@ object DB {
             TokenMode.Sub -> "tokens - $newTokens"
             TokenMode.Set -> "$newTokens"
         }
+        
         preparedStatement("update sky_block set tokens = $innerQuery where uuid = ?") {
             setString(1, uuid.toString())
         } closeAfter {

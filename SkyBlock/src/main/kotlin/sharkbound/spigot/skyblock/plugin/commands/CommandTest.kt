@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import sharkbound.spigot.skyblock.plugin.extensions.register
-import sharkbound.spigot.skyblock.plugin.extensions.send
+
 
 class CommandTest : CommandExecutor {
     init {
@@ -17,7 +17,10 @@ class CommandTest : CommandExecutor {
             return false
         }
 
-        caller.send("hello!")
+
+        caller.inventory.contents.filterNotNull().forEach {
+//           val cis = CraftItemStack.copyNMSStack(net.minecraft.server.v1_8_R3.ItemStack(ItemCarrotStick()), ).tag
+        }
         return false
     }
 }

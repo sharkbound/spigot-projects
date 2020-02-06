@@ -1,4 +1,4 @@
-name: skyblock
+name: SkyBlock
 version: "1.0"
 main: sharkbound.spigot.skyblock.plugin.SkyBlock
 

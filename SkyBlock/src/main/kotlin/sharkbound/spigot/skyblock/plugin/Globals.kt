@@ -20,4 +20,5 @@ val cwd get() = File(System.getProperty("user.dir"))
 val cfg get() = skyBlockInstance.config
 val skyIslandGenerationQueue = nonNullableMutableMapOf<UUID, PlayerSkyIslandGenerator>()
 val server get() = Bukkit.getServer()!!
+val logger get() = skyBlockInstance.logger
 

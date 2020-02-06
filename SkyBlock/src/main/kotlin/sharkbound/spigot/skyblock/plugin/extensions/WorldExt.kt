@@ -4,6 +4,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.block.Block
+import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import sharkbound.spigot.skyblock.plugin.utils.deleteWorld
 
@@ -33,3 +34,6 @@ fun World.delete() {
 
 inline fun <reified T> World.spawnEntityCast(location: Location, entityType: EntityType) =
     spawnEntity(location, entityType) as? T
+
+inline fun <reified T : Entity> World.spawnCast(location: Location): T =
+    spawn(location, T::class.java)

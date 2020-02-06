@@ -3,13 +3,14 @@ package sharkbound.spigot.skyblock.plugin.listeners
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
-import org.bukkit.event.player.PlayerChangedWorldEvent
 import org.bukkit.event.player.PlayerJoinEvent
-import sharkbound.spigot.skyblock.plugin.DB
+import sharkbound.spigot.skyblock.plugin.database.DB
 import sharkbound.spigot.skyblock.plugin.extensions.id
 import sharkbound.spigot.skyblock.plugin.extensions.register
-import sharkbound.spigot.skyblock.plugin.extensions.skyBlockWorldName
-import sharkbound.spigot.skyblock.plugin.skyIslandGenerationQueue
+import sharkbound.spigot.skyblock.plugin.extensions.send
+import sharkbound.spigot.skyblock.plugin.logger
+import sharkbound.spigot.skyblock.plugin.objects.Config
+import java.util.logging.Level
 
 class PlayerEventListener : Listener {
     init {
@@ -23,6 +24,13 @@ class PlayerEventListener : Listener {
 
     @EventHandler
     fun onPlayerDeath(e: PlayerDeathEvent) {
-
+        e.entity.killer?.let { killer ->
+            killer.send("&ayou got ${Config.tokensOnKill} ${Config.tokenName} for killing ${e.entity.displayName}")
+            logger.log(
+                Level.INFO,
+                "gave ${Config.tokensOnKill} ${Config.tokenName} to ${killer.name} for killing ${e.entity.name}"
+            )
+            DB.modifyTokens(killer.id, Config.tokensOnKill, DB.TokenMode.Add)
+        }
     }
 }
