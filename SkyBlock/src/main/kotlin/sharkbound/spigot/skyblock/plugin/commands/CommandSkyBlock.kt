@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import sharkbound.spigot.skyblock.plugin.extensions.*
-import sharkbound.spigot.skyblock.plugin.inventories.SkyBlockMainGui
+import sharkbound.spigot.skyblock.plugin.inventories.SkyIslandGui
 import sharkbound.spigot.skyblock.plugin.utils.cannotBeCalledFromConsole
 
 class CommandSkyBlock : CommandExecutor/*, TabCompleter*/ {
@@ -18,7 +18,7 @@ class CommandSkyBlock : CommandExecutor/*, TabCompleter*/ {
             return cannotBeCalledFromConsole()
         }
 
-        SkyBlockMainGui.show(caller)
+        SkyIslandGui.show(caller)
         return true
 
 //        when (args[0].toLowerCase()) {

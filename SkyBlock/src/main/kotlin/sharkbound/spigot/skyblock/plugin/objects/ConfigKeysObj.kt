@@ -5,5 +5,7 @@ object ConfigKeys {
     const val cowSpawnEggName = "cow_spawn_egg_name"
     const val tokensOnKill = "tokens_on_kill"
     const val tokenName = "token_name"
+    const val emberRodCost = "item_costs.ember_rod_cost"
+    const val aspectOfTheEndCost = "item_costs.aspect_of_the_end"
 }
 

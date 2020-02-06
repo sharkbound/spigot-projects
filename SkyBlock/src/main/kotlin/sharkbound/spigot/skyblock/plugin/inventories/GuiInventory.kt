@@ -1,70 +1,48 @@
 package sharkbound.spigot.skyblock.plugin.inventories
 
+import io.netty.handler.codec.http.multipart.AbstractDiskHttpData
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.ItemStack
+import sharkbound.commonutils.extensions.ifNull
 import sharkbound.commonutils.extensions.isFalse
-import sharkbound.spigot.skyblock.plugin.objects.Coords
 import sharkbound.spigot.skyblock.plugin.extensions.*
+import sharkbound.spigot.skyblock.plugin.objects.Coords
 import sharkbound.spigot.skyblock.plugin.objects.LocationHistory
 import sharkbound.spigot.skyblock.plugin.utils.createSkyBlockWorld
 import sharkbound.spigot.skyblock.plugin.utils.startCountDown
 
 
-data class GuiElement(val slot: Int, val material: Material, val name: String) {
-    val item: ItemStack = ItemStack(material, 1).displayName(name)
-}
+object SkyIslandGui : InventoryGui("SkyBlock Menu", 5) {
+    val DELETE = "&4Delete".colored()
+    val JOIN = "&aJoin".colored()
+    val RESET = "&4Reset".colored()
+    val EXIT = "&eExit".colored()
 
-object GuiButtons {
-    val delete = "&4Delete".colored()
-    val join = "&aJoin".colored()
-    val reset = "&4Reset".colored()
-    val exit = "&eExit".colored()
-
-    val allNames = setOf(delete, join, reset, exit)
-}
-
-object GuiNames {
-    val skyBlockGuiMain = "SkyBlock Menu"
-
-    val allNames = setOf(skyBlockGuiMain)
-}
-
-object SkyBlockMainGui {
-    fun show(player: Player) {
-        player.openInventory(create(player))
-    }
-
-    private fun create(player: Player): Inventory {
-        val items = arrayOf(
-            GuiElement(9 + 1, Material.GRASS, GuiButtons.join),
-            GuiElement(9 + 7, Material.BARRIER, GuiButtons.delete),
-            GuiElement(9 + 6, Material.TNT, GuiButtons.reset),
-            GuiElement(18 + 4, Material.ARROW, GuiButtons.exit)
+    init {
+        addElements(
+            GuiElement(1, 1, Material.GRASS, JOIN),
+            GuiElement(7, 1, Material.BARRIER, DELETE),
+            GuiElement(6, 1, Material.TNT, RESET),
+            GuiElement(4, 2, Material.ARROW, EXIT)
         )
-
-        return Bukkit.createInventory(player, 9 * 4, GuiNames.skyBlockGuiMain).apply {
-            items.forEach {
-                setItem(it.slot, it.item)
-            }
-        }
     }
 
-    fun clicked(player: Player, name: String) {
+    override fun clicked(player: Player, element: GuiElement, normalizedName: String, name: String) {
         when (name) {
-            GuiButtons.join -> {
-                if (player.skyBlockWorld == null) {
+            JOIN -> {
+                player.skyBlockWorld ifNull {
                     createSkyBlockWorld(player)
                 }
+
 
                 player.closeInventory()
                 startDelayedJoin(player)
             }
 
-            GuiButtons.reset -> {
+            RESET -> {
                 if (player.skyBlockWorld?.players?.isEmpty().isFalse) {
                     player.closeInventory()
                     player.send("&eyour skyblock island has players in it, so it cannot be reset right now")
@@ -77,7 +55,7 @@ object SkyBlockMainGui {
                 player.send("&ayour skyblock world as been reset!")
             }
 
-            GuiButtons.delete -> {
+            DELETE -> {
                 if (player.skyBlockWorld?.players?.isEmpty().isFalse) {
                     player.closeInventory()
                     player.send("&eyour skyblock island has players in it, so it cannot be deleted right now")
@@ -89,7 +67,7 @@ object SkyBlockMainGui {
                 player.send("&ayour skyblock world as been deleted!")
             }
 
-            GuiButtons.exit -> {
+            EXIT -> {
                 if (player.id !in LocationHistory) {
                     player.closeInventory()
                     player.send("&eyou do not have any previous positions to teleport to")
@@ -136,3 +114,4 @@ object SkyBlockMainGui {
         )
     }
 }
+

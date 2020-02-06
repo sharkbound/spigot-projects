@@ -15,4 +15,10 @@ object Config {
     val tokenName
         get() = cfg.getString(ConfigKeys.tokenName)
 
+    val emberRodCost
+        get() = cfg.getInt(ConfigKeys.emberRodCost)
+
+    val aspectOfTheEndCost
+        get() = cfg.getInt(ConfigKeys.aspectOfTheEndCost)
+
 }

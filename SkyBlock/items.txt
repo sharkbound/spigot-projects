@@ -1,0 +1,28 @@
+Items:
+BlazeRod / Enchant Animation
+Name = Ember Rod
+type: SUPER (Green &A)
+Description: It's all yours
+Type: It will shoot fireballs when it is fully charged
+Cooldown: 30 sec
+--
+Diamond Sword
+Name Aspect of the end
+type: EPIC (Purple &5)
+Desc: it's all yours
+Type: Teleport when rightclick to the area that you rightclicked on.
+Cooldown: 15 sec
+--
+Goldnugget
+Name Coin
+type: NORMAL (Gold &6)
+Desc: it's all yours
+Type: Used as currency and gives 1 dollar every time found & rightclicked
+Cooldown: 15 sec
+--
+Piggy Bank (Piggy Head)
+Mobile bank
+essentially what we're wanting is hypixels skyblock
+but we want it customizable
+and easy to use
+aswell as custom features

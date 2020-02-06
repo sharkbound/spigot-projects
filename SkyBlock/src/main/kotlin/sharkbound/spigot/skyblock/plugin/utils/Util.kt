@@ -21,7 +21,7 @@ import sharkbound.spigot.skyblock.plugin.extensions.send
 import sharkbound.spigot.skyblock.plugin.extensions.skyBlockWorldName
 import sharkbound.spigot.skyblock.plugin.generators.PlayerSkyIslandGenerator
 import sharkbound.spigot.skyblock.plugin.generators.VoidChunkGenerator
-import sharkbound.spigot.skyblock.plugin.listeners.InventoryListener
+import sharkbound.spigot.skyblock.plugin.inventories.InventoryGuiClickListener
 import sharkbound.spigot.skyblock.plugin.listeners.PlayerEventListener
 import sharkbound.spigot.skyblock.plugin.listeners.SkyBlockWorldChangeListener
 import sharkbound.spigot.skyblock.plugin.objects.WorldEditConstants
@@ -47,7 +47,7 @@ fun registerAllEventListeners() {
     allEventListeners.addAll(
         listOf(
             SkyBlockWorldChangeListener(),
-            InventoryListener(),
+            InventoryGuiClickListener(),
             PlayerEventListener()
         )
     )

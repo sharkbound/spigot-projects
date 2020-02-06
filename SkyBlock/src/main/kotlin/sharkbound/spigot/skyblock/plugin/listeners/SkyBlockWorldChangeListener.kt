@@ -18,8 +18,13 @@ class SkyBlockWorldChangeListener : Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     fun onBeforeTeleport(e: PlayerTeleportEvent) {
-        if (e.isCancelled || e.from == null || e.to?.world?.name != e.player.skyBlockWorldName)
+        if (
+            e.isCancelled
+            || e.from?.world?.name == e.player.skyBlockWorldName
+            || e.to?.world?.name != e.player.skyBlockWorldName
+        ) {
             return
+        }
 
         LocationHistory.update(e.from, e.player.id)
     }

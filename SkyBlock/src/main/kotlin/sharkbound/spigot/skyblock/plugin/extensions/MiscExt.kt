@@ -23,3 +23,6 @@ val Int.secondTicks
 
 val Int.ticks
     get() = toLong()
+
+val String.normalized
+    get() = toLowerCase().trim()

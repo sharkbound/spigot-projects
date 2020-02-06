@@ -25,6 +25,8 @@ class PlayerEventListener : Listener {
     @EventHandler
     fun onPlayerDeath(e: PlayerDeathEvent) {
         e.entity.killer?.let { killer ->
+            if (e.entity.id == killer.id) return
+
             killer.send("&ayou got ${Config.tokensOnKill} ${Config.tokenName} for killing ${e.entity.displayName}")
             logger.log(
                 Level.INFO,

@@ -2,3 +2,7 @@ sky_island_schematic: plugins/WorldEdit/schematics/sky.schematic
 cow_spawn_egg_name: "&dBetty"
 tokens_on_kill: 5
 token_name: tokens
+
+item_costs:
+  ember_rod_cost: 10
+  aspect_of_the_end: 20
