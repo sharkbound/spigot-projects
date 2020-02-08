@@ -28,8 +28,11 @@ object ShopGui : InventoryGui("Shop", 3) {
 
     override fun clicked(player: Player, element: GuiElement, normalizedName: String, name: String) {
         when (name) {
-            EMBER_ROD_SHOP_ITEM_NAME -> emberRodClicked(player)
-            ASPECT_OF_THE_END_SHOP_ITEM_NAME -> aspectOfTheEndClicked(player)
+            EMBER_ROD_SHOP_ITEM_NAME ->
+                purchaseItem(player, SpecialItems.emberRod(), Config.emberRodCost)
+
+            ASPECT_OF_THE_END_SHOP_ITEM_NAME ->
+                purchaseItem(player, SpecialItems.aspectOfTheEnd(), Config.aspectOfTheEndCost)
         }
     }
 
@@ -43,7 +46,7 @@ object ShopGui : InventoryGui("Shop", 3) {
     }
 
     private fun purchaseItem(player: Player, item: ItemStack, price: Int) {
-        if (!hasEnoughBalance(player, price, item.name)) return
+        if (!player.hasFreeSpace() || !hasEnoughBalance(player, price, item.name)) return
 
         player.inventory.addItem(item)
         player.send("&eyou purchased &r${item.name}&r&e for $price ${Config.tokenName}, &eit has been added to your inventory")
@@ -51,23 +54,12 @@ object ShopGui : InventoryGui("Shop", 3) {
         DB.modifyBalance(player, price, DB.BalanceModifyOperation.Sub)
     }
 
-    private fun aspectOfTheEndClicked(player: Player) {
-        if (player.hasFreeSpace()) {
-            purchaseItem(player, SpecialItems.aspectOfTheEnd(), Config.aspectOfTheEndCost)
-        }
-    }
+}
 
-    private fun emberRodClicked(player: Player) {
-        if (player.hasFreeSpace()) {
-            purchaseItem(player, SpecialItems.emberRod(), Config.emberRodCost)
-        }
+private fun Player.hasFreeSpace(): Boolean {
+    if (!player.hasFreeInvSlot) {
+        player.send("&4you do not have any free inventory slots, empty one then try to buy it again")
+        return false
     }
-
-    fun Player.hasFreeSpace(): Boolean {
-        if (!player.hasFreeInvSlot) {
-            player.send("&4you do not have any free inventory slots, empty one then try to buy it again")
-            return false
-        }
-        return true
-    }
+    return true
 }
