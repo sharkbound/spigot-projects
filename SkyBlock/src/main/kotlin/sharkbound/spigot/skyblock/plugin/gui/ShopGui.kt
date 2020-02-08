@@ -63,6 +63,6 @@ object ShopGui : InventoryGui("Shop", 3) {
     }
 
     private fun emberRodClicked(player: Player) {
-
+        TODO()
     }
 }
