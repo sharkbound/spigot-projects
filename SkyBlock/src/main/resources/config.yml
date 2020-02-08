@@ -6,3 +6,6 @@ token_name: tokens
 item_costs:
   ember_rod_cost: 10
   aspect_of_the_end: 20
+
+item_settings:
+  aspect_of_the_end_range: 30

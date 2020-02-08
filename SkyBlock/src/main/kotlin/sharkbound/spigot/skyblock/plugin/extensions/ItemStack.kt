@@ -6,6 +6,8 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import sharkbound.commonutils.extensions.isTrue
+import sharkbound.spigot.skyblock.plugin.objects.NbtTags
+import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
 import net.minecraft.server.v1_8_R3.ItemStack as ServerItemStack
 
 fun ItemStack.enchant(enchantment: Enchantment, level: Int = 1, ignoreMaxLevel: Boolean = true) =
@@ -39,9 +41,6 @@ val ItemStack.name
 val ItemStack.nms: ServerItemStack
     get() = CraftItemStack.asNMSCopy(this)
 
-inline fun <R> ItemStack.useNMS(block: ServerItemStack.() -> R) =
-    nms.run(block)
-
 fun ItemStack.ensureNBT() =
     nms.ensureNBT().asBukkit
 
@@ -52,10 +51,32 @@ fun ServerItemStack.ensureNBT() =
     }
 
 
-inline fun <R> ItemStack.copyWithNBT(block: NBTTagCompound.() -> R): ItemStack =
-    nms.ensureNBT().apply { block(tag) }.asBukkit
+inline fun ItemStack.copyWithNBT(block: NBTTagCompound.() -> Unit): ItemStack =
+    copyWithNMS { block(tag) }
+
+inline fun ItemStack.copyWithNMS(block: ServerItemStack.() -> Unit): ItemStack =
+    nms.ensureNBT().apply { block(this) }.asBukkit
 
 fun ItemStack.hasTag(tag: String): Boolean =
     nms.tag?.hasKey(tag).isTrue
 
-val ServerItemStack.asBukkit get() = CraftItemStack.asBukkitCopy(this)
+val ServerItemStack.asBukkit: ItemStack
+    get() = CraftItemStack.asBukkitCopy(this)
+
+infix fun ItemStack.applySpecialFlag(flag: SpecialItemFlags): ItemStack =
+    copyWithNBT { setString(NbtTags.ITEM_CLASS, flag.nbtValue) }
+
+infix fun ItemStack?.hasSpecialItemFlag(flag: SpecialItemFlags): Boolean =
+    this?.nms?.tag?.getString(NbtTags.ITEM_CLASS) == flag.nbtValue
+
+val ItemStack?.hasItemClass: Boolean
+    get() = this?.hasTag(NbtTags.ITEM_CLASS).isTrue
+
+val ItemStack.nbt: NBTTagCompound
+    get() = nms.ensureNBT().tag
+
+val ItemStack?.specialItemFlag: SpecialItemFlags?
+    get() =
+        this?.nbt?.getString(NbtTags.ITEM_CLASS)?.let { value ->
+            SpecialItemFlags.values().firstOrNull { it.nbtValue == value }
+        }

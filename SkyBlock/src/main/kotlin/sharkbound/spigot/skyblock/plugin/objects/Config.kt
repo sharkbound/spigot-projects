@@ -21,4 +21,7 @@ object Config {
     val aspectOfTheEndCost
         get() = cfg.getInt(ConfigKeys.aspectOfTheEndCost)
 
+    val aspectOfTheEndRange
+        get() = cfg.getInt(ConfigKeys.aspectOfTheEndRange)
+
 }

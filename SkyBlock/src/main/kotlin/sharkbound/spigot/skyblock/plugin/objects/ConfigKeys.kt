@@ -7,5 +7,6 @@ object ConfigKeys {
     const val tokenName = "token_name"
     const val emberRodCost = "item_costs.ember_rod_cost"
     const val aspectOfTheEndCost = "item_costs.aspect_of_the_end"
+    const val aspectOfTheEndRange = "item_settings.aspect_of_the_end_range"
 }
 
