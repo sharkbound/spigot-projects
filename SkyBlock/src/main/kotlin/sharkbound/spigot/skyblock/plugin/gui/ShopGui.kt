@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.database.DB
 import sharkbound.spigot.skyblock.plugin.extensions.colored
 import sharkbound.spigot.skyblock.plugin.extensions.hasFreeInvSlot
+import sharkbound.spigot.skyblock.plugin.extensions.name
 import sharkbound.spigot.skyblock.plugin.extensions.send
 import sharkbound.spigot.skyblock.plugin.objects.Config
 import sharkbound.spigot.skyblock.plugin.objects.SpecialItemLores
@@ -32,37 +33,41 @@ object ShopGui : InventoryGui("Shop", 3) {
         }
     }
 
-    private fun sendNotEnoughFunds(player: Player, required: Int, currentBalance: Int, itemName: String) {
-        val color = "&6"
-        player.send("&6[SHOP]${color} you do not have enough ${Config.tokenName} to get $itemName&r${color}, you short by ${required - currentBalance} ${Config.tokenName}")
-    }
-
-    private fun aspectOfTheEndClicked(player: Player) {
+    private fun hasEnoughBalance(player: Player, required: Int, itemName: String): Boolean {
         val bal = DB.balance(player)
-        if (bal < Config.aspectOfTheEndCost) {
-            sendNotEnoughFunds(player, Config.aspectOfTheEndCost, bal, "&5Aspect Of The End")
-            return
+        if (bal < required) {
+            player.send("&6[SHOP] you do not have enough ${Config.tokenName} to get '$itemName&r&6', you need $required ${Config.tokenName}")
+            return false
         }
-
-        if (!player.hasFreeInvSlot) {
-            player.send("&4you do not have any free inventory slots, please empty a slot then try to buy it again")
-            return
-        }
-
-        player.closeInventory()
-        purchaseItem(player, SpecialItems.aspectOfTheEnd(), Config.aspectOfTheEndCost)
+        return true
     }
 
     private fun purchaseItem(player: Player, item: ItemStack, price: Int) {
+        if (!hasEnoughBalance(player, price, item.name)) return
+
         player.inventory.addItem(item)
+        player.send("&eyou purchased &r${item.name}&r&e for $price ${Config.tokenName}, &eit has been added to your inventory")
 
-        val itemName = item.itemMeta?.displayName ?: item.type.name
-        player.send("&eyou purchased &r${itemName}&r, &eit has been added to your inventory")
+        DB.modifyBalance(player, price, DB.BalanceModifyOperation.Sub)
+    }
 
-        DB.modifyBalance(player, price, DB.BalanceModifyMode.Sub)
+    private fun aspectOfTheEndClicked(player: Player) {
+        if (player.hasFreeSpace()) {
+            purchaseItem(player, SpecialItems.aspectOfTheEnd(), Config.aspectOfTheEndCost)
+        }
     }
 
     private fun emberRodClicked(player: Player) {
-        TODO()
+        if (player.hasFreeSpace()) {
+            purchaseItem(player, SpecialItems.emberRod(), Config.emberRodCost)
+        }
+    }
+
+    fun Player.hasFreeSpace(): Boolean {
+        if (!player.hasFreeInvSlot) {
+            player.send("&4you do not have any free inventory slots, empty one then try to buy it again")
+            return false
+        }
+        return true
     }
 }

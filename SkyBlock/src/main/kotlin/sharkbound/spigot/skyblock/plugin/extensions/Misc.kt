@@ -2,7 +2,6 @@ package sharkbound.spigot.skyblock.plugin.extensions
 
 import org.bukkit.ChatColor
 import org.bukkit.event.Cancellable
-import sharkbound.commonutils.util.askLong
 import java.util.*
 
 fun String.colored(char: Char = '&'): String =

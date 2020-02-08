@@ -14,7 +14,7 @@ import org.bukkit.plugin.PluginManager
 import org.bukkit.util.Vector
 import sharkbound.commonutils.extensions.len
 import sharkbound.commonutils.extensions.use
-import sharkbound.spigot.skyblock.plugin.*
+import sharkbound.spigot.skyblock.plugin.SkyBlock
 import sharkbound.spigot.skyblock.plugin.commands.*
 import sharkbound.spigot.skyblock.plugin.enums.CoordPosition
 import sharkbound.spigot.skyblock.plugin.extensions.colored
@@ -26,6 +26,9 @@ import sharkbound.spigot.skyblock.plugin.gui.InventoryGuiClickListener
 import sharkbound.spigot.skyblock.plugin.listeners.PlayerEventListener
 import sharkbound.spigot.skyblock.plugin.listeners.SkyBlockWorldChangeListener
 import sharkbound.spigot.skyblock.plugin.objects.WorldEditConstants
+import sharkbound.spigot.skyblock.plugin.pluginManager
+import sharkbound.spigot.skyblock.plugin.skyBlockInstance
+import sharkbound.spigot.skyblock.plugin.skyIslandGenerationQueue
 import java.io.File
 import java.util.*
 

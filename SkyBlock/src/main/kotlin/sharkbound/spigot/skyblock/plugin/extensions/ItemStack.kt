@@ -29,3 +29,6 @@ fun ItemStack.withMeta(func: ItemMeta.() -> Unit) =
 
 infix fun ItemStack?.displayNameIs(other: String): Boolean =
     this?.itemMeta?.displayName?.equals(other, ignoreCase = true).isTrue
+
+val ItemStack.name
+    get() = itemMeta?.displayName ?: type.name

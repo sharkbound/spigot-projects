@@ -4,7 +4,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import sharkbound.spigot.skyblock.plugin.extensions.*
+import sharkbound.spigot.skyblock.plugin.extensions.register
 import sharkbound.spigot.skyblock.plugin.gui.SkyIslandGui
 import sharkbound.spigot.skyblock.plugin.utils.cannotBeCalledFromConsole
 

@@ -5,7 +5,6 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import sharkbound.commonutils.extensions.ifNull
 import sharkbound.commonutils.extensions.isFalse
-import sharkbound.commonutils.extensions.orElse
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Coords
 import sharkbound.spigot.skyblock.plugin.objects.LocationHistory

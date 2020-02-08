@@ -17,7 +17,7 @@ class GuiElement(val x: Int, val y: Int, val material: Material, val name: Strin
         item.modifyMeta { addItemFlags(ItemFlag.HIDE_ATTRIBUTES) }
     }
 
-    fun lore(loreLines: List<String>) =
+    fun lore(loreLines: List<String>): ItemStack =
         item.modifyMeta { lore = loreLines.map { it.colored() } }
 
     override fun equals(other: Any?): Boolean {

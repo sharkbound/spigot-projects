@@ -42,19 +42,19 @@ object DB {
         }
     }
 
-    enum class BalanceModifyMode {
+    enum class BalanceModifyOperation {
         Add, Sub, Set
     }
 
-    fun modifyBalance(player: Player, newBalance: Int, mode: BalanceModifyMode) {
-        modifyBalance(player.id, newBalance, mode)
+    fun modifyBalance(player: Player, newBalance: Int, operation: BalanceModifyOperation) {
+        modifyBalance(player.id, newBalance, operation)
     }
 
-    fun modifyBalance(uuid: UUID, newBalance: Int, mode: BalanceModifyMode) {
-        val innerQuery = when (mode) {
-            BalanceModifyMode.Add -> "tokens + $newBalance"
-            BalanceModifyMode.Sub -> "tokens - $newBalance"
-            BalanceModifyMode.Set -> "$newBalance"
+    fun modifyBalance(uuid: UUID, newBalance: Int, operation: BalanceModifyOperation) {
+        val innerQuery = when (operation) {
+            BalanceModifyOperation.Add -> "tokens + $newBalance"
+            BalanceModifyOperation.Sub -> "tokens - $newBalance"
+            BalanceModifyOperation.Set -> "$newBalance"
         }
 
         preparedStatement("update sky_block set tokens = $innerQuery where uuid = ?") {

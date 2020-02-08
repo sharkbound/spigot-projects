@@ -6,12 +6,10 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import sharkbound.spigot.skyblock.plugin.objects.ConfigKeys
-import sharkbound.spigot.skyblock.plugin.objects.Coords
-import sharkbound.spigot.skyblock.plugin.objects.Schematics
-import sharkbound.spigot.skyblock.plugin.cfg
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Config
+import sharkbound.spigot.skyblock.plugin.objects.Coords
+import sharkbound.spigot.skyblock.plugin.objects.Schematics
 import sharkbound.spigot.skyblock.plugin.utils.worldEditSession
 
 data class PlayerSkyIslandGenerator(val player: Player) {
