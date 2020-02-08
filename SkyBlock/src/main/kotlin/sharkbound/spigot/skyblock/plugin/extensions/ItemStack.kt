@@ -43,16 +43,14 @@ inline fun <R> ItemStack.useNMS(block: ServerItemStack.() -> R) =
     nms.run(block)
 
 fun ItemStack.ensureNBT() =
-    apply {
-        nms.apply {
-            tag = tag ?: NBTTagCompound()
-        }
-    }
+    nms.ensureNBT().asBukkit
+
 
 fun ServerItemStack.ensureNBT() =
     apply {
         tag = tag ?: NBTTagCompound()
     }
+
 
 inline fun <R> ItemStack.copyWithNBT(block: NBTTagCompound.() -> R): ItemStack =
     nms.ensureNBT().apply { block(tag) }.asBukkit
