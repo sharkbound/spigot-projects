@@ -2,14 +2,12 @@ package sharkbound.spigot.skyblock.plugin.utils
 
 import com.sk89q.worldedit.EditSession
 import com.sk89q.worldedit.bukkit.BukkitWorld
-import org.bukkit.Bukkit
-import org.bukkit.ChatColor
-import org.bukkit.World
-import org.bukkit.WorldCreator
+import org.bukkit.*
 import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.generator.ChunkGenerator
+import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.PluginManager
 import org.bukkit.util.Vector
 import sharkbound.commonutils.extensions.len
@@ -171,8 +169,11 @@ fun vect(value: Double, mode: CoordPosition) =
 inline fun World.worldEditSession(handler: (EditSession) -> Unit) =
     EditSession(BukkitWorld(this), WorldEditConstants.MAX_WORLD_EDIT_BLOCKS).apply(handler)
 
-fun Collection<String>.colorAll() =
+fun Collection<String>.colorAll(): List<String> =
     map { it.colored() }
 
-fun colorAll(vararg strings: String) =
+fun colorAll(vararg strings: String): List<String> =
     strings.map { it.colored() }
+
+fun newStack(material: Material, amount: Int = 1, damage: Short = 0): ItemStack =
+    ItemStack(material, amount, damage)

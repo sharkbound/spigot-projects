@@ -3,11 +3,10 @@ package sharkbound.spigot.skyblock.plugin.listeners
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import sharkbound.spigot.skyblock.plugin.database.DB
-import sharkbound.spigot.skyblock.plugin.extensions.id
-import sharkbound.spigot.skyblock.plugin.extensions.register
-import sharkbound.spigot.skyblock.plugin.extensions.send
+import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.logger
 import sharkbound.spigot.skyblock.plugin.objects.Config
 import java.util.logging.Level
@@ -15,6 +14,15 @@ import java.util.logging.Level
 class PlayerEventListener : Listener {
     init {
         register()
+    }
+
+    @EventHandler
+    fun itemEquipped(e: PlayerItemHeldEvent) {
+        e.newItem?.let {
+            if (it.hasTag("test")) {
+                println(it.name)
+            }
+        }
     }
 
     @EventHandler
