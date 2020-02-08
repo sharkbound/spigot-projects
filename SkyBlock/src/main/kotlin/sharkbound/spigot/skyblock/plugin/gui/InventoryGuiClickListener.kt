@@ -1,4 +1,4 @@
-package sharkbound.spigot.skyblock.plugin.inventories
+package sharkbound.spigot.skyblock.plugin.gui
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

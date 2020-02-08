@@ -5,7 +5,7 @@ import org.bukkit.event.Cancellable
 import sharkbound.commonutils.util.askLong
 import java.util.*
 
-fun String.colored(char: Char = '&') =
+fun String.colored(char: Char = '&'): String =
     ChatColor.translateAlternateColorCodes(char, this)
 
 fun Cancellable.cancel() {

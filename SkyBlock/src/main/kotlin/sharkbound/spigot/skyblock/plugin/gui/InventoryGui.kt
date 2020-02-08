@@ -1,6 +1,7 @@
-package sharkbound.spigot.skyblock.plugin.inventories
+package sharkbound.spigot.skyblock.plugin.gui
 
 import org.bukkit.Bukkit
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
@@ -20,12 +21,21 @@ open class InventoryGui(val name: String, val rows: Int) {
             else -> false
         }
 
-    fun createInventory() =
+
+    private fun createInventory() =
         Bukkit.createInventory(null, rows * 9, name)
 
-    fun addElements(vararg newElements: GuiElement) {
-        elements.addAll(newElements)
-    }
+    fun addElement(
+        x: Int,
+        y: Int,
+        material: Material,
+        name: String,
+        lore: List<String> = emptyList()
+    ): GuiElement =
+        GuiElement(x, y, material, name).also {
+            it.lore(lore)
+            elements.add(it)
+        }
 
     open fun addItemsToInv(inventory: Inventory) {
         elements.forEach {
@@ -86,6 +96,6 @@ fun addInventoryGui(vararg gui: InventoryGui) {
 }
 
 fun registerAllInventoryGui() {
-    addInventoryGui(SkyIslandGui)
+    addInventoryGui(SkyIslandGui, ShopGui)
 }
 

@@ -4,6 +4,7 @@ import org.bukkit.entity.Player
 import org.intellij.lang.annotations.Language
 import org.sqlite.SQLiteDataSource
 import sharkbound.commonutils.extensions.closeAfter
+import sharkbound.spigot.skyblock.plugin.extensions.id
 import sharkbound.spigot.skyblock.plugin.extensions.strId
 import sharkbound.spigot.skyblock.plugin.extensions.toUUID
 import java.sql.PreparedStatement
@@ -16,10 +17,13 @@ object DB {
     val data = SQLiteDataSource().apply { url = "jdbc:sqlite:skyblock.sqlite" }
     val connection get() = data.connection
 
-    inline fun statement(func: Statement.() -> Unit) =
+    inline fun statement(func: Statement.() -> Unit): Statement =
         connection.createStatement().apply(func)
 
-    inline fun preparedStatement(@Language("SQLite") query: String, func: PreparedStatement.() -> Unit) =
+    inline fun preparedStatement(
+        @Language("SQLite") query: String,
+        func: PreparedStatement.() -> Unit
+    ): PreparedStatement =
         connection.prepareStatement(query).apply(func)
 
     fun init() {
@@ -38,17 +42,21 @@ object DB {
         }
     }
 
-    enum class TokenMode {
+    enum class BalanceModifyMode {
         Add, Sub, Set
     }
 
-    fun modifyTokens(uuid: UUID, newTokens: Int, mode: TokenMode) {
+    fun modifyBalance(player: Player, newBalance: Int, mode: BalanceModifyMode) {
+        modifyBalance(player.id, newBalance, mode)
+    }
+
+    fun modifyBalance(uuid: UUID, newBalance: Int, mode: BalanceModifyMode) {
         val innerQuery = when (mode) {
-            TokenMode.Add -> "tokens + $newTokens"
-            TokenMode.Sub -> "tokens - $newTokens"
-            TokenMode.Set -> "$newTokens"
+            BalanceModifyMode.Add -> "tokens + $newBalance"
+            BalanceModifyMode.Sub -> "tokens - $newBalance"
+            BalanceModifyMode.Set -> "$newBalance"
         }
-        
+
         preparedStatement("update sky_block set tokens = $innerQuery where uuid = ?") {
             setString(1, uuid.toString())
         } closeAfter {
@@ -56,8 +64,10 @@ object DB {
         }
     }
 
+    fun dataOf(player: Player): PlayerData? =
+        dataOf(player.id)
 
-    fun playerData(uuid: UUID): PlayerData? {
+    fun dataOf(uuid: UUID): PlayerData? {
         preparedStatement("select * from sky_block where uuid = ?") {
             setString(1, uuid.toString())
         }.executeQuery().apply {
@@ -77,6 +87,11 @@ object DB {
 
     }
 
+    fun balance(player: Player): Int =
+        balance(player.id)
+
+    fun balance(uuid: UUID): Int =
+        dataOf(uuid)?.tokens ?: 0
 
     fun initPlayer(player: Player) {
 //        check if the players data already exists

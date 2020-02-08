@@ -4,7 +4,7 @@ import org.bukkit.Material
 import org.bukkit.World
 import org.bukkit.entity.Player
 import sharkbound.spigot.skyblock.plugin.RE_REMOVE_NON_ALPHA
-import sharkbound.spigot.skyblock.plugin.utils.colorFormat
+import sharkbound.spigot.skyblock.plugin.utils.colored
 import java.util.*
 
 fun Player.target(
@@ -16,7 +16,7 @@ fun Player.target(
 
 val Player.lookLocation get() = target().location
 fun Player.send(message: String, char: Char = '&') =
-    sendMessage(colorFormat(message, char))
+    sendMessage(colored(message, char))
 
 val Player.skyBlockWorldName get() = "skyblock_${RE_REMOVE_NON_ALPHA.replace(name, "")}"
 val Player.skyBlockWorld: World? get() = sharkbound.spigot.skyblock.plugin.utils.getWorld(skyBlockWorldName)
@@ -27,5 +27,10 @@ val Player.strId
 val Player.id: UUID
     get() = uniqueId
 
+inline infix fun <R> Player.closeInventoryAfter(block: (Player) -> R) =
+    block(this).also {
+        closeInventory()
+    }
 
-
+val Player.hasFreeInvSlot
+    get() = inventory.firstEmpty() != -1

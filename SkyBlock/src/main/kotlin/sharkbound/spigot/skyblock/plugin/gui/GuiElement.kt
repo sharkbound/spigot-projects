@@ -1,8 +1,9 @@
-package sharkbound.spigot.skyblock.plugin.inventories
+package sharkbound.spigot.skyblock.plugin.gui
 
 import org.bukkit.Material
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
+import sharkbound.spigot.skyblock.plugin.extensions.colored
 import sharkbound.spigot.skyblock.plugin.extensions.displayName
 import sharkbound.spigot.skyblock.plugin.extensions.modifyMeta
 import sharkbound.spigot.skyblock.plugin.extensions.normalized
@@ -15,6 +16,9 @@ class GuiElement(val x: Int, val y: Int, val material: Material, val name: Strin
     init {
         item.modifyMeta { addItemFlags(ItemFlag.HIDE_ATTRIBUTES) }
     }
+
+    fun lore(loreLines: List<String>) =
+        item.modifyMeta { lore = loreLines.map { it.colored() } }
 
     override fun equals(other: Any?): Boolean {
         return other is GuiElement && other.normalizedName == normalizedName

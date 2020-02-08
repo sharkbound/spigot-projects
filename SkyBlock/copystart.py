@@ -68,7 +68,17 @@ else:
 
     import pyautogui
 
-    win = pyautogui.getWindowsWithTitle('minecraft 1.8.8')
+    win = pyautogui.getWindowsWithTitle(SERVER_PROC_NAME)
+    if not win:
+        exit()
+
+    win = win[0]
+    win.activate()
+
+    pyautogui.typewrite('reload')
+    pyautogui.press('enter')
+
+    win = pyautogui.getWindowsWithTitle("minecraft 1.8.8")
     if not win:
         exit()
 
@@ -76,6 +86,4 @@ else:
     win.activate()
 
     pyautogui.press('escape')
-    pyautogui.press('/')
-    pyautogui.typewrite('reload')
-    pyautogui.press('enter')
+

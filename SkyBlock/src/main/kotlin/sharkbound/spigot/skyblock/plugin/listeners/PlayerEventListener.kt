@@ -32,7 +32,7 @@ class PlayerEventListener : Listener {
                 Level.INFO,
                 "gave ${Config.tokensOnKill} ${Config.tokenName} to ${killer.name} for killing ${e.entity.name}"
             )
-            DB.modifyTokens(killer.id, Config.tokensOnKill, DB.TokenMode.Add)
+            DB.modifyBalance(killer.id, Config.tokensOnKill, DB.BalanceModifyMode.Add)
         }
     }
 }

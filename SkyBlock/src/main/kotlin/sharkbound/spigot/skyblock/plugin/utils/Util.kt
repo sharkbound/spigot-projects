@@ -17,11 +17,12 @@ import sharkbound.commonutils.extensions.use
 import sharkbound.spigot.skyblock.plugin.*
 import sharkbound.spigot.skyblock.plugin.commands.*
 import sharkbound.spigot.skyblock.plugin.enums.CoordPosition
+import sharkbound.spigot.skyblock.plugin.extensions.colored
 import sharkbound.spigot.skyblock.plugin.extensions.send
 import sharkbound.spigot.skyblock.plugin.extensions.skyBlockWorldName
 import sharkbound.spigot.skyblock.plugin.generators.PlayerSkyIslandGenerator
 import sharkbound.spigot.skyblock.plugin.generators.VoidChunkGenerator
-import sharkbound.spigot.skyblock.plugin.inventories.InventoryGuiClickListener
+import sharkbound.spigot.skyblock.plugin.gui.InventoryGuiClickListener
 import sharkbound.spigot.skyblock.plugin.listeners.PlayerEventListener
 import sharkbound.spigot.skyblock.plugin.listeners.SkyBlockWorldChangeListener
 import sharkbound.spigot.skyblock.plugin.objects.WorldEditConstants
@@ -53,7 +54,7 @@ fun registerAllEventListeners() {
     )
 }
 
-fun colorFormat(message: String, char: Char = '&') =
+fun colored(message: String, char: Char = '&') =
     ChatColor.translateAlternateColorCodes(char, message)
 
 fun deleteWorld(worldName: String): Boolean {
@@ -166,3 +167,9 @@ fun vect(value: Double, mode: CoordPosition) =
 @Suppress("DEPRECATION")
 inline fun World.worldEditSession(handler: (EditSession) -> Unit) =
     EditSession(BukkitWorld(this), WorldEditConstants.MAX_WORLD_EDIT_BLOCKS).apply(handler)
+
+fun Collection<String>.colorAll() =
+    map { it.colored() }
+
+fun colorAll(vararg strings: String) =
+    strings.map { it.colored() }
