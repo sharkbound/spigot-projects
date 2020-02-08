@@ -34,3 +34,12 @@ inline infix fun <R> Player.closeInventoryAfter(block: (Player) -> R) =
 
 val Player.hasFreeInvSlot
     get() = inventory.firstEmpty() != -1
+
+val Player.lookDirection
+    get() = location.direction
+
+val Player.yaw
+    get() = location.yaw
+
+val Player.pitch
+    get() = location.pitch
