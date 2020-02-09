@@ -5,6 +5,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import sharkbound.spigot.skyblock.plugin.builders.buildItem
 import sharkbound.spigot.skyblock.plugin.extensions.copyWithNBT
 import sharkbound.spigot.skyblock.plugin.extensions.nms
 import sharkbound.spigot.skyblock.plugin.extensions.register
@@ -21,7 +22,12 @@ class CommandTest : CommandExecutor {
             return false
         }
 
-//        nbtTest(caller)
+        caller.inventory.addItem(buildItem {
+            material(Material.WOOD_SWORD)
+            nbt {
+
+            }
+        })
         return false
     }
 
