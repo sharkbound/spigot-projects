@@ -11,7 +11,6 @@ data class TaskResult(val taskId: Int) {
         get() = taskId == -1
 
     fun cancel() {
-//        println("CANCELLED: $taskId")
         server.scheduler.cancelTask(taskId)
     }
 }
@@ -20,6 +19,8 @@ fun delaySyncTask(tickDelay: Long, task: () -> Unit): TaskResult {
     return TaskResult(server.scheduler.scheduleSyncDelayedTask(skyBlockInstance, task, tickDelay))
 }
 
+fun repeatingSyncTask(startDelay: Long, intervalTicks: Long, handler: () -> Unit): TaskResult =
+    TaskResult(server.scheduler.scheduleSyncRepeatingTask(skyBlockInstance, handler, startDelay, intervalTicks))
 
 fun startCountDown(
     initialValue: Int,
