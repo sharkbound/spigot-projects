@@ -38,23 +38,22 @@ fun cancellingRepeatingSyncTask(
     return task
 }
 
-fun startCountDown(
-    initialValue: Int,
-    startDelay: Long = 0,
-    intervalTicks: Long = 20,
-    handler: (Int) -> Unit
-): CancellableTask {
-    var i = initialValue
-    return cancellingRepeatingSyncTask(startDelay, intervalTicks, { i == -1 }) {
-        handler(i)
-        i -= 1
-    }
-//    task = CancellableTask(server.scheduler.scheduleSyncRepeatingTask(skyBlockInstance, {
+//fun startCountDown(
+//    initialValue: Int,
+//    startDelay: Long = 0,
+//    intervalTicks: Long = 20,
+//    handler: (Int) -> Unit
+//): CancellableTask {
+//    var i = initialValue
+//    return cancellingRepeatingSyncTask(startDelay, intervalTicks, { i == -1 }) {
 //        handler(i)
 //        i -= 1
-//        if (i == -1) {
-//            task.cancel()
-//        }
-//    }, startDelay, intervalTicks))
-//    return task
-}
+//    }
+////    task = CancellableTask(server.scheduler.scheduleSyncRepeatingTask(skyBlockInstance, {
+////        handler(i)
+////        i -= 1
+////        if (i == -1) {
+////            task.cancel()
+////        }
+////    }, startDelay, intervalTicks))
+////    return task

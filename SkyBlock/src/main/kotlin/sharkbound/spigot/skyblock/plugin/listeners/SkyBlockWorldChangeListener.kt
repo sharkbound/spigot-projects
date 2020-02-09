@@ -18,15 +18,17 @@ class SkyBlockWorldChangeListener : Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     fun onBeforeTeleport(e: PlayerTeleportEvent) {
-        if (
-            e.isCancelled
-            || e.from?.world?.name == e.player.skyBlockWorldName
-            || e.to?.world?.name != e.player.skyBlockWorldName
-        ) {
+        val from = e.from
+        val to = e.to
+
+        if (e.isCancelled) {
             return
         }
 
-        LocationHistory.update(e.from, e.player.id)
+        // is the player teleporting to their sky island?
+        if (from.world.name != e.player.skyBlockWorldName && to.world.name == e.player.skyBlockWorldName) {
+            LocationHistory.update(e.from, e.player.id)
+        }
     }
 
     @EventHandler

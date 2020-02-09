@@ -5,7 +5,6 @@ import org.bukkit.craftbukkit.v1_8_R3.inventory.CraftItemStack
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
-import sharkbound.commonutils.extensions.isTrue
 import sharkbound.spigot.skyblock.plugin.objects.NbtTags
 import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
 import net.minecraft.server.v1_8_R3.ItemStack as ServerItemStack
@@ -33,7 +32,7 @@ fun ItemStack.withMeta(func: ItemMeta.() -> Unit) =
     itemMeta.apply(func)
 
 infix fun ItemStack?.displayNameIs(other: String): Boolean =
-    this?.itemMeta?.displayName?.equals(other, ignoreCase = true).isTrue
+    this?.itemMeta?.displayName?.equals(other, ignoreCase = true) == true
 
 val ItemStack.name
     get() = itemMeta?.displayName ?: type.name
@@ -58,7 +57,7 @@ inline fun ItemStack.copyWithNMS(block: ServerItemStack.() -> Unit): ItemStack =
     nms.ensureNBT().apply { block(this) }.asBukkit
 
 fun ItemStack.hasTag(tag: String): Boolean =
-    nms.tag?.hasKey(tag).isTrue
+    nms.tag?.hasKey(tag) == true
 
 val ServerItemStack.asBukkit: ItemStack
     get() = CraftItemStack.asBukkitCopy(this)
@@ -70,7 +69,7 @@ infix fun ItemStack?.hasSpecialItemFlag(flag: SpecialItemFlags): Boolean =
     this?.nms?.tag?.getString(NbtTags.ITEM_CLASS) == flag.nbtValue
 
 val ItemStack?.hasItemClass: Boolean
-    get() = this?.hasTag(NbtTags.ITEM_CLASS).isTrue
+    get() = this?.hasTag(NbtTags.ITEM_CLASS) == true
 
 val ItemStack.nbt: NBTTagCompound
     get() = nms.ensureNBT().tag

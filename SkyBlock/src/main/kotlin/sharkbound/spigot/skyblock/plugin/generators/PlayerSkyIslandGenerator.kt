@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Config
-import sharkbound.spigot.skyblock.plugin.objects.Coords
+import sharkbound.spigot.skyblock.plugin.objects.Locations
 import sharkbound.spigot.skyblock.plugin.objects.Schematics
 import sharkbound.spigot.skyblock.plugin.utils.worldEditSession
 
@@ -19,7 +19,7 @@ data class PlayerSkyIslandGenerator(val player: Player) {
     fun generate() {
         world.worldEditSession {
             Schematics
-                .skyIslandSchematic.place(it, Vector(0.0, Coords.SKY_ISLAND_SCHEMATIC_Y, 0.0), false)
+                .skyIslandSchematic.place(it, Vector(0.0, Locations.SKY_ISLAND_SCHEMATIC_Y, 0.0), false)
         }
         addChestItems()
     }

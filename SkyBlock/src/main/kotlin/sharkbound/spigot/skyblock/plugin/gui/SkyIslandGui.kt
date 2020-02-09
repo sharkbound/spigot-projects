@@ -1,15 +1,16 @@
 package sharkbound.spigot.skyblock.plugin.gui
 
-import org.bukkit.Location
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import sharkbound.commonutils.extensions.ifNull
-import sharkbound.commonutils.extensions.isFalse
+import sharkbound.spigot.skyblock.plugin.database.SkyIslandLocation
 import sharkbound.spigot.skyblock.plugin.extensions.*
-import sharkbound.spigot.skyblock.plugin.objects.Coords
 import sharkbound.spigot.skyblock.plugin.objects.LocationHistory
+import sharkbound.spigot.skyblock.plugin.utils.CancellableTask
+import sharkbound.spigot.skyblock.plugin.utils.cancellingRepeatingSyncTask
 import sharkbound.spigot.skyblock.plugin.utils.createSkyBlockWorld
-import sharkbound.spigot.skyblock.plugin.utils.startCountDown
+import sharkbound.spigot.skyblock.plugin.utils.delaySyncTask
 
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -55,73 +56,90 @@ object SkyIslandGui : InventoryGui("SkyBlock Menu", 5) {
             }
 
 
-            LocationHistory.teleportBack(player)
-            it.send("&ayou were teleported to your last location")
+            startDelayedLeave(it)
         }
     }
 
-    private fun deleteClicked(player: Player) {
-        player.closeInventoryAfter {
-            if (it.skyBlockWorld?.players?.isEmpty().isFalse) {
-                it.closeInventory()
-                it.send("&eyour skyblock island has players in it, so it cannot be deleted right now")
-                return
-            }
+}
 
-            player.skyBlockWorld?.delete()
-            player.send("&ayour skyblock world as been deleted!")
-        }
-    }
-
-    private fun resetClicked(player: Player) {
-        player.closeInventoryAfter {
-            if (it.skyBlockWorld?.players?.isEmpty().isFalse) {
-                it.send("&eyour skyblock island has players in it, so it cannot be reset right now")
-                return
-            }
-
-            player.skyBlockWorld?.delete()
-            createSkyBlockWorld(it)
-            player.send("&ayour skyblock world as been reset!")
-        }
-    }
-
-    private fun joinClicked(player: Player) {
-        player.closeInventoryAfter {
-            it.skyBlockWorld ifNull {
-                createSkyBlockWorld(it)
-            }
-
-            startDelayedJoin(it)
-        }
-    }
-
-    private fun startDelayedJoin(player: Player) {
-        val res = startCountDown(5, 10.ticks) {
-            if (it == 0) {
-                teleportPlayerToSkyIsland(player)
-                player.send("&awelcome to your skyblock island!")
-            } else {
-                player.send("&ateleporting you to your island in &e&l$it &r&aseconds")
-            }
+private fun deleteClicked(player: Player) {
+    player.closeInventoryAfter {
+        if (it.skyBlockWorld?.players?.isEmpty() == false) {
+            it.closeInventory()
+            it.send("&eyour skyblock island has players in it, so it cannot be deleted right now")
+            return
         }
 
-        if (res.failed) {
-            player.send("&4failed to join sky island")
-        }
-    }
-
-    private fun teleportPlayerToSkyIsland(player: Player) {
-        player.teleport(
-            Location(
-                player.skyBlockWorld,
-                0.0,
-                Coords.SKY_ISLAND_SCHEMATIC_Y,
-                0.0,
-                player.location.yaw,
-                player.location.pitch
-            ).add(Coords.skyIslandSpawnOffset)
-        )
+        player.skyBlockWorld?.delete()
+        player.send("&ayour skyblock world as been deleted!")
     }
 }
 
+private fun resetClicked(player: Player) {
+    player.closeInventoryAfter {
+        if (it.skyBlockWorld?.players?.isEmpty() == false) {
+            it.send("&eyour skyblock island has players in it, so it cannot be reset right now")
+            return
+        }
+
+        player.skyBlockWorld?.delete()
+        createSkyBlockWorld(it)
+        player.send("&ayour skyblock world as been reset!")
+    }
+}
+
+private fun joinClicked(player: Player) {
+    player.closeInventoryAfter {
+        it.skyBlockWorld ifNull {
+            println("CREATED!")
+            createSkyBlockWorld(it)
+        }
+
+        startDelayedJoin(it)
+    }
+}
+
+private fun startDelayedJoin(player: Player) {
+    var i = 5
+    val res = cancellingRepeatingSyncTask(5.ticks, 20.ticks, { i == -1 }) {
+        if (i == 0) {
+            teleportPlayerToSkyIsland(player)
+            player.send("&awelcome to your skyblock island!")
+        } else {
+            player.send("&ateleporting you to your island in &e&l$i&r&a seconds")
+        }
+        i -= 1
+    }
+
+    if (res.failed) {
+        player.send("&4failed to join sky island")
+    }
+}
+
+private fun teleportPlayerToSkyIsland(player: Player) {
+    player.teleport(SkyIslandLocation.lastLocation(player))
+}
+
+
+private fun startDelayedLeave(
+    player: Player
+): CancellableTask {
+    var i = 5
+    return cancellingRepeatingSyncTask(5.ticks, 20.ticks, { i == -1 }) {
+        if (i == 0) {
+            SkyIslandLocation.update(player, player.location)
+            LocationHistory.teleportBack(player)
+
+            delaySyncTask(2.secondTicks) {
+                if (player.skyBlockWorld?.players?.isEmpty() == true) {
+                    Bukkit.unloadWorld(player.skyBlockWorldName, true)
+                }
+            }
+
+            player.send("&ayou were teleported to your last location")
+        } else {
+            player.send("&aleaving island in &e&l$i&r&a seconds")
+        }
+        i -= 1
+    }
+}

@@ -5,6 +5,7 @@ import org.bukkit.World
 import org.bukkit.entity.Player
 import sharkbound.spigot.skyblock.plugin.RE_REMOVE_NON_ALPHA
 import sharkbound.spigot.skyblock.plugin.utils.colored
+import sharkbound.spigot.skyblock.plugin.utils.getWorld
 import java.util.*
 
 fun Player.target(
@@ -19,7 +20,7 @@ fun Player.send(message: String, char: Char = '&') =
     sendMessage(colored(message, char))
 
 val Player.skyBlockWorldName get() = "skyblock_${RE_REMOVE_NON_ALPHA.replace(name, "")}"
-val Player.skyBlockWorld: World? get() = sharkbound.spigot.skyblock.plugin.utils.getWorld(skyBlockWorldName)
+val Player.skyBlockWorld: World? get() = getWorld(skyBlockWorldName)
 
 val Player.strId
     get() = id.toString()

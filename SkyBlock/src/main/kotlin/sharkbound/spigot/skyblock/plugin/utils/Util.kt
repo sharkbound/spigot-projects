@@ -6,29 +6,21 @@ import org.bukkit.*
 import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.Player
 import org.bukkit.event.Listener
-import org.bukkit.generator.ChunkGenerator
 import org.bukkit.inventory.ItemStack
 import org.bukkit.plugin.PluginManager
 import org.bukkit.util.Vector
 import sharkbound.commonutils.extensions.len
-import sharkbound.commonutils.extensions.use
 import sharkbound.spigot.skyblock.plugin.SkyBlock
 import sharkbound.spigot.skyblock.plugin.commands.*
 import sharkbound.spigot.skyblock.plugin.enums.CoordPosition
 import sharkbound.spigot.skyblock.plugin.extensions.colored
 import sharkbound.spigot.skyblock.plugin.extensions.send
-import sharkbound.spigot.skyblock.plugin.extensions.skyBlockWorldName
-import sharkbound.spigot.skyblock.plugin.generators.PlayerSkyIslandGenerator
-import sharkbound.spigot.skyblock.plugin.generators.VoidChunkGenerator
 import sharkbound.spigot.skyblock.plugin.gui.InventoryGuiClickListener
 import sharkbound.spigot.skyblock.plugin.listeners.PlayerEventListener
 import sharkbound.spigot.skyblock.plugin.listeners.SkyBlockWorldChangeListener
 import sharkbound.spigot.skyblock.plugin.objects.WorldEditConstants
 import sharkbound.spigot.skyblock.plugin.pluginManager
 import sharkbound.spigot.skyblock.plugin.skyBlockInstance
-import sharkbound.spigot.skyblock.plugin.skyIslandGenerationQueue
-import java.io.File
-import java.util.*
 
 val allCommands = mutableListOf<CommandExecutor>()
 val allEventListeners = mutableListOf<Listener>()
@@ -58,63 +50,12 @@ fun registerAllEventListeners() {
 fun colored(message: String, char: Char = '&') =
     ChatColor.translateAlternateColorCodes(char, message)
 
-fun deleteWorld(worldName: String): Boolean {
-    getWorld(worldName) use {
-        Bukkit.unloadWorld(this, false)
-        try {
-            deleteWorld(worldFolder)
-        } catch (e: Exception) {
-            println("failed to delete world: $name")
-            e.printStackTrace()
-        }
-        return true
-    }
-    return false
-}
-
-fun createVoidWorld(name: String): World =
-    Bukkit.createWorld(WorldCreator(name).generator(VoidChunkGenerator()))
-
-fun deleteWorld(path: File): Boolean {
-    if (path.exists()) {
-        path.listFiles()?.let {
-            for (file in it) {
-                if (file.isDirectory) {
-                    deleteWorld(file)
-                } else {
-                    file.delete()
-                }
-            }
-        }
-    }
-    return path.delete()
-}
-
-fun createWorld(name: String, chunkGenerator: ChunkGenerator): World =
-    Bukkit.createWorld(WorldCreator(name).generator(chunkGenerator))
-
-fun worldExists(name: String) =
-    getWorld(name) != null
-
 inline fun usePlugin(func: SkyBlock.() -> Unit) {
     skyBlockInstance.func()
 }
 
 inline fun usePluginManager(func: PluginManager.() -> Unit) {
     pluginManager.func()
-}
-
-fun getWorld(name: String): World? =
-    Bukkit.getWorld(name)
-
-fun getWorld(id: UUID): World? =
-    Bukkit.getWorld(id)
-
-@Suppress("DEPRECATION")
-fun createSkyBlockWorld(player: Player): World {
-    skyIslandGenerationQueue[player.uniqueId] =
-        PlayerSkyIslandGenerator(player)
-    return createVoidWorld(player.skyBlockWorldName)
 }
 
 fun cannotBeCalledFromConsole(): Boolean {
