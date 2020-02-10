@@ -4,9 +4,9 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import sharkbound.commonutils.extensions.ifNull
-import sharkbound.spigot.skyblock.plugin.database.SkyIslandLocation
 import sharkbound.spigot.skyblock.plugin.extensions.*
-import sharkbound.spigot.skyblock.plugin.objects.LocationHistory
+import sharkbound.spigot.skyblock.plugin.objects.PreSkyIslandLocation
+import sharkbound.spigot.skyblock.plugin.objects.SkyIslandLocation
 import sharkbound.spigot.skyblock.plugin.utils.CancellableTask
 import sharkbound.spigot.skyblock.plugin.utils.cancellingRepeatingSyncTask
 import sharkbound.spigot.skyblock.plugin.utils.createSkyBlockWorld
@@ -49,12 +49,6 @@ object SkyIslandGui : InventoryGui("SkyBlock Menu", 5) {
                 it.send("&eleave island can only be used in your skyblock world")
                 return
             }
-
-            if (it.id !in LocationHistory) {
-                it.send("&eyou do not have any previous positions to teleport to")
-                return
-            }
-
 
             startDelayedLeave(it)
         }
@@ -128,7 +122,7 @@ private fun startDelayedLeave(
     return cancellingRepeatingSyncTask(5.ticks, 20.ticks, { i == -1 }) {
         if (i == 0) {
             SkyIslandLocation.update(player, player.location)
-            LocationHistory.teleportBack(player)
+            player.teleport(PreSkyIslandLocation.lastLocation(player))
 
             delaySyncTask(2.secondTicks) {
                 if (player.skyBlockWorld?.players?.isEmpty() == true) {

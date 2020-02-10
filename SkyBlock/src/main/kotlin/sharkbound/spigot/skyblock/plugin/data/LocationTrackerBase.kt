@@ -1,4 +1,4 @@
-package sharkbound.spigot.skyblock.plugin.database
+package sharkbound.spigot.skyblock.plugin.data
 
 import org.bukkit.Location
 import org.bukkit.configuration.file.YamlConfiguration
@@ -7,30 +7,30 @@ import sharkbound.commonutils.extensions.closeAfter
 import sharkbound.spigot.skyblock.plugin.extensions.div
 import sharkbound.spigot.skyblock.plugin.extensions.id
 import sharkbound.spigot.skyblock.plugin.objects.FilePaths
-import sharkbound.spigot.skyblock.plugin.objects.Locations
 import java.io.FileWriter
 import java.util.*
 
-object SkyIslandLocation {
-    private val config: YamlConfiguration
-    private val path = FilePaths.configFolder / "sky_island_locs.yml"
+open class LocationTrackerBase(configFile: String) {
+    protected val path = FilePaths.configFolder / configFile
+    protected val config: YamlConfiguration
 
-    val exists
-        get() = path.toFile().exists()
 
     init {
-        if (!exists) {
+        if (exists) {
             FileWriter(path.toString()).closeAfter {
                 write("")
             }
         }
-
         config = YamlConfiguration.loadConfiguration(path.toFile())
     }
 
-    private fun save() {
+    val exists
+        get() = path.toFile().exists()
+
+    protected fun save() {
         config.save(path.toString())
     }
+
 
     fun remove(player: Player): Unit =
         remove(player.id)
@@ -51,6 +51,6 @@ object SkyIslandLocation {
         save()
     }
 
-    fun lastLocation(player: Player): Location =
-        config[player.id.toString()] as Location? ?: Locations.skyIslandSpawn(player)
+    open fun lastLocation(player: Player): Location =
+        throw NotImplementedError("base lastLocation was not overridden")
 }
