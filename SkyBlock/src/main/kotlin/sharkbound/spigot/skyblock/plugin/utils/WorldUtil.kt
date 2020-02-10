@@ -57,8 +57,12 @@ fun worldExists(name: String) =
     Bukkit.getWorld(name) != null || FilePaths.worldFolder.toFile().div(name)
         .let { it.isDirectory && it.div("playerdata").isDirectory }
 
-fun getWorld(name: String): World? =
-    if (worldExists(name)) Bukkit.createWorld(WorldCreator(name)) else null
+fun getWorld(name: String): World? {
+    // note of the createWorld here, bukkit's getWorld() only get LOADED worlds
+    // so what i did was to check if the world's folder exists
+    // then load it using createWorld, createWorld loads a world if it exists in the files, but creates it if it does not
+    return if (worldExists(name)) Bukkit.createWorld(WorldCreator(name)) else null
+}
 
 fun getWorld(id: UUID): World? =
     Bukkit.getWorld(id)
