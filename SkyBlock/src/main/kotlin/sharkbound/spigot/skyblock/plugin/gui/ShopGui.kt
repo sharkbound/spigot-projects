@@ -4,34 +4,27 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.database.DB
-import sharkbound.spigot.skyblock.plugin.extensions.colored
 import sharkbound.spigot.skyblock.plugin.extensions.hasFreeInvSlot
 import sharkbound.spigot.skyblock.plugin.extensions.name
 import sharkbound.spigot.skyblock.plugin.extensions.send
 import sharkbound.spigot.skyblock.plugin.objects.Config
-import sharkbound.spigot.skyblock.plugin.objects.SpecialItemLores
-import sharkbound.spigot.skyblock.plugin.objects.SpecialItemNames
 import sharkbound.spigot.skyblock.plugin.objects.SpecialItems
+import sharkbound.spigot.skyblock.plugin.specialitems.AspectOfTheEnd
+import sharkbound.spigot.skyblock.plugin.specialitems.EmberRod
 
 @Suppress("MemberVisibilityCanBePrivate")
 object ShopGui : InventoryGui("Shop", 3) {
-    val EMBER_ROD_SHOP_ITEM_NAME
-        get() = "${SpecialItemNames.EMBER_ROD} &e(${Config.emberRodCost} ${Config.tokenName})".colored()
-
-    val ASPECT_OF_THE_END_SHOP_ITEM_NAME
-        get() = "${SpecialItemNames.ASPECT_OF_THE_END} &e(${Config.aspectOfTheEndCost} ${Config.tokenName})".colored()
-
     init {
-        addElement(3, 1, Material.BLAZE_ROD, EMBER_ROD_SHOP_ITEM_NAME, SpecialItemLores.EMBER_ROD)
-        addElement(5, 1, Material.DIAMOND_SWORD, ASPECT_OF_THE_END_SHOP_ITEM_NAME, SpecialItemLores.ASPECT_OF_THE_END)
+        addElement(3, 1, Material.BLAZE_ROD, EmberRod.shopItemName, EmberRod.itemLore)
+        addElement(5, 1, Material.DIAMOND_SWORD, AspectOfTheEnd.shopItemName, AspectOfTheEnd.itemLore)
     }
 
     override fun clicked(player: Player, element: GuiElement, normalizedName: String, name: String) {
         when (name) {
-            EMBER_ROD_SHOP_ITEM_NAME ->
+            EmberRod.shopItemName ->
                 purchaseItem(player, SpecialItems.emberRod(), Config.emberRodCost)
 
-            ASPECT_OF_THE_END_SHOP_ITEM_NAME ->
+            AspectOfTheEnd.shopItemName ->
                 purchaseItem(player, SpecialItems.aspectOfTheEnd(), Config.aspectOfTheEndCost)
         }
     }

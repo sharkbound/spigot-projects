@@ -11,7 +11,8 @@ import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.logger
 import sharkbound.spigot.skyblock.plugin.objects.Config
 import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
-import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFunctions
+import sharkbound.spigot.skyblock.plugin.specialitems.AspectOfTheEnd
+import sharkbound.spigot.skyblock.plugin.specialitems.EmberRod
 import java.util.logging.Level
 
 class PlayerEventListener : Listener {
@@ -30,8 +31,8 @@ class PlayerEventListener : Listener {
 
         if (e.action == Action.RIGHT_CLICK_AIR || e.action == Action.RIGHT_CLICK_BLOCK) {
             when (e.item?.specialItemFlag) {
-                SpecialItemFlags.EmberRod -> SpecialItemFunctions.emberRod(e.player)
-                SpecialItemFlags.AspectOfTheEnd -> SpecialItemFunctions.aspectOfTheEnd(e.player)
+                SpecialItemFlags.EmberRod -> EmberRod.activate(e.player)
+                SpecialItemFlags.AspectOfTheEnd -> AspectOfTheEnd.activate(e.player)
             }
         }
     }
