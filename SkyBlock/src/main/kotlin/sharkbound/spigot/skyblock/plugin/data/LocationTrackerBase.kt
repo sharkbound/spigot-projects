@@ -51,6 +51,9 @@ open class LocationTrackerBase(configFile: String) {
         save()
     }
 
-    open fun lastLocation(player: Player): Location =
-        throw NotImplementedError("base lastLocation was not overridden")
+    open fun lastLocationOrDefault(player: Player): Location =
+        throw NotImplementedError("base lastLocationOrDefault was not overridden")
+
+    open fun lastLocationOrNull(player: Player): Location? =
+        null
 }

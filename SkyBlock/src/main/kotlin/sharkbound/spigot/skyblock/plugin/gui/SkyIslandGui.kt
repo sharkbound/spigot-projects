@@ -111,7 +111,7 @@ private fun startDelayedJoin(player: Player) {
 }
 
 private fun teleportPlayerToSkyIsland(player: Player) {
-    player.teleport(SkyIslandLocation.lastLocation(player))
+    player.teleport(SkyIslandLocation.lastLocationOrDefault(player))
 }
 
 
@@ -122,7 +122,7 @@ private fun startDelayedLeave(
     return cancellingRepeatingSyncTask(5.ticks, 20.ticks, { i == -1 }) {
         if (i == 0) {
             SkyIslandLocation.update(player, player.location)
-            player.teleport(PreSkyIslandLocation.lastLocation(player))
+            player.teleport(PreSkyIslandLocation.lastLocationOrDefault(player))
 
             delaySyncTask(2.secondTicks) {
                 if (player.skyBlockWorld?.players?.isEmpty() == true) {

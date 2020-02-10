@@ -6,11 +6,11 @@ import sharkbound.spigot.skyblock.plugin.data.LocationTrackerBase
 import sharkbound.spigot.skyblock.plugin.extensions.strId
 
 object SkyIslandLocation : LocationTrackerBase("sky_island_locs.yml") {
-    override fun lastLocation(player: Player): Location =
+    override fun lastLocationOrDefault(player: Player): Location =
         config[player.strId] as Location? ?: Locations.skyIslandSpawn(player)
 }
 
 object PreSkyIslandLocation : LocationTrackerBase("pre_sky_island_locs.yml") {
-    override fun lastLocation(player: Player): Location =
+    override fun lastLocationOrDefault(player: Player): Location =
         config[player.strId] as Location
 }
