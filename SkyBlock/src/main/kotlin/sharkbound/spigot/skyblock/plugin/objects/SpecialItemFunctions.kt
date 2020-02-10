@@ -2,6 +2,8 @@ package sharkbound.spigot.skyblock.plugin.objects
 
 import org.bukkit.entity.Fireball
 import org.bukkit.entity.Player
+import sharkbound.commonutils.extensions.len
+import sharkbound.commonutils.toMaybe
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.utils.cancellingRepeatingSyncTask
 
@@ -14,10 +16,21 @@ object SpecialItemFunctions {
     }
 
     fun aspectOfTheEnd(player: Player) {
-        player.teleport(player.target(Config.aspectOfTheEndRange).location.apply {
-            pitch = player.pitch
-            yaw = player.yaw
-        })
+//        player.teleport(player.target(Config.aspectOfTheEndRange).location.apply {
+//            pitch = player.pitch
+//            yaw = player.yaw
+//        })
+        try {
+            player.lastTwoTarget().toMaybe.filter { it.len == 2 }.apply {
+                ifPresent {
+                    player.send("${it[1].getFace(it[0])}")
+                }.ifAbsent {
+                    player.send(":(")
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         player.send("&5Poof!")
     }
 }
