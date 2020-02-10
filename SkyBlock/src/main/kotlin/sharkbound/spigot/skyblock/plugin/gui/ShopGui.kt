@@ -8,7 +8,6 @@ import sharkbound.spigot.skyblock.plugin.extensions.hasFreeInvSlot
 import sharkbound.spigot.skyblock.plugin.extensions.name
 import sharkbound.spigot.skyblock.plugin.extensions.send
 import sharkbound.spigot.skyblock.plugin.objects.Config
-import sharkbound.spigot.skyblock.plugin.objects.SpecialItems
 import sharkbound.spigot.skyblock.plugin.specialitems.AspectOfTheEnd
 import sharkbound.spigot.skyblock.plugin.specialitems.EmberRod
 
@@ -22,10 +21,10 @@ object ShopGui : InventoryGui("Shop", 3) {
     override fun clicked(player: Player, element: GuiElement, normalizedName: String, name: String) {
         when (name) {
             EmberRod.shopItemName ->
-                purchaseItem(player, SpecialItems.emberRod(), Config.emberRodCost)
+                purchaseItem(player, EmberRod.finalItem(), Config.emberRodCost)
 
             AspectOfTheEnd.shopItemName ->
-                purchaseItem(player, SpecialItems.aspectOfTheEnd(), Config.aspectOfTheEndCost)
+                purchaseItem(player, AspectOfTheEnd.finalItem(), Config.aspectOfTheEndCost)
         }
     }
 

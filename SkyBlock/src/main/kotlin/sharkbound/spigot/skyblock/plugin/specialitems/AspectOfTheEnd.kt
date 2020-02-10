@@ -1,10 +1,13 @@
 package sharkbound.spigot.skyblock.plugin.specialitems
 
+import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
+import sharkbound.spigot.skyblock.plugin.builders.buildItem
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Config
+import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
 import sharkbound.spigot.skyblock.plugin.objects.Text
 import sharkbound.spigot.skyblock.plugin.utils.colorAll
 
@@ -12,8 +15,17 @@ object AspectOfTheEnd {
     val color = "&5".colored()
     val itemName = "${color}Aspect Of The End".colored()
     val itemLore = colorAll("&r${Text.TIER}: &5EPIC")
+    val minTpRange = 5.0
     val shopItemName
         get() = "$itemName &e(${Config.aspectOfTheEndCost} ${Config.tokenName})".colored()
+
+    fun finalItem() =
+        buildItem {
+            material(Material.DIAMOND_SWORD)
+            specialItemFlag(SpecialItemFlags.AspectOfTheEnd)
+            displayName(itemName)
+            lore(itemLore)
+        }
 
     fun activate(player: Player) {
         if (teleport(player)) {
@@ -22,12 +34,14 @@ object AspectOfTheEnd {
     }
 
     private fun teleport(player: Player): Boolean {
-        val horizonalOffset = 1.3
+        val horizonalOffset = 1.4
         val verticalOffset = 2
         val error = "&3"
 
+
+
         player.apply {
-            if (target(Config.aspectOfTheEndRange).location.distance(player.location) <= 3.5) {
+            if (target(Config.aspectOfTheEndRange).location.distance(player.location) <= minTpRange) {
                 player.send("$error[&r${player.itemInHand.name}$error] that block is too close to teleport to")
                 return false
             }

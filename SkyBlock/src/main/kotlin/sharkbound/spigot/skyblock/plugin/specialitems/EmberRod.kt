@@ -1,9 +1,12 @@
 package sharkbound.spigot.skyblock.plugin.specialitems
 
+import org.bukkit.Material
 import org.bukkit.entity.Fireball
 import org.bukkit.entity.Player
+import sharkbound.spigot.skyblock.plugin.builders.buildItem
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Config
+import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
 import sharkbound.spigot.skyblock.plugin.objects.Text
 import sharkbound.spigot.skyblock.plugin.utils.cancellingRepeatingSyncTask
 import sharkbound.spigot.skyblock.plugin.utils.colorAll
@@ -16,6 +19,13 @@ object EmberRod {
     val shopItemName
         get() = "$itemName &e(${Config.emberRodCost} ${Config.tokenName})".colored()
 
+    fun finalItem() =
+        buildItem {
+            material(Material.BLAZE_ROD)
+            specialItemFlag(SpecialItemFlags.EmberRod)
+            displayName(itemName)
+            lore(itemLore)
+        }
 
     fun activate(player: Player) {
         if (!spawnEmberRodFireball(player)) {
