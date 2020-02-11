@@ -74,7 +74,23 @@ object AspectOfTheEnd {
                     else -> vectorOfZeros()
                 }
 
-                player.teleport(it.firstPos.add(offset).cloneApply {
+                val offsetLocation = it.firstPos.add(offset)
+
+                if (Config.aspectOfTheEndWallYAutoCorrect > 0) {
+                    for (i in 0..Config.aspectOfTheEndWallYAutoCorrect) {
+                        val block = player.world.getBlockAt(offsetLocation.cloneApply { y -= i })
+                        if (block.type !in TargetGlobals.invalidTargets) {
+                            offsetLocation.apply { y = block.y + 1.0 }
+                            break
+                        }
+                    }
+                }
+
+                if (player.world.typeAt(offsetLocation.cloneApply { y += 1 }) != Material.AIR) {
+                    return player.itemError("teleporting there is not safe!")
+                }
+
+                player.teleport(offsetLocation.cloneApply {
                     yaw = player.yaw
                     pitch = player.pitch
                 })

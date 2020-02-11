@@ -8,5 +8,6 @@ object ConfigKeys {
     const val emberRodCost = "item_costs.ember_rod_cost"
     const val aspectOfTheEndCost = "item_costs.aspect_of_the_end"
     const val aspectOfTheEndRange = "item_settings.aspect_of_the_end_range"
+    const val aspectOfTheEndWallYAutoCorrect = "item_settings.aspect_of_the_end_wall_y_autocorrect"
 }
 

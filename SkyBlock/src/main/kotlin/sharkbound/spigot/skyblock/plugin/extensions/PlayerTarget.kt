@@ -41,6 +41,7 @@ object TargetGlobals {
     const val DEFAULT_TARGET_RANGE = Int.MAX_VALUE
     val defaultTransparent = setOf(Material.AIR, Material.WATER, Material.LAVA)
     val liquids = setOf(Material.WATER, Material.STATIONARY_WATER, Material.LAVA, Material.STATIONARY_LAVA)
+    val invalidTargets = liquids + setOf(Material.AIR)
 
 }
 
@@ -56,9 +57,10 @@ fun Player.lastTwoTargets(
     includeTransparentBlocks: Boolean = false
 ): LastTwoTarget? {
     val blocks = getLastTwoTargetBlocks(transparent, maxDistance)
-    if (blocks.len != 2 || (!includeTransparentBlocks && !blocks[1].type.isOccluding))
-        return null
-    return LastTwoTarget(blocks[1], blocks[0])
+    // check there are two blocks found, and if the
+    if (blocks.len == 2 && (blocks[1].type.isOccluding || includeTransparentBlocks))
+        return LastTwoTarget(blocks[1], blocks[0])
+    return null
 
 }
 

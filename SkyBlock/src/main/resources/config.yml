@@ -9,3 +9,5 @@ item_costs:
 
 item_settings:
   aspect_of_the_end_range: 60
+  aspect_of_the_end_wall_y_autocorrect: 4
+

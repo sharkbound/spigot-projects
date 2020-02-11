@@ -24,4 +24,6 @@ object Config {
     val aspectOfTheEndRange
         get() = cfg.getInt(ConfigKeys.aspectOfTheEndRange)
 
+    val aspectOfTheEndWallYAutoCorrect
+        get() = cfg.getInt(ConfigKeys.aspectOfTheEndWallYAutoCorrect)
 }

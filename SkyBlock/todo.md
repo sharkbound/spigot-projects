@@ -1,6 +1,3 @@
 TODO
-* safe ender tp
+* cooldowns for special items
 * 
-
-DONE
-*

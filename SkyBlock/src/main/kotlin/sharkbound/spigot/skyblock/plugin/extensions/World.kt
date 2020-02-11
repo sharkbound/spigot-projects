@@ -37,3 +37,6 @@ inline fun <reified T> World.spawnEntityCast(location: Location, entityType: Ent
 
 inline fun <reified T : Entity> World.spawnCast(location: Location): T =
     spawn(location, T::class.java)
+
+fun World.typeAt(location: Location) =
+    getBlockAt(location).type
