@@ -29,9 +29,6 @@ object AspectOfTheEnd {
             lore(itemLore)
         }
 
-    private fun Player.resetVelocity() {
-        player.velocity = vectorOfZeros()
-    }
 
     fun activate(player: Player) {
         if (teleport(player)) {
@@ -77,12 +74,10 @@ object AspectOfTheEnd {
                     else -> vectorOfZeros()
                 }
 
-                player.resetVelocity()
-                val tpLoc = it.firstPos.add(offset).cloneApply {
+                player.teleport(it.firstPos.add(offset).cloneApply {
                     yaw = player.yaw
                     pitch = player.pitch
-                }
-                player.teleport(tpLoc)
+                })
 
                 return true
             }
