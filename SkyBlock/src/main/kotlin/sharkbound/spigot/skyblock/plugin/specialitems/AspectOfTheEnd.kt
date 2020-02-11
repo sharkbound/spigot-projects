@@ -10,6 +10,7 @@ import sharkbound.spigot.skyblock.plugin.objects.Config
 import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
 import sharkbound.spigot.skyblock.plugin.objects.Text
 import sharkbound.spigot.skyblock.plugin.utils.colorAll
+import sharkbound.spigot.skyblock.plugin.utils.vectorOfZeros
 
 object AspectOfTheEnd {
     val color = "&5".colored()
@@ -27,23 +28,28 @@ object AspectOfTheEnd {
             lore(itemLore)
         }
 
+    private fun Player.resetVelocity() {
+        player.velocity = vectorOfZeros()
+    }
+
     fun activate(player: Player) {
         if (teleport(player)) {
             player.playSound(player.location, Sound.ENDERMAN_TELEPORT, .5f, 1f)
         }
     }
 
+    fun Player.itemError(msg: String, errorColor: String = "&3"): Boolean {
+        player.send("$errorColor[&r${itemName}$errorColor] $msg")
+        return false
+    }
+
     private fun teleport(player: Player): Boolean {
-        val horizonalOffset = 1.4
+        val horizonalOffset = 1.35
         val verticalOffset = 2
-        val error = "&3"
-
-
 
         player.apply {
             if (target(Config.aspectOfTheEndRange).location.distance(player.location) <= minTpRange) {
-                player.send("$error[&r${player.itemInHand.name}$error] that block is too close to teleport to")
-                return false
+                return player.itemError("that block is too close to teleport to")
             }
         }
 
@@ -63,6 +69,7 @@ object AspectOfTheEnd {
                     else -> it.firstPos.cloneApply { y += verticalOffset }
                 }
 
+                player.resetVelocity()
                 player.teleport(location.cloneApply {
                     yaw = player.yaw
                     pitch = player.pitch

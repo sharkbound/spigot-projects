@@ -4,21 +4,14 @@ import com.sk89q.worldedit.EditSession
 import com.sk89q.worldedit.bukkit.BukkitWorld
 import org.bukkit.Material
 import org.bukkit.World
-import org.bukkit.command.CommandExecutor
 import org.bukkit.entity.Player
-import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 import sharkbound.commonutils.extensions.len
-import sharkbound.spigot.skyblock.plugin.commands.*
 import sharkbound.spigot.skyblock.plugin.enums.CoordPosition
 import sharkbound.spigot.skyblock.plugin.extensions.colored
 import sharkbound.spigot.skyblock.plugin.extensions.send
-import sharkbound.spigot.skyblock.plugin.gui.InventoryGuiClickListener
-import sharkbound.spigot.skyblock.plugin.listeners.PlayerEventListener
-import sharkbound.spigot.skyblock.plugin.listeners.SkyBlockWorldChangeListener
 import sharkbound.spigot.skyblock.plugin.objects.WorldEditConstants
-
 
 
 fun cannotBeCalledFromConsole(): Boolean {
@@ -60,6 +53,9 @@ fun vect(value: Double, mode: CoordPosition) =
         CoordPosition.Y -> vect(0.0, value, 0.0)
         CoordPosition.Z -> vect(0.0, 0.0, value)
     }
+
+fun vectorOfZeros() =
+    Vector(0, 0, 0)
 
 @Suppress("DEPRECATION")
 inline fun World.worldEditSession(handler: (EditSession) -> Unit) =
