@@ -2,7 +2,7 @@ package sharkbound.spigot.skyblock.plugin.extensions
 
 import org.bukkit.Location
 
-fun Location.setYawPitch(yaw: Float, pitch: Float) =
+fun Location.yawPitch(yaw: Float, pitch: Float) =
     also {
         it.yaw = yaw
         it.pitch = pitch
@@ -22,3 +22,9 @@ inline fun <R> Location.cloneLet(block: (Location) -> R) =
 
 inline fun Location.clone(block: (Location) -> Unit) =
     apply(block)
+
+fun Location.keepYawPitch(other: Location): Location =
+    cloneApply {
+        yaw = other.yaw
+        pitch = other.pitch
+    }

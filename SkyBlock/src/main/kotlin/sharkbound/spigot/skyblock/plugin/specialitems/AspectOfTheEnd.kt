@@ -10,6 +10,7 @@ import sharkbound.spigot.skyblock.plugin.objects.Config
 import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
 import sharkbound.spigot.skyblock.plugin.objects.Text
 import sharkbound.spigot.skyblock.plugin.utils.colorAll
+import sharkbound.spigot.skyblock.plugin.utils.vect
 import sharkbound.spigot.skyblock.plugin.utils.vectorOfZeros
 
 object AspectOfTheEnd {
@@ -38,14 +39,16 @@ object AspectOfTheEnd {
         }
     }
 
-    fun Player.itemError(msg: String, errorColor: String = "&3"): Boolean {
+    private fun Player.itemError(msg: String, errorColor: String = "&3"): Boolean {
         player.send("$errorColor[&r${itemName}$errorColor] $msg")
         return false
     }
 
+//    val horizonalOffset = 1.2
+//    val verticalOffset = 1
+
     private fun teleport(player: Player): Boolean {
-        val horizonalOffset = 1.35
-        val verticalOffset = 2
+
 
         player.apply {
             if (target(Config.aspectOfTheEndRange).location.distance(player.location) <= minTpRange) {
@@ -55,25 +58,31 @@ object AspectOfTheEnd {
 
         player.lastTwoTargets(Config.aspectOfTheEndRange, includeTransparentBlocks = true)?.also {
             if (it.firstIsAir) {
-                player.teleport(it.firstPos.cloneApply { yaw = player.yaw; pitch = player.pitch })
+                player.teleport(it.firstPos.keepYawPitch(player.location))
                 return true
             }
+
             if (it.firstIsBlock) {
-                val location = when (it.face) {
-                    BlockFace.UP -> it.firstPos.cloneApply { y += 1 }
-                    BlockFace.DOWN -> it.firstPos.cloneApply { y -= 2 }
-                    BlockFace.NORTH -> it.firstPos.cloneApply { z -= horizonalOffset }
-                    BlockFace.SOUTH -> it.firstPos.cloneApply { z += horizonalOffset }
-                    BlockFace.EAST -> it.firstPos.cloneApply { x += horizonalOffset }
-                    BlockFace.WEST -> it.firstPos.cloneApply { x -= horizonalOffset }
-                    else -> it.firstPos.cloneApply { y += verticalOffset }
+                val posCorrection = .5
+                val offset = when (it.face) {
+                    // all these vectors are corrections when teleporting
+                    // the block's position is slightly offset when a player is teleported to it
+                    // the most of the .5's are there to correct this
+                    BlockFace.UP -> vect(y = 1.0, x = posCorrection, z = posCorrection)
+                    BlockFace.DOWN -> vect(y = -2.0, x = posCorrection, z = posCorrection)
+                    BlockFace.NORTH -> vect(z = -posCorrection, x = posCorrection)
+                    BlockFace.SOUTH -> vect(z = 1.5, x = posCorrection)
+                    BlockFace.EAST -> vect(x = 1.5, z = posCorrection)
+                    BlockFace.WEST -> vect(x = -posCorrection, z = posCorrection)
+                    else -> vectorOfZeros()
                 }
 
                 player.resetVelocity()
-                player.teleport(location.cloneApply {
+                val tpLoc = it.firstPos.add(offset).cloneApply {
                     yaw = player.yaw
                     pitch = player.pitch
-                })
+                }
+                player.teleport(tpLoc)
 
                 return true
             }
