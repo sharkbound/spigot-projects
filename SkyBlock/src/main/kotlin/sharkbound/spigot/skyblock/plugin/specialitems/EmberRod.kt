@@ -1,15 +1,20 @@
 package sharkbound.spigot.skyblock.plugin.specialitems
 
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.entity.Fireball
 import org.bukkit.entity.Player
 import sharkbound.spigot.skyblock.plugin.builders.buildItem
+import sharkbound.spigot.skyblock.plugin.data.YamlCooldownBase
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Config
 import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
 import sharkbound.spigot.skyblock.plugin.objects.Text
 import sharkbound.spigot.skyblock.plugin.utils.cancellingRepeatingSyncTask
 import sharkbound.spigot.skyblock.plugin.utils.colorAll
+
+private object EmberRodCooldown :
+    YamlCooldownBase("ember_rod_cooldowns.yml", Config.emberRodCooldown)
 
 object EmberRod {
     val color = "&a".colored()
@@ -28,10 +33,22 @@ object EmberRod {
         }
 
     fun activate(player: Player) {
-        if (!spawnEmberRodFireball(player)) {
-            player.send("&4failed to create task to spawn fireball, let the server owner know if this continues to happen")
+        if (EmberRodCooldown.onCooldown(player.id)) {
+            player.itemError("you must wait ${EmberRodCooldown.remainingCooldownFormatted(player.id)} seconds to use this item again")
             return
         }
+
+        if (spawnEmberRodFireball(player)) {
+            player.playSound(player.location, Sound.FIRE_IGNITE, .5f, 1f)
+            EmberRodCooldown.update(player.id)
+        } else {
+            player.itemError("&4failed to create task to spawn fireball, let the server owner know if this continues to happen")
+        }
+    }
+
+    private fun Player.itemError(msg: String, errorColor: String = "&3"): Boolean {
+        player.send("$errorColor[&r${itemName}$errorColor] $msg")
+        return false
     }
 
     private fun spawnEmberRodFireball(player: Player): Boolean {

@@ -5,6 +5,7 @@ import org.bukkit.Sound
 import org.bukkit.block.BlockFace
 import org.bukkit.entity.Player
 import sharkbound.spigot.skyblock.plugin.builders.buildItem
+import sharkbound.spigot.skyblock.plugin.data.YamlCooldownBase
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Config
 import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
@@ -12,6 +13,9 @@ import sharkbound.spigot.skyblock.plugin.objects.Text
 import sharkbound.spigot.skyblock.plugin.utils.colorAll
 import sharkbound.spigot.skyblock.plugin.utils.vect
 import sharkbound.spigot.skyblock.plugin.utils.vectorOfZeros
+
+private object AspectOfTheEndCooldown :
+    YamlCooldownBase("aspect_of_the_end_cooldowns.yml", Config.aspectOfTheEndCooldown)
 
 object AspectOfTheEnd {
     val color = "&5".colored()
@@ -31,8 +35,14 @@ object AspectOfTheEnd {
 
 
     fun activate(player: Player) {
+        if (AspectOfTheEndCooldown.onCooldown(player.id)) {
+            player.itemError("you must wait ${AspectOfTheEndCooldown.remainingCooldownFormatted(player.id)} seconds to use this item again")
+            return
+        }
+
         if (teleport(player)) {
             player.playSound(player.location, Sound.ENDERMAN_TELEPORT, .5f, 1f)
+            AspectOfTheEndCooldown.update(player.id)
         }
     }
 
@@ -45,8 +55,6 @@ object AspectOfTheEnd {
 //    val verticalOffset = 1
 
     private fun teleport(player: Player): Boolean {
-
-
         player.apply {
             if (target(Config.aspectOfTheEndRange).location.distance(player.location) <= minTpRange) {
                 return player.itemError("that block is too close to teleport to")

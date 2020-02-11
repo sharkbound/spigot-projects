@@ -4,26 +4,32 @@ import sharkbound.spigot.skyblock.plugin.cfg
 
 object Config {
     val skyIslandSchematicString
-        get() = cfg.getString(ConfigKeys.skyIslandSchematicKey)
+        get() = cfg.getString("sky_island_schematic")
 
     val cowSpawnEggName
-        get() = cfg.getString(ConfigKeys.cowSpawnEggName)
+        get() = cfg.getString("cow_spawn_egg_name")
 
     val tokensOnKill
-        get() = cfg.getInt(ConfigKeys.tokensOnKill)
+        get() = cfg.getInt("tokens_on_kill")
 
     val tokenName
-        get() = cfg.getString(ConfigKeys.tokenName)
+        get() = cfg.getString("token_name")
 
     val emberRodCost
-        get() = cfg.getInt(ConfigKeys.emberRodCost)
+        get() = cfg.getInt("item_costs.ember_rod_cost")
 
     val aspectOfTheEndCost
-        get() = cfg.getInt(ConfigKeys.aspectOfTheEndCost)
+        get() = cfg.getInt("item_costs.aspect_of_the_end")
 
     val aspectOfTheEndRange
-        get() = cfg.getInt(ConfigKeys.aspectOfTheEndRange)
+        get() = cfg.getInt("item_settings.aspect_of_the_end_range")
 
     val aspectOfTheEndWallYAutoCorrect
-        get() = cfg.getInt(ConfigKeys.aspectOfTheEndWallYAutoCorrect)
+        get() = cfg.getInt("item_settings.aspect_of_the_end_wall_y_autocorrect")
+
+    val aspectOfTheEndCooldown
+        get() = cfg.getDouble("cooldowns.aspect_of_the_end")
+
+    val emberRodCooldown
+        get() = cfg.getDouble("cooldowns.ember_rod")
 }

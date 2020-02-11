@@ -121,7 +121,7 @@ private fun startDelayedLeave(
     var i = 5
     return cancellingRepeatingSyncTask(5.ticks, 20.ticks, { i == -1 }) {
         if (i == 0) {
-            SkyIslandLocation.update(player, player.location)
+            SkyIslandLocation.update(player.id, player.location)
             player.teleport(PreSkyIslandLocation.lastLocationOrDefault(player))
 
             delaySyncTask(2.secondTicks) {

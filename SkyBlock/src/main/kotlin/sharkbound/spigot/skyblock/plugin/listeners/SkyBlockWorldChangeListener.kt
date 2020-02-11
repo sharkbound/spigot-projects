@@ -5,10 +5,10 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerChangedWorldEvent
 import org.bukkit.event.player.PlayerTeleportEvent
-import sharkbound.spigot.skyblock.plugin.objects.PreSkyIslandLocation
 import sharkbound.spigot.skyblock.plugin.extensions.id
 import sharkbound.spigot.skyblock.plugin.extensions.register
 import sharkbound.spigot.skyblock.plugin.extensions.skyBlockWorldName
+import sharkbound.spigot.skyblock.plugin.objects.PreSkyIslandLocation
 import sharkbound.spigot.skyblock.plugin.skyIslandGenerationQueue
 
 class SkyBlockWorldChangeListener : Listener {
@@ -27,7 +27,7 @@ class SkyBlockWorldChangeListener : Listener {
 
         // is the player teleporting to their sky island?
         if (from.world.name != e.player.skyBlockWorldName && to.world.name == e.player.skyBlockWorldName) {
-            PreSkyIslandLocation.update(e.player, e.from)
+            PreSkyIslandLocation.update(e.player.id, e.from)
         }
     }
 
