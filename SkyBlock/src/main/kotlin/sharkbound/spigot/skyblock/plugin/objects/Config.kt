@@ -12,8 +12,8 @@ object Config {
     val tokensOnKill
         get() = cfg.getInt("tokens_on_kill")
 
-    val tokenName
-        get() = cfg.getString("token_name")
+    val currencyName
+        get() = cfg.getString("currency_name")
 
     val emberRodCost
         get() = cfg.getInt("item_costs.ember_rod_cost")

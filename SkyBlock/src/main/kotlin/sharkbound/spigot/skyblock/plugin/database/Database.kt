@@ -13,7 +13,7 @@ import java.util.*
 
 data class PlayerData(val id: Int, val uuid: UUID, val tokens: Int)
 
-object DB {
+object SkyBlockDatabase {
     val data = SQLiteDataSource().apply { url = "jdbc:sqlite:skyblock.sqlite" }
     val connection get() = data.connection
 

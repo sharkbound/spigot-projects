@@ -4,7 +4,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import sharkbound.spigot.skyblock.plugin.commands.*
-import sharkbound.spigot.skyblock.plugin.database.DB
+import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.gui.InventoryGuiClickListener
 import sharkbound.spigot.skyblock.plugin.gui.registerAllInventoryGui
 import sharkbound.spigot.skyblock.plugin.listeners.PlayerEventListener
@@ -14,7 +14,7 @@ import sharkbound.spigot.skyblock.plugin.objects.FilePaths
 class SkyBlock : JavaPlugin() {
     override fun onEnable() {
         skyBlockInstance = this
-        DB.init()
+        SkyBlockDatabase.init()
 
         registerAllCommands()
         registerAllEventListeners()

@@ -3,7 +3,7 @@ package sharkbound.spigot.skyblock.plugin.gui
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import sharkbound.spigot.skyblock.plugin.database.DB
+import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.extensions.hasFreeInvSlot
 import sharkbound.spigot.skyblock.plugin.extensions.name
 import sharkbound.spigot.skyblock.plugin.extensions.send
@@ -29,9 +29,9 @@ object ShopGui : InventoryGui("Shop", 3) {
     }
 
     private fun hasEnoughBalance(player: Player, required: Int, itemName: String): Boolean {
-        val bal = DB.balance(player)
+        val bal = SkyBlockDatabase.balance(player)
         if (bal < required) {
-            player.send("&6[SHOP] you do not have enough ${Config.tokenName} to get '$itemName&r&6', you need $required ${Config.tokenName}")
+            player.send("&6[SHOP] you do not have enough ${Config.currencyName} to get '$itemName&r&6', you need $required ${Config.currencyName}")
             return false
         }
         return true
@@ -41,9 +41,9 @@ object ShopGui : InventoryGui("Shop", 3) {
         if (!player.hasFreeSpace() || !hasEnoughBalance(player, price, item.name)) return
 
         player.inventory.addItem(item)
-        player.send("&eyou purchased &r${item.name}&r&e for $price ${Config.tokenName}, &eit has been added to your inventory")
+        player.send("&eyou purchased &r${item.name}&r&e for $price ${Config.currencyName}, &eit has been added to your inventory")
 
-        DB.modifyBalance(player, price, DB.BalanceModifyOperation.Sub)
+        SkyBlockDatabase.modifyBalance(player, price, SkyBlockDatabase.BalanceModifyOperation.Sub)
     }
 
 }

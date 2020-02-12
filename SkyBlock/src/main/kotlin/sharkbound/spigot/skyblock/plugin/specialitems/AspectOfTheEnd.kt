@@ -8,6 +8,7 @@ import sharkbound.spigot.skyblock.plugin.builders.buildItem
 import sharkbound.spigot.skyblock.plugin.data.YamlCooldownBase
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Config
+import sharkbound.spigot.skyblock.plugin.objects.ItemTier
 import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
 import sharkbound.spigot.skyblock.plugin.objects.Text
 import sharkbound.spigot.skyblock.plugin.utils.colorAll
@@ -20,10 +21,10 @@ private object AspectOfTheEndCooldown :
 object AspectOfTheEnd {
     val color = "&5".colored()
     val itemName = "${color}Aspect Of The End".colored()
-    val itemLore = colorAll("&r${Text.TIER}: &5EPIC")
+    val itemLore = colorAll("&r${Text.TIER}: ${ItemTier.EPIC}")
     val minTpRange = 5.0
     val shopItemName
-        get() = "$itemName &e(${Config.aspectOfTheEndCost} ${Config.tokenName})".colored()
+        get() = "$itemName &e(${Config.aspectOfTheEndCost} ${Config.currencyName})".colored()
 
     fun finalItem() =
         buildItem {
@@ -36,7 +37,8 @@ object AspectOfTheEnd {
 
     fun activate(player: Player) {
         if (AspectOfTheEndCooldown.onCooldown(player.id)) {
-            player.itemError("you must wait ${AspectOfTheEndCooldown.remainingCooldownFormatted(player.id)} seconds to use this item again")
+            val remainingCooldown = AspectOfTheEndCooldown.remainingCooldownFormatted(player.id)
+            player.itemError("you must wait $remainingCooldown seconds to use this item again")
             return
         }
 

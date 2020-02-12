@@ -8,6 +8,7 @@ import sharkbound.spigot.skyblock.plugin.builders.buildItem
 import sharkbound.spigot.skyblock.plugin.data.YamlCooldownBase
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Config
+import sharkbound.spigot.skyblock.plugin.objects.ItemTier
 import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
 import sharkbound.spigot.skyblock.plugin.objects.Text
 import sharkbound.spigot.skyblock.plugin.utils.cancellingRepeatingSyncTask
@@ -19,10 +20,10 @@ private object EmberRodCooldown :
 object EmberRod {
     val color = "&a".colored()
     val itemName = "${color}Ember Rod".colored()
-    val itemLore = colorAll("&r${Text.TIER}: &aSUPER")
+    val itemLore = colorAll("&r${Text.TIER}: ${ItemTier.SUPER}")
 
     val shopItemName
-        get() = "$itemName &e(${Config.emberRodCost} ${Config.tokenName})".colored()
+        get() = "$itemName &e(${Config.emberRodCost} ${Config.currencyName})".colored()
 
     fun finalItem() =
         buildItem {
@@ -53,7 +54,7 @@ object EmberRod {
 
     private fun spawnEmberRodFireball(player: Player): Boolean {
         val fireball = player.world.spawnCast<Fireball>(
-            player.location.add(player.lookDirection.multiply(3).add(1.y))
+            player.location.add(player.lookDirection.multiply(2).add(1.y))
         )
 
         val lookDir = player.lookDirection.multiply(3)
