@@ -32,8 +32,9 @@ object SkyBlockDatabase {
                 executeUpdate(
                     """
                 create table if not exists sky_block(
-                    id     integer not null primary key autoincrement,
-                    uuid   text    not null unique,
+                    id integer not null primary key autoincrement,
+                    player_name text not null unique,
+                    uuid text not null unique,
                     tokens integer default 0 not null
                 );"""
                 )
@@ -93,6 +94,16 @@ object SkyBlockDatabase {
     fun balance(uuid: UUID): Int =
         dataOf(uuid)?.tokens ?: 0
 
+    fun updatePlayerName(player: Player) {
+        // keep player name up to date in the database
+        preparedStatement("update sky_block set player_name = ? where uuid = ?") {
+            setString(1, player.displayName)
+            setString(2, player.strId)
+        }.closeAfter {
+            executeUpdate()
+        }
+    }
+
     fun initPlayer(player: Player) {
 //        check if the players data already exists
         preparedStatement("select exists(select 1 from sky_block where uuid = ?)") {
@@ -105,9 +116,10 @@ object SkyBlockDatabase {
         }
 
         // player data does not exists, create a row for it
-        preparedStatement("insert into sky_block (uuid, tokens) values (?, ?)") {
+        preparedStatement("insert into sky_block (uuid, tokens, player_name) values (?, ?, ?)") {
             setString(1, player.strId)
             setInt(2, 0)
+            setString(3, player.displayName)
         }.closeAfter {
             executeUpdate()
         }

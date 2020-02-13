@@ -6,7 +6,7 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import sharkbound.spigot.skyblock.plugin.objects.NbtTags
-import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
+import sharkbound.spigot.skyblock.plugin.objects.CustomItemFlag
 import net.minecraft.server.v1_8_R3.ItemStack as ServerItemStack
 
 fun ItemStack.enchant(enchantment: Enchantment, level: Int = 1, ignoreMaxLevel: Boolean = true) =
@@ -23,12 +23,18 @@ fun ItemStack.displayName(newName: String) =
 fun ItemStack.durability(newDura: Short) =
     modifyMeta { durability = newDura }
 
-fun ItemStack.modifyMeta(func: ItemMeta.() -> Unit) =
+inline fun ItemStack.modifyMeta(func: ItemMeta.() -> Unit) =
     apply {
         itemMeta = itemMeta.apply(func)
     }
 
-fun ItemStack.withMeta(func: ItemMeta.() -> Unit) =
+inline fun <reified T : ItemMeta> ItemStack.modifyMetaCast(func: T.() -> Unit) =
+    apply {
+        itemMeta = (itemMeta as? T)?.apply(func) ?: itemMeta
+    }
+
+
+inline fun ItemStack.withMeta(func: ItemMeta.() -> Unit) =
     itemMeta.apply(func)
 
 infix fun ItemStack?.displayNameIs(other: String): Boolean =
@@ -62,10 +68,10 @@ fun ItemStack.hasTag(tag: String): Boolean =
 val ServerItemStack.asBukkit: ItemStack
     get() = CraftItemStack.asBukkitCopy(this)
 
-infix fun ItemStack.applySpecialFlag(flag: SpecialItemFlags): ItemStack =
+infix fun ItemStack.applySpecialFlag(flag: CustomItemFlag): ItemStack =
     copyWithNBT { setString(NbtTags.ITEM_CLASS, flag.nbtValue) }
 
-infix fun ItemStack?.hasSpecialItemFlag(flag: SpecialItemFlags): Boolean =
+infix fun ItemStack?.hasSpecialItemFlag(flag: CustomItemFlag): Boolean =
     this?.nms?.tag?.getString(NbtTags.ITEM_CLASS) == flag.nbtValue
 
 val ItemStack?.hasItemClass: Boolean
@@ -74,8 +80,8 @@ val ItemStack?.hasItemClass: Boolean
 val ItemStack.nbt: NBTTagCompound
     get() = nms.ensureNBT().tag
 
-val ItemStack?.specialItemFlag: SpecialItemFlags?
+val ItemStack?.customItemFlag: CustomItemFlag?
     get() =
         this?.nbt?.getString(NbtTags.ITEM_CLASS)?.let { value ->
-            SpecialItemFlags.values().firstOrNull { it.nbtValue == value }
+            CustomItemFlag.values().firstOrNull { it.nbtValue == value }
         }

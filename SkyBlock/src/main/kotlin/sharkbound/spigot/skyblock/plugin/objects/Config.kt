@@ -16,10 +16,13 @@ object Config {
         get() = cfg.getString("currency_name")
 
     val emberRodCost
-        get() = cfg.getInt("item_costs.ember_rod_cost")
+        get() = cfg.getInt("item_costs.ember_rod")
 
     val aspectOfTheEndCost
         get() = cfg.getInt("item_costs.aspect_of_the_end")
+
+    val mobileBankCost
+        get() = cfg.getInt("item_costs.mobile_bank")
 
     val aspectOfTheEndRange
         get() = cfg.getInt("item_settings.aspect_of_the_end_range")
@@ -32,4 +35,11 @@ object Config {
 
     val emberRodCooldown
         get() = cfg.getDouble("cooldowns.ember_rod")
+
+    val mobileBankCooldown
+        get() = cfg.getDouble("cooldowns.mobile_bank")
+
+    val mobileBankSkullOwnerUUID
+        get() = cfg.getString("item_settings.mobile_bank_skull_owner_uuid")
+
 }

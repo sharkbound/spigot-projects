@@ -1,4 +1,4 @@
-package sharkbound.spigot.skyblock.plugin.specialitems
+package sharkbound.spigot.skyblock.plugin.customitems
 
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -8,8 +8,8 @@ import sharkbound.spigot.skyblock.plugin.builders.buildItem
 import sharkbound.spigot.skyblock.plugin.data.YamlCooldownBase
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Config
+import sharkbound.spigot.skyblock.plugin.objects.CustomItemFlag
 import sharkbound.spigot.skyblock.plugin.objects.ItemTier
-import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
 import sharkbound.spigot.skyblock.plugin.objects.Text
 import sharkbound.spigot.skyblock.plugin.utils.colorAll
 import sharkbound.spigot.skyblock.plugin.utils.vect
@@ -18,24 +18,24 @@ import sharkbound.spigot.skyblock.plugin.utils.vectorOfZeros
 private object AspectOfTheEndCooldown :
     YamlCooldownBase("aspect_of_the_end_cooldowns.yml", Config.aspectOfTheEndCooldown)
 
-object AspectOfTheEnd {
-    val color = "&5".colored()
-    val itemName = "${color}Aspect Of The End".colored()
-    val itemLore = colorAll("&r${Text.TIER}: ${ItemTier.EPIC}")
+object AspectOfTheEnd : CustomItemBase() {
     val minTpRange = 5.0
-    val shopItemName
-        get() = "$itemName &e(${Config.aspectOfTheEndCost} ${Config.currencyName})".colored()
 
-    fun finalItem() =
+    override val itemName = "&5Aspect Of The End".colored()
+    override val itemLore = colorAll(Text.createLoreTier(ItemTier.EPIC))
+    override val tier = ItemTier.EPIC
+    override val price
+        get() = Config.aspectOfTheEndCost
+
+    override fun createItem() =
         buildItem {
             material(Material.DIAMOND_SWORD)
-            specialItemFlag(SpecialItemFlags.AspectOfTheEnd)
+            specialItemFlag(CustomItemFlag.AspectOfTheEnd)
             displayName(itemName)
             lore(itemLore)
         }
 
-
-    fun activate(player: Player) {
+    override fun onPlayerUse(player: Player) {
         if (AspectOfTheEndCooldown.onCooldown(player.id)) {
             val remainingCooldown = AspectOfTheEndCooldown.remainingCooldownFormatted(player.id)
             player.itemError("you must wait $remainingCooldown seconds to use this item again")
@@ -47,14 +47,6 @@ object AspectOfTheEnd {
             AspectOfTheEndCooldown.update(player.id)
         }
     }
-
-    private fun Player.itemError(msg: String, errorColor: String = "&3"): Boolean {
-        player.send("$errorColor[&r${itemName}$errorColor] $msg")
-        return false
-    }
-
-//    val horizonalOffset = 1.2
-//    val verticalOffset = 1
 
     private fun teleport(player: Player): Boolean {
         player.apply {

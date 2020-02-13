@@ -6,14 +6,14 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerChangedWorldEvent
 import org.bukkit.event.player.PlayerTeleportEvent
 import sharkbound.spigot.skyblock.plugin.extensions.id
-import sharkbound.spigot.skyblock.plugin.extensions.register
+import sharkbound.spigot.skyblock.plugin.extensions.registerEvents
 import sharkbound.spigot.skyblock.plugin.extensions.skyBlockWorldName
 import sharkbound.spigot.skyblock.plugin.objects.PreSkyIslandLocation
 import sharkbound.spigot.skyblock.plugin.skyIslandGenerationQueue
 
-class SkyBlockWorldChangeListener : Listener {
+class SkyBlockWorldChange : Listener {
     init {
-        register()
+        registerEvents()
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

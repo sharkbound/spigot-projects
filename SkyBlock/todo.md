@@ -1,6 +1,6 @@
 * piggy bank
     * mobile bank
-    * pin input
+    * pin input?
     * add coins to account
     * remove coins from account
 * coin

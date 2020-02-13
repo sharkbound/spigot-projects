@@ -3,28 +3,33 @@ package sharkbound.spigot.skyblock.plugin.gui
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import sharkbound.spigot.skyblock.plugin.customitems.AspectOfTheEnd
+import sharkbound.spigot.skyblock.plugin.customitems.EmberRod
+import sharkbound.spigot.skyblock.plugin.customitems.MobileBank
 import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.extensions.hasFreeInvSlot
 import sharkbound.spigot.skyblock.plugin.extensions.name
 import sharkbound.spigot.skyblock.plugin.extensions.send
 import sharkbound.spigot.skyblock.plugin.objects.Config
-import sharkbound.spigot.skyblock.plugin.specialitems.AspectOfTheEnd
-import sharkbound.spigot.skyblock.plugin.specialitems.EmberRod
 
 @Suppress("MemberVisibilityCanBePrivate")
 object ShopGui : InventoryGui("Shop", 3) {
     init {
-        addElement(3, 1, Material.BLAZE_ROD, EmberRod.shopItemName, EmberRod.itemLore)
-        addElement(5, 1, Material.DIAMOND_SWORD, AspectOfTheEnd.shopItemName, AspectOfTheEnd.itemLore)
+        addElement(3, 1, EmberRod)
+        addElement(4, 1, MobileBank)
+        addElement(5, 1, AspectOfTheEnd)
     }
 
     override fun clicked(player: Player, element: GuiElement, normalizedName: String, name: String) {
         when (name) {
             EmberRod.shopItemName ->
-                purchaseItem(player, EmberRod.finalItem(), Config.emberRodCost)
+                purchaseItem(player, EmberRod.createItem(), Config.emberRodCost)
 
             AspectOfTheEnd.shopItemName ->
-                purchaseItem(player, AspectOfTheEnd.finalItem(), Config.aspectOfTheEndCost)
+                purchaseItem(player, AspectOfTheEnd.createItem(), Config.aspectOfTheEndCost)
+
+            MobileBank.shopItemName ->
+                purchaseItem(player, MobileBank.createItem(), Config.mobileBankCost)
         }
     }
 

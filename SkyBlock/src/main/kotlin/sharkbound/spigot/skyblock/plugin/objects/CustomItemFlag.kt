@@ -4,7 +4,8 @@ internal object NbtTags {
     const val ITEM_CLASS = "itemClass"
 }
 
-enum class SpecialItemFlags(val nbtValue: String) {
+enum class CustomItemFlag(val nbtValue: String) {
     EmberRod("emberrod"),
     AspectOfTheEnd("aspectoftheend"),
+    MobileBank("mobilebank"),
 }

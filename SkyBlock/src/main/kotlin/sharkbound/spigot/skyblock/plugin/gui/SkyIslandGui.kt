@@ -22,11 +22,11 @@ object SkyIslandGui : InventoryGui("SkyBlock Menu", 5) {
     val SHOP = "&eShop".colored()
 
     init {
-        addElement(1, 1, Material.GRASS, JOIN)
-        addElement(7, 1, Material.BARRIER, DELETE)
-        addElement(6, 1, Material.TNT, RESET)
-        addElement(3, 3, Material.ARROW, LEAVE_ISLAND)
-        addElement(4, 3, Material.CHEST, SHOP)
+        addElement(1, 1, BasicCustomItem(Material.GRASS, JOIN))
+        addElement(7, 1, BasicCustomItem(Material.BARRIER, DELETE))
+        addElement(6, 1, BasicCustomItem(Material.TNT, RESET))
+        addElement(3, 3, BasicCustomItem(Material.ARROW, LEAVE_ISLAND))
+        addElement(4, 3, BasicCustomItem(Material.CHEST, SHOP))
     }
 
     override fun clicked(player: Player, element: GuiElement, normalizedName: String, name: String) {

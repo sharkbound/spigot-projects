@@ -1,26 +1,19 @@
 package sharkbound.spigot.skyblock.plugin.gui
 
 import org.bukkit.Bukkit
-import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
+import sharkbound.spigot.skyblock.plugin.customitems.CustomItemBase
 import sharkbound.spigot.skyblock.plugin.extensions.cancel
+import sharkbound.spigot.skyblock.plugin.extensions.name
 import sharkbound.spigot.skyblock.plugin.extensions.normalized
 
 open class InventoryGui(val name: String, val rows: Int) {
     val elements = mutableListOf<GuiElement>()
-    val elementNames get() = elements.asSequence().map { it.name }.toMutableSet()
+    val elementNames get() = elements.asSequence().map { it.item.name }.toMutableSet()
     val normalizedElementNames get() = elements.asSequence().map { it.normalizedName }.toMutableSet()
     val normalizedName = name.normalized
-
-    operator fun contains(o: Any?) =
-        when (o) {
-            is String -> o in elementNames
-            is GuiElement -> o in elements
-            else -> false
-        }
-
 
     private fun createInventory() =
         Bukkit.createInventory(null, rows * 9, name)
@@ -28,14 +21,9 @@ open class InventoryGui(val name: String, val rows: Int) {
     fun addElement(
         x: Int,
         y: Int,
-        material: Material,
-        name: String,
-        lore: List<String> = emptyList()
+        item: CustomItemBase
     ): GuiElement =
-        GuiElement(x, y, material, name).also {
-            it.lore(lore)
-            elements.add(it)
-        }
+        GuiElement(x, y, item).also { elements.add(it) }
 
     open fun addItemsToInv(inventory: Inventory) {
         elements.forEach {
@@ -62,7 +50,7 @@ open class InventoryGui(val name: String, val rows: Int) {
                 return false
             }
             val clickedElement = get(itemName) ?: return false
-            clicked(it, clickedElement, clickedElement.normalizedName, clickedElement.name)
+            clicked(it, clickedElement, clickedElement.normalizedName, clickedElement.item.name)
         }
 
         return true

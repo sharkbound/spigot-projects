@@ -2,37 +2,39 @@ package sharkbound.spigot.skyblock.plugin.listeners
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.Action
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.logger
+import sharkbound.spigot.skyblock.plugin.objects.Actions
 import sharkbound.spigot.skyblock.plugin.objects.Config
-import sharkbound.spigot.skyblock.plugin.objects.SpecialItemFlags
-import sharkbound.spigot.skyblock.plugin.specialitems.AspectOfTheEnd
-import sharkbound.spigot.skyblock.plugin.specialitems.EmberRod
+import sharkbound.spigot.skyblock.plugin.objects.CustomItemFlag
+import sharkbound.spigot.skyblock.plugin.customitems.AspectOfTheEnd
+import sharkbound.spigot.skyblock.plugin.customitems.EmberRod
 import java.util.logging.Level
 
-class PlayerEventListener : Listener {
+class PlayerEvent : Listener {
     init {
-        register()
+        registerEvents()
     }
 
     @EventHandler
     fun onPlayerJoin(e: PlayerJoinEvent) {
         SkyBlockDatabase.initPlayer(e.player)
+        SkyBlockDatabase.updatePlayerName(e.player)
     }
 
     @EventHandler
     fun onPlayerInteract(e: PlayerInteractEvent) {
         if (!e.item.hasItemClass) return
 
-        if (e.action == Action.RIGHT_CLICK_AIR || e.action == Action.RIGHT_CLICK_BLOCK) {
-            when (e.item?.specialItemFlag) {
-                SpecialItemFlags.EmberRod -> EmberRod.activate(e.player)
-                SpecialItemFlags.AspectOfTheEnd -> AspectOfTheEnd.activate(e.player)
+        if (e.action in Actions.anyRightClick) {
+            when (e.item?.customItemFlag) {
+                CustomItemFlag.EmberRod -> EmberRod.onPlayerUse(e.player)
+                CustomItemFlag.AspectOfTheEnd -> AspectOfTheEnd.onPlayerUse(e.player)
+                CustomItemFlag.MobileBank -> TODO()
             }
         }
     }

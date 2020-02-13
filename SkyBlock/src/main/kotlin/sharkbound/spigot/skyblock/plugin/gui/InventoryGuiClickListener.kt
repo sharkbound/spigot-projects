@@ -4,20 +4,17 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import sharkbound.spigot.skyblock.plugin.extensions.normalized
-import sharkbound.spigot.skyblock.plugin.extensions.register
+import sharkbound.spigot.skyblock.plugin.extensions.registerEvents
 
 class InventoryGuiClickListener : Listener {
     init {
-        register()
+        registerEvents()
     }
 
     @EventHandler
     fun onItemClicked(e: InventoryClickEvent) {
-        allGui.values.forEach {
-            if (it.normalizedName == e.inventory?.name?.normalized && it.handleClickedEvent(e)) {
-                return
-            }
-        }
+        allGui.values
+            .firstOrNull { it.normalizedName == e.inventory?.name?.normalized }
+            ?.handleClickedEvent(e)
     }
-
 }

@@ -67,5 +67,5 @@ fun Collection<String>.colorAll(): List<String> =
 fun colorAll(vararg strings: String): List<String> =
     strings.map { it.colored() }
 
-fun newStack(material: Material, amount: Int = 1, damage: Short = 0): ItemStack =
+fun newItemStack(material: Material, amount: Int = 1, damage: Short = 0): ItemStack =
     ItemStack(material, amount, damage)
