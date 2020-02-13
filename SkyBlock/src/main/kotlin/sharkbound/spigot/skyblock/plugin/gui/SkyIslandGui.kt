@@ -3,6 +3,7 @@ package sharkbound.spigot.skyblock.plugin.gui
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.InventoryClickEvent
 import sharkbound.commonutils.extensions.ifNull
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.PreSkyIslandLocation
@@ -29,7 +30,13 @@ object SkyIslandGui : InventoryGui("SkyBlock Menu", 5) {
         addElement(4, 3, BasicCustomItem(Material.CHEST, SHOP))
     }
 
-    override fun clicked(player: Player, element: GuiElement, normalizedName: String, name: String) {
+    override fun clicked(
+        player: Player,
+        element: GuiElement,
+        normalizedName: String,
+        name: String,
+        e: InventoryClickEvent
+    ) {
         when (name) {
             JOIN -> joinClicked(player)
             RESET -> resetClicked(player)

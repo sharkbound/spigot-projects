@@ -50,13 +50,19 @@ open class InventoryGui(val name: String, val rows: Int) {
                 return false
             }
             val clickedElement = get(itemName) ?: return false
-            clicked(it, clickedElement, clickedElement.normalizedName, clickedElement.item.name)
+            clicked(it, clickedElement, clickedElement.normalizedName, clickedElement.item.name, e)
         }
 
         return true
     }
 
-    open fun clicked(player: Player, element: GuiElement, normalizedName: String, name: String) {
+    open fun clicked(
+        player: Player,
+        element: GuiElement,
+        normalizedName: String,
+        name: String,
+        e: InventoryClickEvent
+    ) {
         throw RuntimeException("unimplemented clicked() handler for menu ${javaClass.name}")
     }
 
@@ -83,7 +89,4 @@ fun addInventoryGui(vararg gui: InventoryGui) {
     }
 }
 
-fun registerAllInventoryGui() {
-    addInventoryGui(SkyIslandGui, ShopGui)
-}
 

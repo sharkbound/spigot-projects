@@ -1,7 +1,7 @@
 package sharkbound.spigot.skyblock.plugin.gui
 
-import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.customitems.AspectOfTheEnd
 import sharkbound.spigot.skyblock.plugin.customitems.EmberRod
@@ -20,7 +20,13 @@ object ShopGui : InventoryGui("Shop", 3) {
         addElement(5, 1, AspectOfTheEnd)
     }
 
-    override fun clicked(player: Player, element: GuiElement, normalizedName: String, name: String) {
+    override fun clicked(
+        player: Player,
+        element: GuiElement,
+        normalizedName: String,
+        name: String,
+        e: InventoryClickEvent
+    ) {
         when (name) {
             EmberRod.shopItemName ->
                 purchaseItem(player, EmberRod.createItem(), Config.emberRodCost)

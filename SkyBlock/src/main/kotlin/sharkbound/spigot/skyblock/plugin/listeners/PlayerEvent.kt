@@ -13,6 +13,7 @@ import sharkbound.spigot.skyblock.plugin.objects.Config
 import sharkbound.spigot.skyblock.plugin.objects.CustomItemFlag
 import sharkbound.spigot.skyblock.plugin.customitems.AspectOfTheEnd
 import sharkbound.spigot.skyblock.plugin.customitems.EmberRod
+import sharkbound.spigot.skyblock.plugin.customitems.MobileBank
 import java.util.logging.Level
 
 class PlayerEvent : Listener {
@@ -34,7 +35,7 @@ class PlayerEvent : Listener {
             when (e.item?.customItemFlag) {
                 CustomItemFlag.EmberRod -> EmberRod.onPlayerUse(e.player)
                 CustomItemFlag.AspectOfTheEnd -> AspectOfTheEnd.onPlayerUse(e.player)
-                CustomItemFlag.MobileBank -> TODO()
+                CustomItemFlag.MobileBank -> MobileBank.onPlayerUse(e.player)
             }
         }
     }
