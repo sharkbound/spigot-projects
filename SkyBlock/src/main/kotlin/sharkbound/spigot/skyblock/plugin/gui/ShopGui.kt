@@ -9,6 +9,7 @@ import sharkbound.spigot.skyblock.plugin.customitems.MobileBank
 import sharkbound.spigot.skyblock.plugin.database.BalanceModifyOperation
 import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.extensions.hasFreeInvSlot
+import sharkbound.spigot.skyblock.plugin.extensions.id
 import sharkbound.spigot.skyblock.plugin.extensions.name
 import sharkbound.spigot.skyblock.plugin.extensions.send
 import sharkbound.spigot.skyblock.plugin.objects.Config
@@ -41,7 +42,7 @@ object ShopGui : InventoryGui("Shop", 3) {
     }
 
     private fun hasEnoughBalance(player: Player, required: Int, itemName: String): Boolean {
-        val bal = SkyBlockDatabase.balance(player)
+        val bal = SkyBlockDatabase.balance(player.id)
         if (bal < required) {
             player.send("&6[SHOP] you do not have enough ${Config.currencyName} to get '$itemName&r&6', you need $required ${Config.currencyName}")
             return false

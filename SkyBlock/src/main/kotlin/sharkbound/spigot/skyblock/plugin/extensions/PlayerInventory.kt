@@ -13,7 +13,13 @@ inline infix fun <R> Player.closeInventoryAfter(block: (Player) -> R) =
         closeInventory()
     }
 
-inline fun Inventory.removeWhere(limit: Int = -1, predicate: (Int, ItemStack) -> Boolean) {
+inline fun Inventory.removeWhereWithIndex(
+    limit: Int = -1,
+    predicate: (
+        @ParameterName("i") Int,
+        @ParameterName("item") ItemStack
+    ) -> Boolean
+) {
     var removed = limit
     for (i in 0 until PLAYER_INV_SIZE) {
         if (removed == 0) return
@@ -25,4 +31,8 @@ inline fun Inventory.removeWhere(limit: Int = -1, predicate: (Int, ItemStack) ->
             }
         }
     }
+}
+
+inline fun Inventory.removeWhere(limit: Int = -1, predicate: (ItemStack) -> Boolean) {
+    removeWhereWithIndex(limit) { _, item -> predicate(item) }
 }

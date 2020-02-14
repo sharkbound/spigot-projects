@@ -66,10 +66,7 @@ object SkyBlockDatabase {
         }
     }
 
-    fun dataOf(player: Player): PlayerData? =
-        dataOf(player.id)
-
-    fun dataOf(uuid: UUID): PlayerData? {
+    fun dataFor(uuid: UUID): PlayerData? {
         preparedStatement("select * from sky_block where uuid = ?") {
             setString(1, uuid.toString())
         }.executeQuery().apply {
@@ -89,11 +86,8 @@ object SkyBlockDatabase {
 
     }
 
-    fun balance(player: Player): Int =
-        balance(player.id)
-
     fun balance(uuid: UUID): Int =
-        dataOf(uuid)?.tokens ?: 0
+        dataFor(uuid)?.tokens ?: 0
 
     fun updatePlayerName(player: Player) {
         // keep player name up to date in the database

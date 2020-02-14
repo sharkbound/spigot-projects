@@ -10,10 +10,8 @@ import sharkbound.spigot.skyblock.plugin.builders.buildItem
 import sharkbound.spigot.skyblock.plugin.database.BalanceModifyOperation
 import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.extensions.*
-import sharkbound.spigot.skyblock.plugin.objects.Actions
 import sharkbound.spigot.skyblock.plugin.objects.Config
 import sharkbound.spigot.skyblock.plugin.objects.CustomItemFlag
-import sharkbound.spigot.skyblock.plugin.utils.newItemStack
 
 object UsableCoin {
     val loreColor = "&7"
@@ -33,15 +31,17 @@ object UsableCoin {
     fun use(player: Player, amount: Int, e: PlayerInteractEvent, stack: ItemStack) {
         val added = if (player.isSneaking) amount else 1
         if (amount - added == 0) {
-            player.inventory.removeWhere(1) { i, item ->
-                item.amount == amount && item hasSpecialItemFlag CustomItemFlag.UsableCoin
+            player.inventory.removeWhere(1) {
+                it.amount == amount && it hasSpecialItemFlag CustomItemFlag.UsableCoin
             }
         } else {
             stack.amount -= added
         }
 
         SkyBlockDatabase.modifyBalance(player.id, added, BalanceModifyOperation.Add)
-        player.send("&aadded &6$added ${Config.currencyName}&a to your account")
+        player.send(
+            "&aadded &6$added ${Config.currencyName}&a to your account, you now have &6${SkyBlockDatabase.balance(player.id)} ${Config.currencyName}"
+        )
     }
 }
 

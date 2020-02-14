@@ -18,7 +18,7 @@ class CommandTest : CommandExecutor {
             return false
         }
 
-        caller.inventory.addItem(UsableCoin.create(64))
+        caller.inventory.addItem(UsableCoin.create(args.getOrElse(0) { "64" }.toInt()))
         return false
     }
 }
