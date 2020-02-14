@@ -4,6 +4,7 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.customitems.CustomItemBase
 import sharkbound.spigot.skyblock.plugin.extensions.cancel
 import sharkbound.spigot.skyblock.plugin.extensions.name
@@ -38,8 +39,24 @@ open class InventoryGui(val name: String, val rows: Int) {
         player.openInventory(prepareInventory(player))
     }
 
+    protected open fun customClickHandler(
+        e: InventoryClickEvent,
+        player: Player,
+        itemName: String?,
+        item: ItemStack?,
+        element: GuiElement?
+    ): Boolean =
+        false
+
     open fun handleClickedEvent(e: InventoryClickEvent): Boolean {
-        val itemName = e.currentItem?.itemMeta?.displayName
+        if (customClickHandler(
+                e, e.whoClicked as Player,
+                e.currentItem?.name, e.currentItem,
+                elements.firstOrNull { it.item.name == e.currentItem?.name }
+            )
+        ) return true
+
+        val itemName = e.currentItem?.name
         if (itemName == null || itemName !in elementNames) {
             return false
         }
@@ -63,7 +80,7 @@ open class InventoryGui(val name: String, val rows: Int) {
         name: String,
         e: InventoryClickEvent
     ) {
-        throw RuntimeException("unimplemented clicked() handler for menu ${javaClass.name}")
+        throw RuntimeException("====== unimplemented clicked() handler for menu ${javaClass.name} ======")
     }
 
     override fun equals(other: Any?): Boolean {

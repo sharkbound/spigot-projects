@@ -27,4 +27,8 @@ class GuiElement(val x: Int, val y: Int, val custom: CustomItemBase) {
         result = 31 * result + normalizedName.hashCode()
         return result
     }
+
+    override fun toString(): String {
+        return "<${javaClass.simpleName} slot=$slot item=$item custom=$custom>"
+    }
 }

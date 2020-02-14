@@ -27,4 +27,8 @@ abstract class CustomItemBase {
         player.send("$errorColor[&r${itemName}$errorColor] $msg")
         return false
     }
+
+    override fun toString(): String {
+        return "<${javaClass.simpleName} itemName=$itemName tier=$tier> price=$price"
+    }
 }

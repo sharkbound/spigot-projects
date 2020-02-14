@@ -6,7 +6,7 @@ import java.util.*
 fun Player.send(message: String, altColorChar: Char = '&') =
     sendMessage(message.colored(altColorChar))
 
-fun Player.send(obj: Any, altColorChar: Char = '&') =
+fun Player.send(obj: Any?, altColorChar: Char = '&') =
     send(obj.toString(), altColorChar)
 
 val Player.strId
