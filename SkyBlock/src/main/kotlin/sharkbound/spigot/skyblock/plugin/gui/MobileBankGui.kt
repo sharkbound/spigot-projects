@@ -12,23 +12,24 @@ object MobileBankGui : InventoryGui("Mobile Bank", 3) {
 
     init {
         val moneyName = Config.currencyName
-        val nuggetLoreColor = "&7"
-        addElement(
-            3, 1, BasicCustomItem(
-                Material.GOLD_NUGGET, "&aDeposit $moneyName", listOf(
-                    "${nuggetLoreColor}click to deposit &r&61 ${moneyName}${nuggetLoreColor} to your account",
-                    "${nuggetLoreColor}shift-click to deposit &r&664 ${moneyName}${nuggetLoreColor} to your account"
+        "&7".let { color ->
+            addElement(
+                3, 1, BasicCustomItem(
+                    Material.GOLD_NUGGET, "&aDeposit $moneyName", listOf(
+                        "${color}click to deposit &r&61 ${moneyName}${color} to your account",
+                        "${color}shift-click to deposit &r&664 ${moneyName}${color} to your account"
+                    )
                 )
             )
-        )
-        addElement(
-            5, 1, BasicCustomItem(
-                Material.GOLD_NUGGET, "&4Withdraw $moneyName", listOf(
-                    "${nuggetLoreColor}click to withdraw &r&61 ${moneyName}${nuggetLoreColor} from your account",
-                    "${nuggetLoreColor}shift-click to withdraw &r&664 ${moneyName}${nuggetLoreColor} from your account"
+            addElement(
+                5, 1, BasicCustomItem(
+                    Material.GOLD_NUGGET, "&4Withdraw $moneyName", listOf(
+                        "${color}click to withdraw &r&61 ${moneyName}${color} from your account",
+                        "${color}shift-click to withdraw &r&664 ${moneyName}${color} from your account"
+                    )
                 )
             )
-        )
+        }
     }
 
     override fun clicked(

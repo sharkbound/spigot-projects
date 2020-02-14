@@ -17,16 +17,15 @@ open class BasicCustomItem(
     override val itemName = name.colored()
     override val price: Int = 0
 
-    override fun createShopItem(): ItemStack {
-        return buildItem {
+    override fun createShopItem() =
+        createItem()
+
+    override fun createItem(): ItemStack =
+        buildItem {
             material(material)
             displayName(itemName)
             lore(itemLore)
             metaFlags(ItemFlag.HIDE_ATTRIBUTES)
         }
-    }
-
-    override fun createItem(): ItemStack =
-        createShopItem()
 
 }
