@@ -62,7 +62,7 @@ inline fun ItemStack.copyWithNBT(block: NBTTagCompound.() -> Unit): ItemStack =
 inline fun ItemStack.copyWithNMS(block: ServerItemStack.() -> Unit): ItemStack =
     nms.ensureNBT().apply { block(this) }.asBukkit
 
-fun ItemStack.hasTag(tag: String): Boolean =
+fun ItemStack.hasNBTKey(tag: String): Boolean =
     nms.tag?.hasKey(tag) == true
 
 val ServerItemStack.asBukkit: ItemStack
@@ -75,7 +75,7 @@ infix fun ItemStack?.hasSpecialItemFlag(flag: CustomItemFlag): Boolean =
     this?.nms?.tag?.getString(NbtTags.ITEM_CLASS) == flag.nbtValue
 
 val ItemStack?.hasItemClass: Boolean
-    get() = this?.hasTag(NbtTags.ITEM_CLASS) == true
+    get() = this?.hasNBTKey(NbtTags.ITEM_CLASS) == true
 
 val ItemStack.nbt: NBTTagCompound
     get() = nms.ensureNBT().tag

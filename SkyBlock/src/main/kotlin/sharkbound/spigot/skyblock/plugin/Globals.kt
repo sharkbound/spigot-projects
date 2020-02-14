@@ -22,3 +22,4 @@ val skyIslandGenerationQueue = nonNullableMutableMapOf<UUID, PlayerSkyIslandGene
 val server get() = Bukkit.getServer()!!
 val logger get() = skyBlockInstance.logger
 
+const val PLAYER_INV_SIZE = 9 * 4

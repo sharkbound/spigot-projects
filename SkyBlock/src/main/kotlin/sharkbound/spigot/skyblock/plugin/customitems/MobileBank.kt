@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.SkullMeta
 import sharkbound.spigot.skyblock.plugin.builders.buildItem
 import sharkbound.spigot.skyblock.plugin.extensions.colored
-import sharkbound.spigot.skyblock.plugin.extensions.send
 import sharkbound.spigot.skyblock.plugin.gui.MobileBankGui
 import sharkbound.spigot.skyblock.plugin.objects.Config
 import sharkbound.spigot.skyblock.plugin.objects.CustomItemFlag

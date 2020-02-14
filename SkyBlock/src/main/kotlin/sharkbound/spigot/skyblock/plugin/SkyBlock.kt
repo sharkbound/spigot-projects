@@ -4,6 +4,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import sharkbound.spigot.skyblock.plugin.commands.*
+import sharkbound.spigot.skyblock.plugin.customitems.UsableCoinListener
 import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.gui.*
 import sharkbound.spigot.skyblock.plugin.listeners.PlayerEvent
@@ -44,12 +45,13 @@ private fun registerAllEventListeners() {
         listOf(
             SkyBlockWorldChange(),
             InventoryGuiClickListener(),
-            PlayerEvent()
+            PlayerEvent(),
+            UsableCoinListener
         )
     )
 }
 
 
-fun registerAllInventoryGui() {
+private fun registerAllInventoryGui() {
     addInventoryGui(SkyIslandGui, ShopGui, MobileBankGui)
 }

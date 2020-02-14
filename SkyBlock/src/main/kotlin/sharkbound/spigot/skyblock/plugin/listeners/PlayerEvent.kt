@@ -14,6 +14,7 @@ import sharkbound.spigot.skyblock.plugin.objects.CustomItemFlag
 import sharkbound.spigot.skyblock.plugin.customitems.AspectOfTheEnd
 import sharkbound.spigot.skyblock.plugin.customitems.EmberRod
 import sharkbound.spigot.skyblock.plugin.customitems.MobileBank
+import sharkbound.spigot.skyblock.plugin.database.BalanceModifyOperation
 import java.util.logging.Level
 
 class PlayerEvent : Listener {
@@ -36,6 +37,7 @@ class PlayerEvent : Listener {
                 CustomItemFlag.EmberRod -> EmberRod.onPlayerUse(e.player)
                 CustomItemFlag.AspectOfTheEnd -> AspectOfTheEnd.onPlayerUse(e.player)
                 CustomItemFlag.MobileBank -> MobileBank.onPlayerUse(e.player)
+                else -> null
             }
         }
     }
@@ -50,7 +52,7 @@ class PlayerEvent : Listener {
                 Level.INFO,
                 "gave ${Config.tokensOnKill} ${Config.currencyName} to ${killer.name} for killing ${e.entity.name}"
             )
-            SkyBlockDatabase.modifyBalance(killer.id, Config.tokensOnKill, SkyBlockDatabase.BalanceModifyOperation.Add)
+            SkyBlockDatabase.modifyBalance(killer.id, Config.tokensOnKill, BalanceModifyOperation.Add)
         }
     }
 }

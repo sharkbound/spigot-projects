@@ -4,6 +4,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import sharkbound.spigot.skyblock.plugin.customitems.UsableCoin
 import sharkbound.spigot.skyblock.plugin.extensions.register
 
 
@@ -17,8 +18,7 @@ class CommandTest : CommandExecutor {
             return false
         }
 
-//        SkyIslandLocation.update(caller.id, caller.location)
-//        caller.send(SkyIslandLocation.lastLocation(caller.id).toString())
+        caller.inventory.addItem(UsableCoin.create(64))
         return false
     }
 }

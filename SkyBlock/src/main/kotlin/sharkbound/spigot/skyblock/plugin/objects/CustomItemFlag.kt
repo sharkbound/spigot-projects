@@ -8,4 +8,5 @@ enum class CustomItemFlag(val nbtValue: String) {
     EmberRod("emberrod"),
     AspectOfTheEnd("aspectoftheend"),
     MobileBank("mobilebank"),
+    UsableCoin("usablecoin")
 }

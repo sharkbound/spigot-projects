@@ -18,7 +18,7 @@ class ItemBuilder(initialItem: ItemStack? = null) {
     var item = initialItem?.clone() ?: newItemStack(Material.BEDROCK)
 
     fun copy() =
-        item.clone()
+        item/*.clone()*/
 
     fun material(material: Material) {
         item = copy().apply { type = material }
@@ -45,7 +45,7 @@ class ItemBuilder(initialItem: ItemStack? = null) {
     }
 
     fun displayName(newName: String) {
-        item = copy().displayName(newName)
+        item = copy().displayName(newName.colored())
     }
 
     fun metaFlags(vararg flags: ItemFlag) {

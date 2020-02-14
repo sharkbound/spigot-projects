@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.customitems.AspectOfTheEnd
 import sharkbound.spigot.skyblock.plugin.customitems.EmberRod
 import sharkbound.spigot.skyblock.plugin.customitems.MobileBank
+import sharkbound.spigot.skyblock.plugin.database.BalanceModifyOperation
 import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.extensions.hasFreeInvSlot
 import sharkbound.spigot.skyblock.plugin.extensions.name
@@ -54,7 +55,7 @@ object ShopGui : InventoryGui("Shop", 3) {
         player.inventory.addItem(item)
         player.send("&eyou purchased &r${item.name}&r&e for $price ${Config.currencyName}, &eit has been added to your inventory")
 
-        SkyBlockDatabase.modifyBalance(player, price, SkyBlockDatabase.BalanceModifyOperation.Sub)
+        SkyBlockDatabase.modifyBalance(player, price, BalanceModifyOperation.Sub)
     }
 
 }

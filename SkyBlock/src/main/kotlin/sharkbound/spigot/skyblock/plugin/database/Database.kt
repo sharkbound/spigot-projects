@@ -13,8 +13,13 @@ import java.util.*
 
 data class PlayerData(val id: Int, val uuid: UUID, val tokens: Int)
 
+enum class BalanceModifyOperation {
+    Add, Sub, Set
+}
+
 object SkyBlockDatabase {
     val data = SQLiteDataSource().apply { url = "jdbc:sqlite:skyblock.sqlite" }
+
     val connection get() = data.connection
 
     inline fun statement(func: Statement.() -> Unit): Statement =
@@ -41,10 +46,6 @@ object SkyBlockDatabase {
             }
 
         }
-    }
-
-    enum class BalanceModifyOperation {
-        Add, Sub, Set
     }
 
     fun modifyBalance(player: Player, newBalance: Int, operation: BalanceModifyOperation) {
