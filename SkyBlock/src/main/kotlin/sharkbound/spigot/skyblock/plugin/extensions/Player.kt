@@ -29,3 +29,4 @@ fun Player.modifyBalance(newBalance: Int, mode: BalanceModifyOperation) =
 
 fun Player.databaseInfo(): PlayerData? =
     SkyBlockDatabase.dataFor(id)
+

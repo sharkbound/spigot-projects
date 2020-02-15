@@ -5,3 +5,6 @@ import org.bukkit.inventory.ItemStack
 
 operator fun Inventory.get(index: Int): ItemStack? =
     getItem(index)
+
+val Inventory.items: Sequence<ItemStack>
+    get() = asSequence().filterNotNull()

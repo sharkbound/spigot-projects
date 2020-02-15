@@ -65,6 +65,16 @@ object UsableCoinPlayerListener : Listener {
 
     @EventHandler
     fun onUsableCoinPickedUp(e: PlayerPickupItemEvent) {
+        // check that the pickup is a usable coin
+        val item = e.item?.itemStack ?: return
+        if (!item.hasSpecialFlag(CustomItemFlag.UsableCoin)) return
+
+        // check that the player has free space
+        if (e.playerInv.firstEmpty() == -1 && !e.playerInv.any { it hasSpecialFlag CustomItemFlag.UsableCoin }) {
+            return
+        }
+
+        TODO()
 
     }
 
