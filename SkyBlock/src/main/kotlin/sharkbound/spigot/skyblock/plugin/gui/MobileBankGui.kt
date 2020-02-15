@@ -3,7 +3,6 @@ package sharkbound.spigot.skyblock.plugin.gui
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.database.BalanceModifyOperation
 import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.extensions.*
@@ -15,8 +14,7 @@ private object MobileBankLores {
     const val nuggetLoreColor = "&7"
 
     val depositNugget = colorAll(
-        "${nuggetLoreColor}click to deposit &r&61 ${Config.currencyName}${nuggetLoreColor} to your account",
-        "${nuggetLoreColor}shift-click to deposit &r&664 ${Config.currencyName}${nuggetLoreColor} to your account"
+        "${nuggetLoreColor}click to deposit &r&664 ${Config.currencyName}${nuggetLoreColor} to your account"
     )
 
     val withdrawNugget = colorAll(
@@ -48,31 +46,28 @@ object MobileBankGui : InventoryGui("Mobile Bank", 3) {
         e: InventoryClickEvent,
         player: Player
     ) {
-        val needed = when (element) {
-            deposit -> if (e.isShiftClick) 64 else 1
-            else -> return
+        val needed = 64
+
+        if (player.inventory.sumBy { if (it hasSpecialFlag CustomItemFlag.UsableCoin) it.amount else 0 } < needed) {
+            player.send("&4you dont have enough &6${Config.currencyName}&4 to deposit &6$needed ${Config.currencyName}")
+            return
         }
 
         var left = needed
-        loop@ for (item in player.inventory.filterNotNull()) {
+        for (item in player.inventory.filterNotNull()) {
             if (!item.hasSpecialFlag(CustomItemFlag.UsableCoin)) continue
-            when {
-                item.amount == left -> {
-                    left -= item.amount
-                    player.inventory.removeWhere(1) { it == item }
-                    break@loop
-                }
-                item.amount > left -> {
-                    item.amount -= left
-                    left = 0
-                }
-                item.amount < left -> {
-                    player.inventory.removeWhere(1) { it == item }
-                    left -= item.amount
-                }
+            if (item.amount == left) {
+                left -= item.amount
+                player.inventory.removeWhere(1) { it == item }
+                break
+            } else if (item.amount > left) {
+                item.amount -= left
+                left = 0
+            } else if (item.amount < left) {
+                player.inventory.removeWhere(1) { it == item }
+                left -= item.amount
             }
         }
-
 
         player.modifyBalance(needed, BalanceModifyOperation.Add)
         player.send(
