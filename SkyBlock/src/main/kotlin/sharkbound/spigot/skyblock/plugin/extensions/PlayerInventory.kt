@@ -6,7 +6,6 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.PLAYER_INV_SIZE
 import sharkbound.spigot.skyblock.plugin.data.IndexedInventoryItem
-import sharkbound.spigot.skyblock.plugin.data.NullableIndexedInventoryItem
 
 val Player.hasFreeInvSlot
     get() = inventory.firstEmpty() != -1
