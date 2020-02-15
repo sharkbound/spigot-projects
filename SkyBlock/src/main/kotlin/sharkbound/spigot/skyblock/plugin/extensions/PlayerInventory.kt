@@ -1,9 +1,12 @@
 package sharkbound.spigot.skyblock.plugin.extensions
 
+import org.bukkit.entity.Item
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.PLAYER_INV_SIZE
+import sharkbound.spigot.skyblock.plugin.data.IndexedInventoryItem
+import sharkbound.spigot.skyblock.plugin.data.NullableIndexedInventoryItem
 
 val Player.hasFreeInvSlot
     get() = inventory.firstEmpty() != -1
@@ -13,7 +16,7 @@ inline infix fun <R> Player.closeInventoryAfter(block: (Player) -> R) =
         closeInventory()
     }
 
-inline fun Inventory.removeWhereWithIndex(
+inline fun Inventory.removeWhereIndexed(
     limit: Int = -1,
     predicate: (
         @ParameterName("i") Int,
@@ -34,5 +37,13 @@ inline fun Inventory.removeWhereWithIndex(
 }
 
 inline fun Inventory.removeWhere(limit: Int = -1, predicate: (ItemStack) -> Boolean) {
-    removeWhereWithIndex(limit) { _, item -> predicate(item) }
+    removeWhereIndexed(limit) { _, item -> predicate(item) }
 }
+
+val Inventory.indexedNullable
+    get() = asSequence().mapIndexed { slot, item ->
+        if (item != null) IndexedInventoryItem(slot, item) else null
+    }
+
+val Inventory.indexed
+    get() = indexedNullable.filterNotNull()

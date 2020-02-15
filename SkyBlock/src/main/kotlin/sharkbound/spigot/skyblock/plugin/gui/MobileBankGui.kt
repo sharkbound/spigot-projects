@@ -3,7 +3,6 @@ package sharkbound.spigot.skyblock.plugin.gui
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.database.BalanceModifyOperation
 import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.extensions.*
@@ -57,12 +56,8 @@ object MobileBankGui : InventoryGui("Mobile Bank", 3) {
         var left = needed
         // todo add a extension function for this
         // todo test this again, to be sure it still works
-        val entries = player.inventory
-            .asSequence()
-            .mapIndexed { slot, item -> if (item != null) IndexedInventoryItem(slot, item) else null }
-            .filterNotNull()
 
-        for (entry in entries) {
+        for (entry in player.inventory.indexed) {
             val (slot, item) = entry
             if (!item.hasSpecialFlag(CustomItemFlag.UsableCoin)) continue
             if (item.amount == left) {
@@ -83,6 +78,4 @@ object MobileBankGui : InventoryGui("Mobile Bank", 3) {
             "&aadded &6$needed ${Config.currencyName}&a to your account, you now have &6${SkyBlockDatabase.balance(player.id)} ${Config.currencyName}"
         )
     }
-
-    private data class IndexedInventoryItem(val slot: Int, val item: ItemStack)
 }
