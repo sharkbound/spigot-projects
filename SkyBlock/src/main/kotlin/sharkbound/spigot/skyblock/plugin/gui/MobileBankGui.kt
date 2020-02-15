@@ -56,6 +56,7 @@ object MobileBankGui : InventoryGui("Mobile Bank", 3) {
 
         var left = needed
         // todo add a extension function for this
+        // todo test this again, to be sure it still works
         val entries = player.inventory
             .asSequence()
             .mapIndexed { slot, item -> if (item != null) IndexedInventoryItem(slot, item) else null }
