@@ -74,8 +74,7 @@ object UsableCoinPlayerListener : Listener {
             return
         }
 
-        TODO()
-
+        TODO("add pickup merging when picking up coins")
     }
 
     @EventHandler
