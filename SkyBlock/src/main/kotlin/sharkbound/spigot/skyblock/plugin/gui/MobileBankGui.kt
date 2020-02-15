@@ -3,6 +3,7 @@ package sharkbound.spigot.skyblock.plugin.gui
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.database.BalanceModifyOperation
 import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.extensions.*
@@ -54,17 +55,24 @@ object MobileBankGui : InventoryGui("Mobile Bank", 3) {
         }
 
         var left = needed
-        for (item in player.inventory.filterNotNull()) {
+        // todo add a extension function for this
+        val entries = player.inventory
+            .asSequence()
+            .mapIndexed { slot, item -> if (item != null) IndexedInventoryItem(slot, item) else null }
+            .filterNotNull()
+
+        for (entry in entries) {
+            val (slot, item) = entry
             if (!item.hasSpecialFlag(CustomItemFlag.UsableCoin)) continue
             if (item.amount == left) {
                 left -= item.amount
-                player.inventory.removeWhere(1) { it == item }
+                player.inventory.setItem(slot, null)
                 break
             } else if (item.amount > left) {
                 item.amount -= left
                 left = 0
             } else if (item.amount < left) {
-                player.inventory.removeWhere(1) { it == item }
+                player.inventory.setItem(slot, null)
                 left -= item.amount
             }
         }
@@ -74,4 +82,6 @@ object MobileBankGui : InventoryGui("Mobile Bank", 3) {
             "&aadded &6$needed ${Config.currencyName}&a to your account, you now have &6${SkyBlockDatabase.balance(player.id)} ${Config.currencyName}"
         )
     }
+
+    private data class IndexedInventoryItem(val slot: Int, val item: ItemStack)
 }
