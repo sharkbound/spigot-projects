@@ -71,7 +71,7 @@ val ServerItemStack.asBukkit: ItemStack
 infix fun ItemStack.applySpecialFlag(flag: CustomItemFlag): ItemStack =
     copyWithNBT { setString(NbtTags.ITEM_CLASS, flag.nbtValue) }
 
-infix fun ItemStack?.hasSpecialItemFlag(flag: CustomItemFlag): Boolean =
+infix fun ItemStack?.hasSpecialFlag(flag: CustomItemFlag): Boolean =
     this?.nms?.tag?.getString(NbtTags.ITEM_CLASS) == flag.nbtValue
 
 val ItemStack?.hasItemClass: Boolean

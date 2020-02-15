@@ -28,4 +28,8 @@ open class BasicCustomItem(
             metaFlags(ItemFlag.HIDE_ATTRIBUTES)
         }
 
+    override fun equals(other: Any?): Boolean {
+        return other is BasicCustomItem && other.material == material && other.itemName == itemName && other.price == price && other.tier == tier
+    }
+
 }

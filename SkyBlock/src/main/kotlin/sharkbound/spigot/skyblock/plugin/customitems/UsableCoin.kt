@@ -28,17 +28,17 @@ object UsableCoin {
             amount(amount)
         }
 
-    fun use(player: Player, amount: Int, e: PlayerInteractEvent, stack: ItemStack) {
+    fun onPlayerRightClick(player: Player, amount: Int, e: PlayerInteractEvent, stack: ItemStack) {
         val added = if (player.isSneaking) amount else 1
         if (amount - added == 0) {
-            player.inventory.removeWhere(1) {
-                it.amount == amount && it hasSpecialItemFlag CustomItemFlag.UsableCoin
+            player.inventory.removeWhere(1) { item ->
+                item.amount == amount && item hasSpecialFlag CustomItemFlag.UsableCoin
             }
         } else {
             stack.amount -= added
         }
 
-        SkyBlockDatabase.modifyBalance(player.id, added, BalanceModifyOperation.Add)
+        player.modifyBalance(added, BalanceModifyOperation.Add)
         player.send(
             "&aadded &6$added ${Config.currencyName}&a to your account, you now have &6${SkyBlockDatabase.balance(player.id)} ${Config.currencyName}"
         )
@@ -54,10 +54,10 @@ object UsableCoinListener : Listener {
     @EventHandler
     fun onInteract(e: PlayerInteractEvent) {
         e.item?.let {
-            if (!it.hasSpecialItemFlag(CustomItemFlag.UsableCoin)) return
+            if (!it.hasSpecialFlag(CustomItemFlag.UsableCoin)) return
 
             if (e.isRightClick) {
-                UsableCoin.use(e.player, it.amount, e, it)
+                UsableCoin.onPlayerRightClick(e.player, it.amount, e, it)
             }
         }
     }
