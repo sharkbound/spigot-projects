@@ -35,15 +35,20 @@ object MobileBankGui : InventoryGui("Mobile Bank", 3) {
         e: InventoryClickEvent
     ) {
         if (element == deposit) {
-            doDeposit(element, e, player)
+            doDeposit(player)
         } else if (element == withdraw) {
-            TODO()
+            doWithdraw(player)
+        }
+    }
+
+    private fun doWithdraw(player: Player) {
+        val data = player.databaseInfo()
+        if (data == null || data.balance == 0) {
+            player.send("&4you do not have any coins")
         }
     }
 
     private fun doDeposit(
-        element: GuiElement,
-        e: InventoryClickEvent,
         player: Player
     ) {
         val needed = 64

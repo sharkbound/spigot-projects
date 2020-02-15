@@ -1,6 +1,6 @@
 sky_island_schematic: plugins/WorldEdit/schematics/sky.schematic
 cow_spawn_egg_name: "&dBetty"
-tokens_on_kill: 5
+payment_on_kill: 5
 currency_name: coins
 
 item_costs:

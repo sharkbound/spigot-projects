@@ -47,12 +47,12 @@ class PlayerEvent : Listener {
         e.entity.killer?.let { killer ->
             if (e.entity.id == killer.id) return
 
-            killer.send("&ayou got ${Config.tokensOnKill} ${Config.currencyName} for killing ${e.entity.displayName}")
+            killer.send("&ayou got ${Config.paymentOnKill} ${Config.currencyName} for killing ${e.entity.displayName}")
             logger.log(
                 Level.INFO,
-                "gave ${Config.tokensOnKill} ${Config.currencyName} to ${killer.name} for killing ${e.entity.name}"
+                "gave ${Config.paymentOnKill} ${Config.currencyName} to ${killer.name} for killing ${e.entity.name}"
             )
-            SkyBlockDatabase.modifyBalance(killer.id, Config.tokensOnKill, BalanceModifyOperation.Add)
+            SkyBlockDatabase.modifyBalance(killer.id, Config.paymentOnKill, BalanceModifyOperation.Add)
         }
     }
 }

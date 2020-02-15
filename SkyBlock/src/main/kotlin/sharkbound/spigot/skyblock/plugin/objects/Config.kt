@@ -9,8 +9,8 @@ object Config {
     val cowSpawnEggName
         get() = cfg.getString("cow_spawn_egg_name")
 
-    val tokensOnKill
-        get() = cfg.getInt("tokens_on_kill")
+    val paymentOnKill
+        get() = cfg.getInt("payment_on_kill")
 
     val currencyName
         get() = cfg.getString("currency_name")

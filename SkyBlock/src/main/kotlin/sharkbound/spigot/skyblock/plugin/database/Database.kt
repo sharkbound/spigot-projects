@@ -4,21 +4,24 @@ import org.bukkit.entity.Player
 import org.intellij.lang.annotations.Language
 import org.sqlite.SQLiteDataSource
 import sharkbound.commonutils.extensions.closeAfter
+import sharkbound.spigot.skyblock.plugin.extensions.div
 import sharkbound.spigot.skyblock.plugin.extensions.id
 import sharkbound.spigot.skyblock.plugin.extensions.strId
 import sharkbound.spigot.skyblock.plugin.extensions.toUUID
+import sharkbound.spigot.skyblock.plugin.objects.FilePaths
 import java.sql.PreparedStatement
 import java.sql.Statement
 import java.util.*
 
-data class PlayerData(val id: Int, val uuid: UUID, val tokens: Int)
+data class PlayerData(val id: Int, val uuid: UUID, val balance: Int)
 
 enum class BalanceModifyOperation {
     Add, Sub, Set
 }
 
 object SkyBlockDatabase {
-    val data = SQLiteDataSource().apply { url = "jdbc:sqlite:skyblock.sqlite" }
+    val filePath = FilePaths.configFolder / "skyblock.sqlite"
+    val data = SQLiteDataSource().apply { url = "jdbc:sqlite:$filePath" }
 
     val connection get() = data.connection
 
@@ -40,7 +43,7 @@ object SkyBlockDatabase {
                     id integer not null primary key autoincrement,
                     player_name text not null unique,
                     uuid text not null unique,
-                    tokens integer default 0 not null
+                    balance integer default 0 not null
                 );"""
                 )
             }
@@ -54,12 +57,12 @@ object SkyBlockDatabase {
 
     fun modifyBalance(uuid: UUID, newBalance: Int, operation: BalanceModifyOperation) {
         val innerQuery = when (operation) {
-            BalanceModifyOperation.Add -> "tokens + $newBalance"
-            BalanceModifyOperation.Sub -> "tokens - $newBalance"
+            BalanceModifyOperation.Add -> "balance + $newBalance"
+            BalanceModifyOperation.Sub -> "balance - $newBalance"
             BalanceModifyOperation.Set -> "$newBalance"
         }
 
-        preparedStatement("update sky_block set tokens = $innerQuery where uuid = ?") {
+        preparedStatement("update sky_block set balance = $innerQuery where uuid = ?") {
             setString(1, uuid.toString())
         } closeAfter {
             executeUpdate()
@@ -78,7 +81,7 @@ object SkyBlockDatabase {
             return PlayerData(
                 getInt("id"),
                 getString("uuid").toUUID,
-                getInt("tokens")
+                getInt("balance")
             ).also {
                 close()
             }
@@ -87,7 +90,7 @@ object SkyBlockDatabase {
     }
 
     fun balance(uuid: UUID): Int =
-        dataFor(uuid)?.tokens ?: 0
+        dataFor(uuid)?.balance ?: 0
 
     fun updatePlayerName(player: Player) {
         // keep player name up to date in the database
@@ -111,7 +114,7 @@ object SkyBlockDatabase {
         }
 
         // player data does not exists, create a row for it
-        preparedStatement("insert into sky_block (uuid, tokens, player_name) values (?, ?, ?)") {
+        preparedStatement("insert into sky_block (uuid, balance, player_name) values (?, ?, ?)") {
             setString(1, player.strId)
             setInt(2, 0)
             setString(3, player.displayName)
