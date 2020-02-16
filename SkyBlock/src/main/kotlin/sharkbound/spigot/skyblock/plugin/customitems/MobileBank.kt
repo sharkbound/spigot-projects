@@ -28,9 +28,11 @@ object MobileBank : CustomItemBase() {
             material(Material.SKULL_ITEM)
             specialItemFlag(CustomItemFlag.MobileBank)
             metaFlags(ItemFlag.HIDE_ATTRIBUTES)
-            metaCast<SkullMeta> {
-                owner = "StupidDroid"
-            }
+            metaCast<SkullMeta> { owner = Config.mobileBankSkullOwnerUserName }
+//          skulls use durability to determine their type, 3 is a player skull
+            durability(3)
+            println(item.itemMeta)
+            lore(Text.createLoreTier(tier))
         }
     }
 

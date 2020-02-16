@@ -26,22 +26,17 @@ object UsableCoin {
             amount(amount)
         }
 
-    fun onPlayerRightClick(player: Player, amount: Int, e: PlayerInteractEvent) {
+    fun onPlayerRightClick(player: Player, amount: Int, e: PlayerInteractEvent) =
         when {
-            player.isSneaking -> {
-                player.inventory.sumBy { if (it hasSpecialFlag CustomItemFlag.UsableCoin) it.amount else 0 }.also { _ ->
+            player.isSneaking ->
+                player.inventory.sumBy { if (it hasSpecialFlag CustomItemFlag.UsableCoin) it.amount else 0 }.also {
                     player.inventory.removeWhere { it hasSpecialFlag CustomItemFlag.UsableCoin }
                 }
-            }
-            else -> {
-                player.inventory.removeWhere(1) { it == e.item }
-                e.item.amount
-            }
+            else -> e.item.amount.also { _ -> player.inventory.removeWhere(1) { it == e.item } }
         }.let {
             player.modifyBalance(it, BalanceModifyOperation.Add)
             player.send("&aadded &6$it ${Config.currencyName}&a to your account")
         }
-    }
 }
 
 

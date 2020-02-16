@@ -46,7 +46,8 @@ private fun registerAllEventListeners() {
             SkyBlockWorldChange(),
             InventoryGuiClickListener(),
             PlayerEvent(),
-            UsableCoinPlayerListener
+            UsableCoinPlayerListener,
+            MobileBankListener
         )
     )
 }
