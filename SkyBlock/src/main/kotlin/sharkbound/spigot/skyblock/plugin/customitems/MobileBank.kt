@@ -15,7 +15,9 @@ import sharkbound.spigot.skyblock.plugin.objects.Text
 import sharkbound.spigot.skyblock.plugin.utils.colorAll
 
 object MobileBank : CustomItemBase() {
+    val playerSkullTypeId = 3.toShort()
     val color = "&6".colored()
+
     override val itemName = "${color}Mobile Bank".colored()
     override val itemLore = colorAll(Text.createLoreTier(ItemTier.NORMAL))
     override val tier = ItemTier.NORMAL
@@ -30,7 +32,7 @@ object MobileBank : CustomItemBase() {
             metaFlags(ItemFlag.HIDE_ATTRIBUTES)
             metaCast<SkullMeta> { owner = Config.mobileBankSkullOwnerUserName }
 //          skulls use durability to determine their type, 3 is a player skull
-            durability(3)
+            durability(playerSkullTypeId)
             println(item.itemMeta)
             lore(Text.createLoreTier(tier))
         }
