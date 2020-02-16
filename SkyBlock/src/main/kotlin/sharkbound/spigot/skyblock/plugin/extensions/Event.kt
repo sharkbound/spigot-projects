@@ -18,5 +18,5 @@ fun PlayerEvent.send(obj: Any?, altColorChar: Char = '&') {
     player.send(obj, altColorChar)
 }
 
-val PlayerEvent.playerInv: Inventory
+val PlayerEvent.playerInv
     get() = player.inventory

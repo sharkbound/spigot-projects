@@ -4,9 +4,13 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryDragEvent
+import org.bukkit.event.inventory.InventoryMoveItemEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemHeldEvent
 import org.bukkit.event.player.PlayerPickupItemEvent
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.builders.buildItem
 import sharkbound.spigot.skyblock.plugin.database.BalanceModifyOperation
@@ -64,17 +68,52 @@ object UsableCoinPlayerListener : Listener {
     }
 
     @EventHandler
+    fun onCoinDrag(e: InventoryClickEvent) {
+        if (!e.whoClicked.itemOnCursor.hasSpecialFlag(CustomItemFlag.UsableCoin)) return
+        UsableCoin.updateLore(e.whoClicked.itemOnCursor)
+        TODO("add merging support for usable coin clicks in inventories")
+    }
+
+    @EventHandler
     fun onUsableCoinPickedUp(e: PlayerPickupItemEvent) {
         // check that the pickup is a usable coin
         val item = e.item?.itemStack ?: return
         if (!item.hasSpecialFlag(CustomItemFlag.UsableCoin)) return
 
         // check that the player has free space
-        if (e.playerInv.firstEmpty() == -1 && !e.playerInv.any { it hasSpecialFlag CustomItemFlag.UsableCoin }) {
+        val nonMaxCoins = e.playerInv.indexed.filter { it.item hasSpecialFlag CustomItemFlag.UsableCoin && it.item.amount < 64 }.toList()
+        val nonMaxCoinSum = nonMaxCoins.sumBy { it.item.remaining }
+
+        if (nonMaxCoinSum < e.item.itemStack.amount && !e.playerInv.hasFreeSlot) {
             return
         }
 
-        TODO("add pickup merging when picking up coins")
+        e.cancel()
+        e.item.remove()
+
+        var left = e.item.itemStack.amount
+        for (stack in nonMaxCoins) {
+            stack.item.remaining.let { rem ->
+                val updated: Boolean
+                if (left > rem) {
+                    stack.item.amount += rem
+                    updated = true
+                    left -= rem
+                } else {
+                    stack.item.amount += left
+                    updated = true
+                    left = 0
+                }
+
+                if (updated) {
+                    UsableCoin.updateLore(stack.item)
+                }
+            }
+        }
+
+        if (left > 0) {
+            e.playerInv.addItem(UsableCoin.create(left))
+        }
     }
 
     @EventHandler

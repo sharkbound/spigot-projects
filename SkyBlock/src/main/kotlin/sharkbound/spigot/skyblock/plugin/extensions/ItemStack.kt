@@ -85,3 +85,10 @@ val ItemStack?.customItemFlag: CustomItemFlag?
         this?.nbt?.getString(NbtTags.ITEM_CLASS)?.let { value ->
             CustomItemFlag.values().firstOrNull { it.nbtValue == value }
         }
+
+/**
+ * returns how many more items can be added to the stack, ex:
+ *  a stack amount of 62 would return 2 as remaining
+ */
+val ItemStack.remaining
+    get() = maxStackSize - amount

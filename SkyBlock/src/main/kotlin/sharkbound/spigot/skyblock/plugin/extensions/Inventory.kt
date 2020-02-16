@@ -8,3 +8,6 @@ operator fun Inventory.get(index: Int): ItemStack? =
 
 val Inventory.items: Sequence<ItemStack>
     get() = asSequence().filterNotNull()
+
+val Inventory.hasFreeSlot: Boolean
+    get() = firstEmpty() != -1
