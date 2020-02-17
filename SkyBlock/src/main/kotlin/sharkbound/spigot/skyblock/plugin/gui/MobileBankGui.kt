@@ -24,6 +24,7 @@ object MobileBankGui : InventoryGui("Mobile Bank", 3) {
             )
         )
     )
+
     val withdraw = addElement(
         5, 1, BasicCustomItem(
             Material.GOLD_NUGGET, "&4Withdraw ${Config.currencyName}",
