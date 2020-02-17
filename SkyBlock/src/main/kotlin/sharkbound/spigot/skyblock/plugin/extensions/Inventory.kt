@@ -8,8 +8,14 @@ import sharkbound.spigot.skyblock.plugin.data.IndexedInventoryItem
 operator fun Inventory.get(slot: Int): ItemStack? =
     getItem(slot)
 
+operator fun Inventory.get(x: Int, y: Int): ItemStack? =
+    getItem(y * 9 + x)
+
 operator fun Inventory.set(slot: Int, value: ItemStack) =
     setItem(slot, value)
+
+operator fun Inventory.set(x: Int, y: Int, value: ItemStack) =
+    setItem(y * 9 + x, value)
 
 val Inventory.items: Sequence<ItemStack>
     get() = asSequence().filterNotNull()

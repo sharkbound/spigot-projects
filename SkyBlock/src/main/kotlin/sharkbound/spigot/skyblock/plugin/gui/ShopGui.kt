@@ -2,16 +2,15 @@ package sharkbound.spigot.skyblock.plugin.gui
 
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.customitems.AspectOfTheEnd
+import sharkbound.spigot.skyblock.plugin.customitems.BalanceItem
 import sharkbound.spigot.skyblock.plugin.customitems.EmberRod
 import sharkbound.spigot.skyblock.plugin.customitems.MobileBank
 import sharkbound.spigot.skyblock.plugin.database.BalanceModifyOperation
 import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
-import sharkbound.spigot.skyblock.plugin.extensions.hasFreeInvSlot
-import sharkbound.spigot.skyblock.plugin.extensions.id
-import sharkbound.spigot.skyblock.plugin.extensions.name
-import sharkbound.spigot.skyblock.plugin.extensions.send
+import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Config
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -21,6 +20,17 @@ object ShopGui : InventoryGui("Shop", 3) {
         addElement(4, 1, MobileBank)
         addElement(5, 1, AspectOfTheEnd)
     }
+
+    override fun prepareInventory(player: Player): Inventory {
+        val inv = super.prepareInventory(player)
+        inv[4, 2] = BalanceItem.create(player)
+        return inv
+    }
+
+    override fun customClickHandler(e: InventoryClickEvent, player: Player, itemName: String?, item: ItemStack?, element: GuiElement?): Boolean =
+        (item?.let { "you have" in it.name } ?: false).also {
+            if (it) e.cancel()
+        }
 
     override fun clicked(
         player: Player,

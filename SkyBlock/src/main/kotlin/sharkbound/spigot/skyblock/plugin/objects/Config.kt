@@ -42,4 +42,7 @@ object Config {
     val mobileBankSkullOwnerUserName
         get() = cfg.getString("item_settings.mobile_bank_skull_owner_username")
 
+    val usableCoinCooldown
+        get() = cfg.getDouble("cooldowns.coin")
+
 }

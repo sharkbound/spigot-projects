@@ -7,16 +7,21 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.skyblock.plugin.builders.buildItem
+import sharkbound.spigot.skyblock.plugin.data.YamlCooldownBase
 import sharkbound.spigot.skyblock.plugin.database.BalanceModifyOperation
 import sharkbound.spigot.skyblock.plugin.database.SkyBlockDatabase
 import sharkbound.spigot.skyblock.plugin.extensions.*
 import sharkbound.spigot.skyblock.plugin.objects.Config
 import sharkbound.spigot.skyblock.plugin.objects.CustomItemFlag
 
+object UsableCoinCooldown : YamlCooldownBase("usablecoincooldowns.yml", Config.usableCoinCooldown)
+
 object UsableCoin {
-    fun create(amount: Int): ItemStack =
-        buildItem {
-            displayName("&6Coin")
+    val coinName = "&6Coin"
+
+    fun create(amount: Int): ItemStack {
+        return buildItem {
+            displayName(coinName)
             material(Material.GOLD_NUGGET)
             lore(
                 "&7&eRIGHT CLICK&7 to redeem these coins",
@@ -25,8 +30,21 @@ object UsableCoin {
             specialItemFlag(CustomItemFlag.UsableCoin)
             amount(amount)
         }
+    }
 
-    fun onPlayerRightClick(player: Player, amount: Int, e: PlayerInteractEvent) =
+    private fun Player.itemError(msg: String, errorColor: String = "&3"): Boolean {
+        player.send("$errorColor[&r${coinName}$errorColor] $msg")
+        return false
+    }
+
+    fun onPlayerRightClick(player: Player, amount: Int, e: PlayerInteractEvent) {
+        if (UsableCoinCooldown.onCooldown(player.id)) {
+            UsableCoinCooldown.remainingCooldownFormatted(player.id).let {
+                player.itemError("you must wait $it more seconds to redeem more coins")
+            }
+            return
+        }
+
         when {
             player.isSneaking ->
                 player.inventory.sumBy { if (it hasSpecialFlag CustomItemFlag.UsableCoin) it.amount else 0 }.also {
@@ -37,6 +55,9 @@ object UsableCoin {
             player.modifyBalance(it, BalanceModifyOperation.Add)
             player.send("&aadded &6$it ${Config.currencyName}&a to your account")
         }
+
+        UsableCoinCooldown.update(player.id)
+    }
 }
 
 

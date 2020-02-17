@@ -14,7 +14,8 @@ item_settings:
   mobile_bank_skull_owner_username: "StupidDroid"
 
 cooldowns:
-  aspect_of_the_end: 5
-  ember_rod: 5
+  aspect_of_the_end: 15
+  ember_rod: 30
   mobile_bank: 5
+  coin: 15
 

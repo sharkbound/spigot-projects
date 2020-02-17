@@ -6,6 +6,9 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockPlaceEvent
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.Inventory
+import org.bukkit.inventory.ItemStack
+import sharkbound.spigot.skyblock.plugin.customitems.BalanceItem
 import sharkbound.spigot.skyblock.plugin.customitems.UsableCoin
 import sharkbound.spigot.skyblock.plugin.database.BalanceModifyOperation
 import sharkbound.spigot.skyblock.plugin.extensions.*
@@ -29,6 +32,14 @@ object MobileBankGui : InventoryGui("Mobile Bank", 3) {
             )
         )
     )
+
+    override fun prepareInventory(player: Player) =
+        super.prepareInventory(player).also { it[4, 2] = BalanceItem.create(player) }
+
+    override fun customClickHandler(e: InventoryClickEvent, player: Player, itemName: String?, item: ItemStack?, element: GuiElement?): Boolean =
+        (item?.let { "you have" in it.name } ?: false).also {
+            if (it) e.cancel()
+        }
 
     override fun clicked(
         player: Player,

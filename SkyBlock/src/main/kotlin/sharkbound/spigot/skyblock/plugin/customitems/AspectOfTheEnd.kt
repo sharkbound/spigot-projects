@@ -62,17 +62,17 @@ object AspectOfTheEnd : CustomItemBase() {
             }
 
             if (it.firstIsBlock) {
-                val posCorrection = .5
+                val half = .5
                 val offset = when (it.face) {
                     // all these vectors are corrections when teleporting
                     // the block's position is slightly offset when a player is teleported to it
                     // the most of the .5's are there to correct this
-                    BlockFace.UP -> vect(y = 1.0, x = posCorrection, z = posCorrection)
-                    BlockFace.DOWN -> vect(y = -2.0, x = posCorrection, z = posCorrection)
-                    BlockFace.NORTH -> vect(z = -posCorrection, x = posCorrection)
-                    BlockFace.SOUTH -> vect(z = 1.5, x = posCorrection)
-                    BlockFace.EAST -> vect(x = 1.5, z = posCorrection)
-                    BlockFace.WEST -> vect(x = -posCorrection, z = posCorrection)
+                    BlockFace.UP -> vect(y = 1.0, x = half, z = half)
+                    BlockFace.DOWN -> vect(y = -2.0, x = half, z = half)
+                    BlockFace.NORTH -> vect(z = -half, x = half)
+                    BlockFace.SOUTH -> vect(z = 1.5, x = half)
+                    BlockFace.EAST -> vect(x = 1.5, z = half)
+                    BlockFace.WEST -> vect(x = -half, z = half)
                     else -> vectorOfZeros()
                 }
 
