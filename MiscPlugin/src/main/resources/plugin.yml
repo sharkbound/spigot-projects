@@ -1,0 +1,9 @@
+name: MiscPlugin
+version: "1.0"
+main: "sharkbound.spigot.miscplugin.MiscPlugin"
+
+commands:
+  test:
+    description: test command
+  s:
+    description: quick shutdown command

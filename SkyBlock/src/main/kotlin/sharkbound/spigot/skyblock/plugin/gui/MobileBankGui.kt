@@ -108,9 +108,7 @@ object MobileBankGui : InventoryGui("Mobile Bank", 3) {
         }
 
         player.modifyBalance(needed, BalanceModifyOperation.Add)
-        player.send(
-            "&aadded &6$needed ${Config.currencyName}&a to your account"
-        )
+        player.send("&aadded &6$needed ${Config.currencyName}&a to your account")
     }
 }
 
