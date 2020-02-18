@@ -1,6 +1,5 @@
-package sharkbound.spigot.miscplugin.shared.ext
+package sharkbound.spigot.miscplugin.shared.extensions
 
-import org.bukkit.Bukkit
 import org.bukkit.event.Listener
 import sharkbound.spigot.miscplugin.shared.instance
 import sharkbound.spigot.miscplugin.shared.manager

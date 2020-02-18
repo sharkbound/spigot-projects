@@ -1,4 +1,4 @@
-package sharkbound.spigot.miscplugin.shared.ext
+package sharkbound.spigot.miscplugin.shared.extensions
 
 import org.bukkit.entity.Player
 import sharkbound.spigot.miscplugin.shared.colored

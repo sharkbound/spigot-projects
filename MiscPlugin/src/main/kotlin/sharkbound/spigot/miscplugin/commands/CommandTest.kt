@@ -4,8 +4,8 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
-import sharkbound.spigot.miscplugin.shared.ext.registerCommand
-import sharkbound.spigot.miscplugin.shared.ext.send
+import sharkbound.spigot.miscplugin.shared.extensions.registerCommand
+import sharkbound.spigot.miscplugin.shared.extensions.send
 
 object CommandTest : CommandExecutor {
     init {
