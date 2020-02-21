@@ -3,6 +3,7 @@ import shutil
 from msvcrt import getch
 from pathlib import Path
 import psutil
+import time
 
 
 def window_titles():
@@ -78,7 +79,7 @@ else:
     win = win[0]
     win.activate()
 
-    pyautogui.typewrite('reload')
+    pyautogui.typewrite('reload confirm')
     pyautogui.press('enter')
 
     win = pyautogui.getWindowsWithTitle("minecraft 1.14.4")
@@ -88,5 +89,6 @@ else:
     win = win[0]
     win.activate()
 
+    time.sleep(1.5)
     pyautogui.press('escape')
 
