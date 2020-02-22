@@ -3,11 +3,9 @@ package sharkbound.spigot.miscplugin.shared.utils
 import sharkbound.spigot.miscplugin.shared.instance
 import sharkbound.spigot.miscplugin.shared.server
 
-
 data class CancellableTask(val taskId: Int) {
     val successful
         get() = taskId != -1
-
     val failed
         get() = !successful
 
@@ -26,13 +24,13 @@ fun repeatingSyncTask(startDelay: Long, intervalTicks: Long, handler: () -> Unit
 fun cancellingRepeatingSyncTask(
     startDelay: Long,
     intervalTicks: Long,
-    shouldCancel: () -> Boolean,
+    shouldCancel: (() -> Boolean)? = null,
     handler: () -> Unit
 ): CancellableTask {
     var task = CancellableTask(-1)
     task = repeatingSyncTask(startDelay, intervalTicks) {
         handler()
-        if (shouldCancel()) {
+        if (shouldCancel?.invoke() == true) {
             task.cancel()
         }
     }
