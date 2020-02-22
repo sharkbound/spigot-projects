@@ -10,3 +10,6 @@ val manager
 
 val server
     get() = Bukkit.getServer()
+
+val logger
+    get() = instance.logger

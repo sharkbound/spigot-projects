@@ -3,6 +3,7 @@ package sharkbound.spigot.miscplugin
 import org.bukkit.plugin.java.JavaPlugin
 import sharkbound.spigot.miscplugin.commands.CommandStop
 import sharkbound.spigot.miscplugin.commands.CommandTest
+import sharkbound.spigot.miscplugin.listeners.MobListener
 import sharkbound.spigot.miscplugin.listeners.PlayerListener
 import sharkbound.spigot.miscplugin.shared.instance
 
@@ -17,6 +18,6 @@ class MiscPlugin : JavaPlugin() {
         CommandTest
         CommandStop
         PlayerListener
-        PlayerListener
+        MobListener
     }
 }

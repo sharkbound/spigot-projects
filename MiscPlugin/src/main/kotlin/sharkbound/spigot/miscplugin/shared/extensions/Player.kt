@@ -2,10 +2,10 @@ package sharkbound.spigot.miscplugin.shared.extensions
 
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import sharkbound.spigot.miscplugin.shared.format
+import sharkbound.spigot.miscplugin.shared.colored
 
 fun Player.send(obj: Any?, altColorChar: Char = '&') {
-    sendMessage(format(obj.toString(), altColorChar))
+    sendMessage(colored(obj.toString(), altColorChar))
 }
 
 val Player.direction

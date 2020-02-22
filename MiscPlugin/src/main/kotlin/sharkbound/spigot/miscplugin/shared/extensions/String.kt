@@ -1,4 +1,6 @@
 package sharkbound.spigot.miscplugin.shared.extensions
 
-fun String.format(altColorChar: Char = '&') =
-    sharkbound.spigot.miscplugin.shared.format(this, altColorChar)
+import sharkbound.spigot.miscplugin.shared.colored
+
+fun String.color(altColorChar: Char = '&') =
+    colored(this, altColorChar)

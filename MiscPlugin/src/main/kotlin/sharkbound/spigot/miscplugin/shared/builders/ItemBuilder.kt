@@ -5,7 +5,7 @@ import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
-import sharkbound.spigot.miscplugin.shared.extensions.format
+import sharkbound.spigot.miscplugin.shared.extensions.color
 import sharkbound.spigot.miscplugin.shared.extensions.meta
 import sharkbound.spigot.miscplugin.shared.extensions.nbt
 import sharkbound.spigot.miscplugin.shared.extensions.nms
@@ -23,7 +23,7 @@ class ItemBuilder(private val material: Material) {
     var item: ItemStack = ItemStack(material, amount)
 
     fun lore(vararg lines: String) {
-        meta { lore = lines.map { it.format() } }
+        meta { lore = lines.map { it.color() } }
     }
 
     inline fun nms(block: ServerStack.() -> Unit) {
@@ -52,7 +52,7 @@ class ItemBuilder(private val material: Material) {
 
     fun build(): ItemStack {
         durability?.let { meta { durability = it } }
-        name?.let { meta { setDisplayName(it.format()) } }
+        name?.let { meta { setDisplayName(it.color()) } }
         item.amount = amount
         return item
     }
