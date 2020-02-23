@@ -21,7 +21,7 @@ object MobListener : Listener {
         e.entity.let {
             logger.info("${it is LivingEntity}")
             if (it !is LivingEntity) return
-            it.customName = "&e&l${format(it.health)}".color()
+            it.customName = "&5&l${format(it.health)}".color()
             it.isCustomNameVisible = true
         }
     }

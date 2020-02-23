@@ -8,6 +8,8 @@ import org.bukkit.entity.Player
 import sharkbound.spigot.miscplugin.shared.extensions.noAI
 import sharkbound.spigot.miscplugin.shared.extensions.registerCommand
 
+// todo mob speed?
+// todo mob Invulnerable?
 object CommandTest : CommandExecutor {
     init {
         registerCommand("t")
