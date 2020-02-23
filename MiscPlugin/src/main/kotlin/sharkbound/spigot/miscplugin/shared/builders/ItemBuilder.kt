@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import sharkbound.spigot.miscplugin.shared.extensions.color
 import sharkbound.spigot.miscplugin.shared.extensions.meta
-import sharkbound.spigot.miscplugin.shared.extensions.nbt
+import sharkbound.spigot.miscplugin.shared.extensions.modifyNBT
 import sharkbound.spigot.miscplugin.shared.extensions.nms
 import net.minecraft.server.v1_14_R1.ItemStack as ServerStack
 
@@ -31,7 +31,7 @@ class ItemBuilder(private val material: Material) {
     }
 
     inline fun nbt(block: NBTTagCompound.() -> Unit) {
-        item = item.nbt(block)
+        item = item.modifyNBT(block)
     }
 
     inline fun meta(block: ItemMeta.() -> Unit) {

@@ -14,7 +14,7 @@ inline infix fun ItemStack.meta(block: ItemMeta.() -> Unit): ItemStack =
 inline infix fun ItemStack.nms(block: ServerStack.() -> Unit): ItemStack =
     CraftItemStack.asBukkitCopy(nms.apply(block))
 
-inline infix fun ItemStack.nbt(block: NBTTagCompound.() -> Unit): ItemStack =
+inline infix fun ItemStack.modifyNBT(block: NBTTagCompound.() -> Unit): ItemStack =
     nms { orCreateTag.apply(block) }
 
 val ItemStack.nms: ServerStack

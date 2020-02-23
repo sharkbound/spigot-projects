@@ -11,15 +11,26 @@ val Entity.nms
 val Entity.handle: ServerEntity
     get() = nms.handle
 
-inline fun ServerEntity.nbt(block: NBTTagCompound.() -> Unit): ServerEntity =
+inline fun ServerEntity.modifyNBT(block: NBTTagCompound.() -> Unit): ServerEntity =
     apply {
-        f(nbt.apply(block))
+        NBTTagCompound().also {
+            c(it)
+            it.apply(block)
+            f(it)
+        }
     }
 
-val ServerEntity.nbt get() = NBTTagCompound().apply { c(this) }
+val ServerEntity.nbt
+    get() = NBTTagCompound().apply { c(this) }
 
 fun ServerEntity.noAI(): ServerEntity =
-    nbt { setInt("NoAI", 1) }
+    modifyNBT { setInt("NoAI", 1) }
 
 fun Entity.noAI(): Entity =
     handle.noAI().bukkitEntity
+
+val Entity.nbt
+    get() = handle.nbt
+
+inline infix fun Entity.modifyNBT(block: NBTTagCompound.() -> Unit) =
+    apply { handle.modifyNBT(block) }
