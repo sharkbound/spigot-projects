@@ -6,4 +6,6 @@ object Tag {
     const val id = "id"
     const val noAI = "NoAI"
     const val handItems = "HandItems"
+    const val health = "Health"
+    const val canPickUpLoot = "CanPickUpLoot"
 }
