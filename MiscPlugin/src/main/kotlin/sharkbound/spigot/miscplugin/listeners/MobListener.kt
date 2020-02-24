@@ -20,7 +20,7 @@ object MobListener : Listener {
     fun mobHurt(e: EntityDamageEvent) {
         e.entity.let {
             if (it !is LivingEntity) return
-            it.customName = "&5&l${format(it.health - e.damage)}".color()
+            it.customName = "&5&l${format(it.health - e.damage)}                    ".color()
             it.isCustomNameVisible = true
         }
     }

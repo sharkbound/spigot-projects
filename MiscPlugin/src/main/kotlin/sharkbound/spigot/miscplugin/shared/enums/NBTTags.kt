@@ -36,7 +36,7 @@ object NBTTags {
     const val unbreakable = "Unbreakable"
 }
 
-inline fun withTags(block: NBTTags.() -> Unit) {
+inline fun allTags(block: NBTTags.() -> Unit) {
     NBTTags.apply(block)
 }
 

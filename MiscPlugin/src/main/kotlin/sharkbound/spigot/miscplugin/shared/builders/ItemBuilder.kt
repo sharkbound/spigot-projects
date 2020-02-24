@@ -1,6 +1,5 @@
 package sharkbound.spigot.miscplugin.shared.builders
 
-import net.minecraft.server.v1_14_R1.AttributeModifier
 import net.minecraft.server.v1_14_R1.NBTTagCompound
 import net.minecraft.server.v1_14_R1.NBTTagList
 import org.bukkit.Material
@@ -8,9 +7,9 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
+import sharkbound.spigot.miscplugin.shared.enums.NBTTags
 import sharkbound.spigot.miscplugin.shared.enums.buildNBTCompound
-import sharkbound.spigot.miscplugin.shared.enums.buildNBTTagList
-import sharkbound.spigot.miscplugin.shared.enums.withTags
+import sharkbound.spigot.miscplugin.shared.enums.allTags
 import sharkbound.spigot.miscplugin.shared.extensions.*
 import net.minecraft.server.v1_14_R1.AttributeModifier.Operation as Operation
 import net.minecraft.server.v1_14_R1.ItemStack as ServerStack
@@ -35,42 +34,50 @@ class ItemBuilder(private val material: Material) {
     var durability: Int? = null
     var item: ItemStack = ItemStack(material, amount)
 
-    fun genericAttackDamage(value: Double, targetSlot: Slot, mode: Operation = Operation.ADDITION) {
-        withTags {
-            nbt {
-                set(attributeModifiers, (getList(attributeModifiers) ?: NBTTagList()).apply {
+    private inline fun setGenericAttribute(
+        attrName: String,
+        targetSlot: Slot,
+        mode: Operation = Operation.ADDITION,
+        block: NBTTagCompound.() -> Unit
+    ) {
+        nbt {
+            allTags {
+                getOrSet(attributeModifiers) { NBTTagList() }.apply {
                     add(buildNBTCompound {
-                        setString(attributeName, genericAttackDamage)
-                        setString(name, genericAttackDamage)
-                        setDouble(amount, value)
+                        setString(attributeName, attrName)
+                        setString(name, attrName)
                         setInt(operation, mode.a())
+                        setString(slot, targetSlot.value)
                         setInt(uuidLeast, magicUUIDLeast)
                         setInt(uuidMost, magicUUIDMost)
-                        setString(slot, targetSlot.value)
+                        block()
                     })
-                })
+                }
             }
         }
     }
 
-    fun genericAttackSpeed(value: Double, targetSlot: Slot) {
-        withTags {
-            nbt {
-                set(attributeModifiers, (getList(attributeModifiers) ?: NBTTagList()).apply {
-                    add(buildNBTCompound {
-                        setString(attributeName, genericAttackSpeed)
-                        setString(name, genericAttackSpeed)
-                        setDouble(amount, value)
-                        setInt(uuidLeast, magicUUIDLeast)
-                        setInt(uuidMost, magicUUIDMost)
-                        setString(slot, targetSlot.value)
-                    })
-                })
+    fun genericAttackDamage(value: Double, targetSlot: Slot, mode: Operation = Operation.ADDITION) {
+        allTags {
+            setGenericAttribute(genericAttackDamage, targetSlot, mode) {
+                setDouble(amount, value)
+            }
+        }
+    }
+
+    fun genericAttackSpeed(value: Double, targetSlot: Slot, mode: Operation = Operation.ADDITION) {
+        allTags {
+            setGenericAttribute(genericAttackSpeed, targetSlot, mode) {
+                setDouble(amount, value)
             }
         }
     }
 
     fun lore(vararg lines: String) {
+        meta { lore = lines.map { it.color() } }
+    }
+
+    fun lore(lines: List<String>) {
         meta { lore = lines.map { it.color() } }
     }
 
@@ -92,6 +99,24 @@ class ItemBuilder(private val material: Material) {
 
     fun flags(vararg flags: ItemFlag) {
         item.meta { addItemFlags(*flags) }
+    }
+
+    fun unbreakable() {
+        nbt {
+            setByte(NBTTags.unbreakable, 1)
+        }
+    }
+
+    fun hideAttributes() {
+        flags(ItemFlag.HIDE_ATTRIBUTES)
+    }
+
+    fun hideUnbreakable() {
+        flags(ItemFlag.HIDE_UNBREAKABLE)
+    }
+
+    fun hideEnchants() {
+        flags(ItemFlag.HIDE_ENCHANTS)
     }
 
     inline fun <reified T : ItemMeta> metaAs(block: T.() -> Unit) {

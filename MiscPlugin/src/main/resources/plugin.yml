@@ -1,6 +1,7 @@
 name: MiscPlugin
 version: "1.0"
 main: "sharkbound.spigot.miscplugin.MiscPlugin"
+api-version: "1.13"
 
 commands:
   t:

@@ -32,5 +32,5 @@ fun Entity.noAI(): Entity =
 val Entity.nbt
     get() = handle.nbt
 
-inline infix fun Entity.modifyNBT(block: NBTTagCompound.() -> Unit) =
+inline infix fun <T : Entity> T.modifyNBT(block: NBTTagCompound.() -> Unit): T =
     apply { handle.modifyNBT(block) }
