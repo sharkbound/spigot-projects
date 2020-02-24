@@ -2,6 +2,7 @@ package sharkbound.spigot.miscplugin.shared.extensions
 
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
+import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
 import sharkbound.spigot.miscplugin.shared.colored
 import kotlin.contracts.ExperimentalContracts
@@ -29,6 +30,14 @@ fun CommandSender.isPlayer(): Boolean {
         returns(true) implies (this@isPlayer is Player)
     }
     return this is Player
+}
+
+@ExperimentalContracts
+fun CommandSender.isConsole(): Boolean {
+    contract {
+        returns(true) implies (this@isConsole is ConsoleCommandSender)
+    }
+    return this is ConsoleCommandSender
 }
 
 @ExperimentalContracts

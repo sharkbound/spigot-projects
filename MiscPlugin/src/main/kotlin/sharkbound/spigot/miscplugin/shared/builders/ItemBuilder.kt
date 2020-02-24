@@ -1,14 +1,18 @@
 package sharkbound.spigot.miscplugin.shared.builders
 
+import net.minecraft.server.v1_14_R1.AttributeModifier
 import net.minecraft.server.v1_14_R1.NBTTagCompound
+import net.minecraft.server.v1_14_R1.NBTTagList
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
-import sharkbound.spigot.miscplugin.shared.extensions.color
-import sharkbound.spigot.miscplugin.shared.extensions.meta
-import sharkbound.spigot.miscplugin.shared.extensions.modifyNBT
-import sharkbound.spigot.miscplugin.shared.extensions.nms
+import sharkbound.spigot.miscplugin.shared.enums.buildNBTCompound
+import sharkbound.spigot.miscplugin.shared.enums.buildNBTTagList
+import sharkbound.spigot.miscplugin.shared.enums.withTags
+import sharkbound.spigot.miscplugin.shared.extensions.*
+import net.minecraft.server.v1_14_R1.AttributeModifier.Operation as Operation
 import net.minecraft.server.v1_14_R1.ItemStack as ServerStack
 
 @DslMarker
@@ -16,11 +20,55 @@ annotation class ItemBuilderDSL
 
 @ItemBuilderDSL
 class ItemBuilder(private val material: Material) {
+    enum class Slot(val value: String) {
+        Head("head"),
+        Body("body"),
+        Legs("legs"),
+        Feet("feet"),
+        MainHand("mainhand"),
+        OffHand("offhand"),
+        All("all")
+    }
+
     var name: String? = null
     var amount: Int = 1
     var durability: Int? = null
-
     var item: ItemStack = ItemStack(material, amount)
+
+    fun genericAttackDamage(value: Double, targetSlot: Slot, mode: Operation = Operation.ADDITION) {
+        withTags {
+            nbt {
+                set(attributeModifiers, (getList(attributeModifiers) ?: NBTTagList()).apply {
+                    add(buildNBTCompound {
+                        setString(attributeName, genericAttackDamage)
+                        setString(name, genericAttackDamage)
+                        setDouble(amount, value)
+                        setInt(operation, mode.a())
+                        setInt(uuidLeast, magicUUIDLeast)
+                        setInt(uuidMost, magicUUIDMost)
+                        setString(slot, targetSlot.value)
+                    })
+                })
+            }
+        }
+    }
+
+    fun genericAttackSpeed(value: Double, targetSlot: Slot) {
+        withTags {
+            nbt {
+                set(attributeModifiers, (getList(attributeModifiers) ?: NBTTagList()).apply {
+                    add(buildNBTCompound {
+                        setString(attributeName, genericAttackSpeed)
+                        setString(name, genericAttackSpeed)
+                        setDouble(amount, value)
+                        setInt(uuidLeast, magicUUIDLeast)
+                        setInt(uuidMost, magicUUIDMost)
+                        setString(slot, targetSlot.value)
+                    })
+                })
+            }
+        }
+    }
 
     fun lore(vararg lines: String) {
         meta { lore = lines.map { it.color() } }
@@ -40,6 +88,10 @@ class ItemBuilder(private val material: Material) {
 
     fun enchant(enchantment: Enchantment, level: Int) {
         item.addUnsafeEnchantment(enchantment, level)
+    }
+
+    fun flags(vararg flags: ItemFlag) {
+        item.meta { addItemFlags(*flags) }
     }
 
     inline fun <reified T : ItemMeta> metaAs(block: T.() -> Unit) {

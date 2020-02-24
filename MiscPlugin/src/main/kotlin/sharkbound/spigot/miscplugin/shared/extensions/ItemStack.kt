@@ -15,7 +15,7 @@ inline infix fun ItemStack.nms(block: ServerStack.() -> Unit): ItemStack =
     CraftItemStack.asBukkitCopy(nms.apply(block))
 
 inline infix fun ItemStack.modifyNBT(block: NBTTagCompound.() -> Unit): ItemStack =
-    nms { orCreateTag.apply(block) }
+    nms { tag = orCreateTag.apply(block) }
 
 val ItemStack.nms: ServerStack
     get() = CraftItemStack.asNMSCopy(this)
