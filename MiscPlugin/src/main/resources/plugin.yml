@@ -8,3 +8,5 @@ commands:
     description: test command
   s:
     description: quick shutdown command
+  shulkerwand:
+    description: give the caller a shulker wand

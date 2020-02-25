@@ -22,3 +22,6 @@ val ItemStack.nms: ServerStack
 
 val ItemStack.nbt: NBTTagCompound
     get() = nms.orCreateTag
+
+infix fun ItemStack?.hasNBTKey(key: String) =
+    this?.nbt?.hasKey(key) ?: false

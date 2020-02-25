@@ -4,6 +4,7 @@ import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.command.ConsoleCommandSender
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import sharkbound.spigot.miscplugin.shared.colored
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
@@ -46,4 +47,8 @@ fun CommandSender.isNotPlayer(): Boolean {
         returns(true) implies (this@isNotPlayer !is Player)
     }
     return this !is Player
+}
+
+fun Player.replaceHeldItem(newItemStack: ItemStack) {
+    inventory.setItem(inventory.heldItemSlot, newItemStack)
 }

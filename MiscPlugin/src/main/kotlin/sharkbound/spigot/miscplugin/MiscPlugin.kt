@@ -1,6 +1,7 @@
 package sharkbound.spigot.miscplugin
 
 import org.bukkit.plugin.java.JavaPlugin
+import sharkbound.spigot.miscplugin.commands.CommandShulkerWand
 import sharkbound.spigot.miscplugin.commands.CommandStop
 import sharkbound.spigot.miscplugin.commands.CommandTest
 import sharkbound.spigot.miscplugin.listeners.MobListener
@@ -17,6 +18,7 @@ class MiscPlugin : JavaPlugin() {
     private fun load() {
         CommandTest
         CommandStop
+        CommandShulkerWand
         PlayerListener
         MobListener
     }
