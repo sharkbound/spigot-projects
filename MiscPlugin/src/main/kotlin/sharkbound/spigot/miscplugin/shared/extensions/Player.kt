@@ -49,6 +49,6 @@ fun CommandSender.isNotPlayer(): Boolean {
     return this !is Player
 }
 
-fun Player.replaceHeldItem(newItemStack: ItemStack) {
+infix fun Player.replaceHeldItem(newItemStack: ItemStack) {
     inventory.setItem(inventory.heldItemSlot, newItemStack)
 }

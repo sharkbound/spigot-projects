@@ -5,7 +5,7 @@ import org.bukkit.enchantments.Enchantment
 import sharkbound.spigot.miscplugin.shared.builders.buildItem
 
 object ShulkerWand {
-    val nbtId = "shulkerwand"
+    const val nbtId = "shulkerwand"
 
     fun create() =
         buildItem(Material.STICK) {

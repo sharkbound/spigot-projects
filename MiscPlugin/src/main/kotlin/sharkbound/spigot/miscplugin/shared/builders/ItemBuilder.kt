@@ -73,6 +73,14 @@ class ItemBuilder(private val material: Material) {
         }
     }
 
+    fun genericMaxHealth(value: Double, targetSlot: Slot, mode: Operation = Operation.ADDITION) {
+        allTags {
+            setGenericAttribute(genericMaxHealth, targetSlot, mode) {
+                setDouble(amount, value)
+            }
+        }
+    }
+
     fun lore(vararg lines: String) {
         meta { lore = lines.map { it.color() } }
     }
