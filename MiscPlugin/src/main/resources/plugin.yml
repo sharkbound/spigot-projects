@@ -9,4 +9,6 @@ commands:
   s:
     description: quick shutdown command
   shulkerwand:
-    description: give the caller a shulker wand
+    description: give the caller a shulker spawner wand
+  shulkerportal:
+    description: give the caller a shulker portal wand
