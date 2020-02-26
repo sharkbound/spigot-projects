@@ -19,6 +19,7 @@ class MiscPlugin : JavaPlugin() {
         CommandShulkerWand
         CommandShulkerPortal
         CommandPhantomPortal
+        CommandWand
         PlayerListener
         MobListener
     }
