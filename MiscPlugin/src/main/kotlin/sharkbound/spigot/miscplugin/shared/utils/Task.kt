@@ -3,13 +3,13 @@ package sharkbound.spigot.miscplugin.shared.utils
 import sharkbound.spigot.miscplugin.shared.instance
 import sharkbound.spigot.miscplugin.shared.server
 
-data class CancellableTask(val taskId: Int) {
-    val successful
+open class CancellableTask(var taskId: Int) {
+    open val successful
         get() = taskId != -1
-    val failed
+    open val failed
         get() = !successful
 
-    fun cancel() {
+    open fun cancel() {
         server.scheduler.cancelTask(taskId)
     }
 }

@@ -1,10 +1,12 @@
 package sharkbound.spigot.miscplugin.listeners
 
+import org.bukkit.Bukkit
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.util.Vector
 import sharkbound.commonutils.util.randInt
 import sharkbound.spigot.miscplugin.items.ArrowPortal
 import sharkbound.spigot.miscplugin.items.PhantomPortal
@@ -12,11 +14,16 @@ import sharkbound.spigot.miscplugin.items.ShulkerPortal
 import sharkbound.spigot.miscplugin.items.ShulkerWand
 import sharkbound.spigot.miscplugin.shared.extensions.*
 import sharkbound.spigot.miscplugin.shared.utils.cancellingRepeatingSyncTask
+import sharkbound.spigot.miscplugin.shared.utils.repeatingSyncTask
 import sharkbound.spigot.miscplugin.shared.utils.vector
 
 object PlayerListener : Listener {
     init {
         registerEvents()
+        repeatingSyncTask(0, 20) {
+            if (arrowPortals.isEmpty()) return@repeatingSyncTask
+            Bukkit.getWorlds().first().entities.filterIsInstance<Arrow>().forEach { it.remove() }
+        }
     }
 
     private val leftClicks = setOf(Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK)
@@ -33,11 +40,17 @@ object PlayerListener : Listener {
 
     private val arrowPortals = mutableSetOf<Int>()
     private val arrowInterval: Long = 2
+    private val arrowAccuracy = 0f
+
     private fun arrowPortal(e: PlayerInteractEvent) {
-        fun reset() {
-            arrowPortals.clear()
-            e.player.world.entities.filterIsInstance<Arrow>().forEach { it.remove() }
-            e.player.send("&eStopped all arrow portals")
+        fun reset(id: Int? = null) {
+            if (id == null) {
+                arrowPortals.clear()
+            } else {
+                arrowPortals.remove(id)
+            }
+
+            e.player.send("&eStopped all arrow portals with task id #$id")
         }
 
         if (e.action in leftClicks) {
@@ -48,15 +61,15 @@ object PlayerListener : Listener {
         e.player.apply {
             nearestMob()?.let { mob ->
                 targeted(mob)
-                val loc = eyeLocation
-                arrowPortals += cancellingRepeatingSyncTask(
-                    0,
-                    arrowInterval,
+                arrowPortals += cancellingRepeatingSyncTask(0, arrowInterval,
                     shouldCancel = { mob.isDead || taskId !in arrowPortals },
-                    onCancel = { reset() })
+                    onCancel = { reset(taskId) })
                 {
+                    val n = 100
+                    val offset = vector(randInt(-n, n), randInt(0, n), randInt(-n, n))
+                    val loc = mob.location.add(offset)
                     val angle = mob.location.subtract(loc).toVector()
-                    world.spawnArrow(loc, angle, 8f, 15f)
+                    world.spawnArrow(loc, angle, 15f, arrowAccuracy)
                 }.taskId
             }
         }
