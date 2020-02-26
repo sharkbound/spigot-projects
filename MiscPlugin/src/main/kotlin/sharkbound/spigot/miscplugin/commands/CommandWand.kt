@@ -33,15 +33,14 @@ object CommandWand : CommandExecutor, TabCompleter {
             return false
         }
 
-        sender.inventory.addItem(
-            when (args[0]) {
-                SHULKER_PORTAL -> ShulkerPortal.create()
-                SHULKER_WAND -> ShulkerWand.create()
-                PHANTOM_PORTAL -> PhantomPortal.create()
-                ARROW_PORTAL -> ArrowPortal.create()
-                else -> return false
-            }
-        )
+        sender replaceHeldItem (
+                when (args[0]) {
+                    SHULKER_PORTAL -> ShulkerPortal.create()
+                    SHULKER_WAND -> ShulkerWand.create()
+                    PHANTOM_PORTAL -> PhantomPortal.create()
+                    ARROW_PORTAL -> ArrowPortal.create()
+                    else -> return false
+                })
 
         return false
     }

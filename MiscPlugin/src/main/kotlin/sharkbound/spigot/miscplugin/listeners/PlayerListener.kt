@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
+import sharkbound.commonutils.util.randInt
 import sharkbound.spigot.miscplugin.items.ArrowPortal
 import sharkbound.spigot.miscplugin.items.PhantomPortal
 import sharkbound.spigot.miscplugin.items.ShulkerPortal
@@ -18,11 +19,7 @@ object PlayerListener : Listener {
         registerEvents()
     }
 
-    private val shulkerPortals = mutableSetOf<Int>()
     private val leftClicks = setOf(Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK)
-    private val phantoms = mutableListOf<Phantom>()
-    private val phantomPortals = mutableSetOf<Int>()
-    private val arrowPortals = mutableSetOf<Int>()
 
     @EventHandler
     fun onInteract(e: PlayerInteractEvent) {
@@ -34,17 +31,39 @@ object PlayerListener : Listener {
         }
     }
 
+    private val arrowPortals = mutableSetOf<Int>()
+    private val arrowInterval: Long = 2
     private fun arrowPortal(e: PlayerInteractEvent) {
         fun reset() {
             arrowPortals.clear()
+            e.player.world.entities.filterIsInstance<Arrow>().forEach { it.remove() }
+            e.player.send("&eStopped all arrow portals")
         }
 
         if (e.action in leftClicks) {
             reset()
-            e.player.send("&eStopped all arrow portals")
             return
         }
+
+        e.player.apply {
+            nearestMob()?.let { mob ->
+                targeted(mob)
+                val loc = eyeLocation
+                arrowPortals += cancellingRepeatingSyncTask(
+                    0,
+                    arrowInterval,
+                    shouldCancel = { mob.isDead || taskId !in arrowPortals },
+                    onCancel = { reset() })
+                {
+                    val angle = mob.location.subtract(loc).toVector()
+                    world.spawnArrow(loc, angle, 8f, 15f)
+                }.taskId
+            }
+        }
     }
+
+    private val phantoms = mutableListOf<Phantom>()
+    private val phantomPortals = mutableSetOf<Int>()
 
     private fun phantomPortal(e: PlayerInteractEvent) {
         fun reset() {
@@ -75,6 +94,10 @@ object PlayerListener : Listener {
         }
     }
 
+    private val shulkerPortals = mutableSetOf<Int>()
+    private val SHULKER_INTERVAL: Long = 3
+    val shulkerOffset get() = vector(x = randInt(-20, 20), y = randInt(-25, 25), z = randInt(-20, 20))
+
     private fun shulkerPortal(e: PlayerInteractEvent) {
         if (e.action in leftClicks) {
             shulkerPortals.clear()
@@ -87,17 +110,17 @@ object PlayerListener : Listener {
             val loc = location
             nearestMob()?.let { mob ->
                 targeted(mob)
-                shulkerPortals += cancellingRepeatingSyncTask(0, 5, { mob.isDead || taskId !in shulkerPortals }) {
-                    world.spawnAs<ShulkerBullet>(loc).target = mob
+                shulkerPortals += cancellingRepeatingSyncTask(
+                    0,
+                    SHULKER_INTERVAL,
+                    shouldCancel = { mob.isDead || taskId !in shulkerPortals }) {
+                    world.spawnAs<ShulkerBullet>(loc.clone().add(shulkerOffset)).target = mob
                 }.taskId
             }
         }
     }
 
-    private fun Player.targeted(mob: LivingEntity) {
-        send("&eTargeted ${mob.type.name} that is ${location.distance(mob.location).toInt()} blocks away")
-    }
-
+    @Suppress("SameParameterValue")
     private fun shulkerDeathBeam(e: PlayerInteractEvent, yOffset: Double) {
         e.player.apply {
             nearestMob()?.let { mob ->
@@ -108,10 +131,14 @@ object PlayerListener : Listener {
             }
         }
     }
+}
 
-    private fun Player.nearestMob(): LivingEntity? {
-        val range = 200.0
-        return world.getNearbyEntities(target(), range, range, range).asSequence().filter { it !is Player }
-            .filterIsInstance<LivingEntity>().minBy { it.location.distance(target()) }
-    }
+private fun Player.targeted(mob: LivingEntity) {
+    send("&eTargeted ${mob.type.name} that is ${location.distance(mob.location).toInt()} blocks away")
+}
+
+private fun Player.nearestMob(): LivingEntity? {
+    val range = 200.0
+    return world.getNearbyEntities(target(), range, range, range).asSequence().filter { it !is Player }
+        .filterIsInstance<LivingEntity>().minBy { it.location.distance(target()) }
 }
