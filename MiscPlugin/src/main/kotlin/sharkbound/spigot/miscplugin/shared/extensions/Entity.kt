@@ -3,6 +3,7 @@ package sharkbound.spigot.miscplugin.shared.extensions
 import net.minecraft.server.v1_14_R1.NBTTagCompound
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity
 import org.bukkit.entity.Entity
+import org.bukkit.entity.LivingEntity
 import net.minecraft.server.v1_14_R1.Entity as ServerEntity
 
 val Entity.nms
@@ -34,3 +35,7 @@ val Entity.nbt
 
 inline infix fun <T : Entity> T.modifyNBT(block: NBTTagCompound.() -> Unit): T =
     apply { handle.modifyNBT(block) }
+
+fun LivingEntity.kill() {
+    damage(health)
+}

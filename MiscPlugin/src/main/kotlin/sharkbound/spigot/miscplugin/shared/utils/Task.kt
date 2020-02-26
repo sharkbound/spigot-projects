@@ -25,6 +25,7 @@ fun cancellingRepeatingSyncTask(
     startDelay: Long,
     intervalTicks: Long,
     shouldCancel: (CancellableTask.() -> Boolean)? = null,
+    onCancel: (CancellableTask.() -> Unit)? = null,
     handler: () -> Unit
 ): CancellableTask {
     var task = CancellableTask(-1)
@@ -32,6 +33,7 @@ fun cancellingRepeatingSyncTask(
         handler()
         if (shouldCancel?.invoke(task) == true) {
             task.cancel()
+            onCancel?.invoke(task)
         }
     }
     return task

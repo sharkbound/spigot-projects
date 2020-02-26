@@ -19,17 +19,17 @@ object MobListener : Listener {
     private fun format(value: Double) =
         "%.1f".format(value)
 
-    @EventHandler
-    fun entityDeath(e: EntityDeathEvent) {
-        server.getPlayer("landsharkslayer")?.send("&4Entity ${e.entity.type.name} died")
-    }
+//    @EventHandler
+//    fun entityDeath(e: EntityDeathEvent) {
+//        server.getPlayer("landsharkslayer")?.send("&4Entity ${e.entity.type.name} died")
+//    }
 
-    @EventHandler(priority = EventPriority.LOWEST)
-    fun mobHurt(e: EntityDamageEvent) {
-        e.entity.let {
-            if (it !is LivingEntity) return
-            it.customName = "&5&l${format(it.health - e.damage)}                    ".color()
-            it.isCustomNameVisible = true
-        }
-    }
+//    @EventHandler(priority = EventPriority.LOWEST)
+//    fun mobHurt(e: EntityDamageEvent) {
+//        e.entity.let {
+//            if (it !is LivingEntity) return
+//            it.customName = "&5&l${format(it.health - e.damage)}----------${format(it.health - e.damage)}".color()
+//            it.isCustomNameVisible = true
+//        }
+//    }
 }

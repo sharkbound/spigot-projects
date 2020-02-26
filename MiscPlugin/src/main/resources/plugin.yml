@@ -12,3 +12,5 @@ commands:
     description: give the caller a shulker spawner wand
   shulkerportal:
     description: give the caller a shulker portal wand
+  phantomportal:
+    description: summons a horde of phantoms to attack your target
