@@ -6,6 +6,8 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.util.Vector
+import sharkbound.commonutils.util.randDouble
 import sharkbound.commonutils.util.randInt
 import sharkbound.spigot.miscplugin.items.ArrowWand
 import sharkbound.spigot.miscplugin.items.PhantomPortal
@@ -26,9 +28,7 @@ object PlayerListener : Listener {
     @EventHandler
     fun arrowHit(e: ProjectileHitEvent) {
         if (e.entityType == EntityType.ARROW) {
-            delaySyncTask(60) {
-                e.entity.remove()
-            }
+            e.entity.remove()
         }
     }
 
@@ -43,9 +43,22 @@ object PlayerListener : Listener {
     }
 
     private fun arrowWand(e: PlayerInteractEvent) {
+        fun rand(range: Int): Vector {
+            fun r() =
+                randDouble(-range.toDouble(), range.toDouble())
+            return vector(r(), r(), r())
+        }
+
+        val arrowRange = 100
+        val arrowSpeed = 30f
+        val arrowAccuracy = 0f
+
         e.player.apply {
             nearestMob()?.let { mob ->
                 targeted(mob)
+                val arrowSpawn = mob.location.add(rand(arrowRange))
+                val arrowAngle = mob.location.subtract(arrowSpawn).toVector()
+                world.spawnArrow(arrowSpawn, arrowAngle, arrowSpeed, arrowAccuracy)
             }
         }
     }
