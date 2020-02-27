@@ -1,5 +1,6 @@
 package sharkbound.spigot.miscplugin.listeners
 
+import org.bukkit.Location
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -7,7 +8,6 @@ import org.bukkit.event.block.Action
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.util.Vector
-import sharkbound.commonutils.util.randDouble
 import sharkbound.commonutils.util.randInt
 import sharkbound.spigot.miscplugin.items.ArrowWand
 import sharkbound.spigot.miscplugin.items.PhantomPortal
@@ -15,10 +15,12 @@ import sharkbound.spigot.miscplugin.items.ShulkerPortal
 import sharkbound.spigot.miscplugin.items.ShulkerWand
 import sharkbound.spigot.miscplugin.shared.extensions.*
 import sharkbound.spigot.miscplugin.shared.utils.cancellingRepeatingSyncTask
-import sharkbound.spigot.miscplugin.shared.utils.delaySyncTask
 import sharkbound.spigot.miscplugin.shared.utils.vector
 
+data class ArrowSpawnInfo(val spawn: Location, val velocity: Vector, val speed: Float, val spread: Float)
+
 object PlayerListener : Listener {
+
     init {
         registerEvents()
     }
@@ -43,22 +45,20 @@ object PlayerListener : Listener {
     }
 
     private fun arrowWand(e: PlayerInteractEvent) {
-        fun rand(range: Int): Vector {
-            fun r() =
-                randDouble(-range.toDouble(), range.toDouble())
-            return vector(r(), r(), r())
+        fun getArrowInfo(origin: Location, target: Location, direction: Vector): ArrowSpawnInfo {
+            return ArrowSpawnInfo(origin, direction.multiply(5), 10f, 5f)
         }
-
-        val arrowRange = 100
-        val arrowSpeed = 30f
-        val arrowAccuracy = 0f
 
         e.player.apply {
             nearestMob()?.let { mob ->
                 targeted(mob)
-                val arrowSpawn = mob.location.add(rand(arrowRange))
-                val arrowAngle = mob.location.subtract(arrowSpawn).toVector()
-                world.spawnArrow(arrowSpawn, arrowAngle, arrowSpeed, arrowAccuracy)
+                getArrowInfo(
+                    location,
+                    mob.location,
+                    mob.location.subtract(location).toVector()
+                ).apply {
+                    world.spawnArrow(spawn, velocity, speed, spread)
+                }
             }
         }
     }
@@ -137,8 +137,9 @@ private fun Player.targeted(mob: LivingEntity) {
     send("&eTargeted ${mob.type.name} that is ${location.distance(mob.location).toInt()} blocks away")
 }
 
-private fun Player.nearestMob(): LivingEntity? {
+private fun Player.nearestMob(requireLOS: Boolean = true): LivingEntity? {
     val range = 200.0
     return world.getNearbyEntities(target(), range, range, range).asSequence().filter { it !is Player }
-        .filterIsInstance<LivingEntity>().minBy { it.location.distance(target()) }
+        .filterIsInstance<LivingEntity>().filter { !requireLOS || hasLineOfSight(it) }
+        .minBy { it.location.distance(target()) }
 }
