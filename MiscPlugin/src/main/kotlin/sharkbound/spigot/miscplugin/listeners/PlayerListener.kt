@@ -45,18 +45,21 @@ object PlayerListener : Listener {
     }
 
     private fun arrowWand(e: PlayerInteractEvent) {
-        fun getArrowInfo(origin: Location, target: Location, direction: Vector): ArrowSpawnInfo {
-            return ArrowSpawnInfo(origin, direction.multiply(5), 10f, 5f)
+        fun calcArrow(
+            origin: Location,
+            target: Location,
+            distance: Double,
+            direction: Vector
+        ): ArrowSpawnInfo {
+            return ArrowSpawnInfo(origin, direction.apply { y = 5.0 }, 1f, 1f)
         }
 
         e.player.apply {
             nearestMob()?.let { mob ->
                 targeted(mob)
-                getArrowInfo(
-                    location,
-                    mob.location,
-                    mob.location.subtract(location).toVector()
-                ).apply {
+                val origin = eyeLocation.apply { y += 1 }
+                val target = mob.location
+                calcArrow(origin, target, origin dist target, target.subtract(origin).toVector()).apply {
                     world.spawnArrow(spawn, velocity, speed, spread)
                 }
             }
@@ -96,7 +99,8 @@ object PlayerListener : Listener {
 
     private val shulkerPortals = mutableSetOf<Int>()
     private val SHULKER_INTERVAL: Long = 3
-    val shulkerOffset get() = vector(x = randInt(-20, 20), y = randInt(-25, 25), z = randInt(-20, 20))
+    val shulkerOffset: Vector
+        get() = vector(x = randInt(-20, 20), y = randInt(-25, 25), z = randInt(-20, 20))
 
     private fun shulkerPortal(e: PlayerInteractEvent) {
         if (e.action in leftClicks) {
@@ -134,7 +138,7 @@ object PlayerListener : Listener {
 }
 
 private fun Player.targeted(mob: LivingEntity) {
-    send("&eTargeted ${mob.type.name} that is ${location.distance(mob.location).toInt()} blocks away")
+    send("&eTargeted ${mob.type.name} that is ${location.dist(mob.location).toInt()}M away")
 }
 
 private fun Player.nearestMob(requireLOS: Boolean = true): LivingEntity? {

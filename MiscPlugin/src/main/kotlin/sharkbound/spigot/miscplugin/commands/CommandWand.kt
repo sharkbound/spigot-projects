@@ -49,7 +49,6 @@ object CommandWand : CommandExecutor, TabCompleter {
         command: Command,
         alias: String,
         args: Array<out String>
-    ): MutableList<String> {
-        return mutableListOf(SHULKER_PORTAL, SHULKER_WAND, PHANTOM_PORTAL, ARROW_WAND)
-    }
+    ): MutableList<String> =
+        sequenceOf(SHULKER_PORTAL, SHULKER_WAND, PHANTOM_PORTAL, ARROW_WAND).filter { args[0] in it }.toMutableList()
 }

@@ -14,7 +14,7 @@ class MiscPlugin : JavaPlugin() {
     }
 
     private fun load() {
-        CommandTest
+        CommandEverBlaze
         CommandStop
         CommandShulkerWand
         CommandShulkerPortal

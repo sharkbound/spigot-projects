@@ -4,8 +4,8 @@ main: "sharkbound.spigot.miscplugin.MiscPlugin"
 api-version: "1.13"
 
 commands:
-  t:
-    description: test command
+  everblaze:
+    description: gives the caller a everblaze
   s:
     description: quick shutdown command
   shulkerwand:

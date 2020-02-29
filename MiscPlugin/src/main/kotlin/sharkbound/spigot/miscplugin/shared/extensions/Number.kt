@@ -3,11 +3,13 @@ package sharkbound.spigot.miscplugin.shared.extensions
 import org.bukkit.util.Vector
 import sharkbound.spigot.miscplugin.shared.utils.vector
 
+const val SECOND_IN_TICKS: Long = 20
+
 val Int.ticks
     get() = toLong()
 
 val Double.secondTicks
-    get() = (this / 20).toLong()
+    get() = (this * SECOND_IN_TICKS).toLong()
 
 val Int.secondTicks
     get() = toDouble().secondTicks
