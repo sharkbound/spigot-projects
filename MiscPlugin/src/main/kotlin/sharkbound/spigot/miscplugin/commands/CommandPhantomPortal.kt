@@ -16,10 +16,7 @@ import sharkbound.spigot.miscplugin.shared.extensions.registerCommand
 import sharkbound.spigot.miscplugin.shared.extensions.replaceHeldItem
 import kotlin.contracts.ExperimentalContracts
 
-object CommandPhantomPortal : CommandExecutor {
-    init {
-        registerCommand("phantomportal")
-    }
+object CommandPhantomPortal : BaseCommand("phantomportal") {
 
     @ExperimentalContracts
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {

@@ -16,3 +16,5 @@ commands:
     description: summons a horde of phantoms to attack your target
   wand:
     description: gives the caller a wand
+  potionrain:
+    description: enables raining potions around the caller

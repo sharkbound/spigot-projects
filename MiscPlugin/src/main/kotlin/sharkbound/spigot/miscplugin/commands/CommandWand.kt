@@ -13,10 +13,7 @@ import sharkbound.spigot.miscplugin.shared.extensions.*
 import kotlin.contracts.ExperimentalContracts
 
 // todo mob speed?
-object CommandWand : CommandExecutor, TabCompleter {
-    init {
-        registerCommand("wand")
-    }
+object CommandWand : BaseCommand("wand") {
 
     private const val SHULKER_PORTAL = "shulkerportal"
     private const val SHULKER_WAND = "shulkerwand"

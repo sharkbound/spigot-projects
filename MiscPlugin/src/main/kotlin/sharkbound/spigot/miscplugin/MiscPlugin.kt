@@ -20,6 +20,7 @@ class MiscPlugin : JavaPlugin() {
         CommandShulkerPortal
         CommandPhantomPortal
         CommandWand
+        CommandPotionRain
         PlayerListener
         MobListener
     }

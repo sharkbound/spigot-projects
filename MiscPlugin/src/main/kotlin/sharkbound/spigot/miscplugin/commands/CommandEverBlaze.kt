@@ -17,10 +17,7 @@ import sharkbound.spigot.miscplugin.shared.extensions.*
 import kotlin.contracts.ExperimentalContracts
 
 // todo mob speed?
-object CommandEverBlaze : CommandExecutor {
-    init {
-        registerCommand("everblaze")
-    }
+object CommandEverBlaze : BaseCommand("everblaze") {
 
     @ExperimentalContracts
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
