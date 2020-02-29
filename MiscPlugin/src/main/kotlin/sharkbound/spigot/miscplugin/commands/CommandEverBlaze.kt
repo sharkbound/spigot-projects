@@ -46,21 +46,8 @@ object CommandEverBlaze : BaseCommand("everblaze") {
                 "&cSome say this sword embodies the hot flame of a dragon"
             )
 
-        }.let { item ->
-            sender.inventory.setItem(sender.inventory.heldItemSlot, item)
-        }
-
-        sender.world.spawnAs<Zombie>(sender.location).modifyNBT {
-            allTags {
-                getOrSet(attributes) { NBTTagList() }.apply {
-                    add(buildNBTCompound {
-                        setString(name, genericMaxHealth)
-                        setInt(base, 100)
-                    })
-                }
-            }
-        }.apply {
-            health = maxHealth
+        }.let {
+            sender replaceHeldItem it
         }
 
         return false

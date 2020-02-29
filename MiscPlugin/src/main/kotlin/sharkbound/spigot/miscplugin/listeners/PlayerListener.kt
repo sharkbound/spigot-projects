@@ -91,7 +91,7 @@ object PlayerListener : Listener {
                     { mob.isDead || taskId !in phantomPortals },
                     onCancel = { reset() }
                 ) {
-                    phantoms += world.spawnAs<Phantom>(loc).apply { target = mob }
+                    phantoms += world.spawnAs<Phantom>(loc)?.apply { target = mob }!!
                 }.taskId
             }
         }
@@ -118,7 +118,7 @@ object PlayerListener : Listener {
                     0,
                     SHULKER_INTERVAL,
                     shouldCancel = { mob.isDead || taskId !in shulkerPortals }) {
-                    world.spawnAs<ShulkerBullet>(loc.clone().add(shulkerOffset)).target = mob
+                    world.spawnAs<ShulkerBullet>(loc.clone().add(shulkerOffset))?.target = mob
                 }.taskId
             }
         }
@@ -130,7 +130,7 @@ object PlayerListener : Listener {
             nearestMob()?.let { mob ->
                 targeted(mob)
                 repeat(30) {
-                    world.spawnAs<ShulkerBullet>(mob.location.add(vector(y = yOffset))).target = mob
+                    world.spawnAs<ShulkerBullet>(mob.location.add(vector(y = yOffset)))?.target = mob
                 }
             }
         }

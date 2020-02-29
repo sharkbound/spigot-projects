@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender
 import sharkbound.spigot.miscplugin.shared.extensions.registerCommand
 import sharkbound.spigot.miscplugin.shared.server
 
-object CommandStop : BaseCommand("shulkerwand") {
+object CommandStop : BaseCommand("s") {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         server.shutdown()

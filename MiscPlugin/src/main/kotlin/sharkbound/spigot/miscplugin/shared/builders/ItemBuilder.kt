@@ -144,5 +144,5 @@ class ItemBuilder(private val material: Material) {
 }
 
 @ItemBuilderDSL
-inline fun buildItem(material: Material, block: ItemBuilder.() -> Unit) =
+inline fun buildItem(material: Material, block: ItemBuilder.() -> Unit = {}) =
     ItemBuilder(material).apply(block).build()
