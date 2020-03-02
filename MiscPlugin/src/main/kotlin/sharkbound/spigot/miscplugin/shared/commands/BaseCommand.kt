@@ -1,4 +1,4 @@
-package sharkbound.spigot.miscplugin.commands
+package sharkbound.spigot.miscplugin.shared.commands
 
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor

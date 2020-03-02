@@ -14,16 +14,16 @@ open class CancellableTask(var taskId: Int) {
     }
 }
 
-fun delaySyncTask(tickDelay: Long, task: () -> Unit): CancellableTask {
+fun delaySyncTask(tickDelay: Long = 0, task: () -> Unit): CancellableTask {
     return CancellableTask(server.scheduler.scheduleSyncDelayedTask(instance, task, tickDelay))
 }
 
-fun repeatingSyncTask(startDelay: Long, intervalTicks: Long, handler: () -> Unit): CancellableTask =
+fun repeatingSyncTask(startDelay: Long = 0, intervalTicks: Long = 0, handler: () -> Unit): CancellableTask =
     CancellableTask(server.scheduler.scheduleSyncRepeatingTask(instance, handler, startDelay, intervalTicks))
 
 fun cancellingRepeatingSyncTask(
-    startDelay: Long,
-    intervalTicks: Long,
+    startDelay: Long = 0,
+    intervalTicks: Long = 0,
     shouldCancel: (CancellableTask.() -> Boolean)? = null,
     onCancel: (CancellableTask.() -> Unit)? = null,
     handler: CancellableTask.() -> Unit

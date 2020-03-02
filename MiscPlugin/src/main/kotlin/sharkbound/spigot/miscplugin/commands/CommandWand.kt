@@ -1,14 +1,10 @@
 package sharkbound.spigot.miscplugin.commands
 
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
-import org.bukkit.command.TabCompleter
 import sharkbound.commonutils.extensions.len
-import sharkbound.spigot.miscplugin.items.ArrowWand
-import sharkbound.spigot.miscplugin.items.PhantomPortal
-import sharkbound.spigot.miscplugin.items.ShulkerPortal
-import sharkbound.spigot.miscplugin.items.ShulkerWand
+import sharkbound.spigot.miscplugin.items.*
+import sharkbound.spigot.miscplugin.shared.commands.BaseCommand
 import sharkbound.spigot.miscplugin.shared.extensions.*
 import kotlin.contracts.ExperimentalContracts
 
@@ -16,9 +12,10 @@ import kotlin.contracts.ExperimentalContracts
 object CommandWand : BaseCommand("wand") {
 
     private const val SHULKER_PORTAL = "shulkerportal"
-    private const val SHULKER_WAND = "shulkerwand"
+    private const val SHULKER_WAND = "shulker"
     private const val PHANTOM_PORTAL = "phantomportal"
-    private const val ARROW_WAND = "arrowwand"
+    private const val ARROW_WAND = "arrow"
+    private const val LEVITATION_WAND = "levitation"
 
     @ExperimentalContracts
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
@@ -35,6 +32,7 @@ object CommandWand : BaseCommand("wand") {
                     SHULKER_WAND -> ShulkerWand.create()
                     PHANTOM_PORTAL -> PhantomPortal.create()
                     ARROW_WAND -> ArrowWand.create()
+                    LEVITATION_WAND -> LevitationWand.create()
                     else -> return false
                 })
 
@@ -47,5 +45,6 @@ object CommandWand : BaseCommand("wand") {
         alias: String,
         args: Array<out String>
     ): MutableList<String> =
-        sequenceOf(SHULKER_PORTAL, SHULKER_WAND, PHANTOM_PORTAL, ARROW_WAND).filter { args[0] in it }.toMutableList()
+        sequenceOf(SHULKER_PORTAL, SHULKER_WAND, PHANTOM_PORTAL, ARROW_WAND, LEVITATION_WAND)
+            .filter { args[0] in it }.toMutableList()
 }

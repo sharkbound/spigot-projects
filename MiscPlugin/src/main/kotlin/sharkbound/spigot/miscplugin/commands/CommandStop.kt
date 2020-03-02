@@ -1,9 +1,8 @@
 package sharkbound.spigot.miscplugin.commands
 
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
-import sharkbound.spigot.miscplugin.shared.extensions.registerCommand
+import sharkbound.spigot.miscplugin.shared.commands.BaseCommand
 import sharkbound.spigot.miscplugin.shared.server
 
 object CommandStop : BaseCommand("s") {

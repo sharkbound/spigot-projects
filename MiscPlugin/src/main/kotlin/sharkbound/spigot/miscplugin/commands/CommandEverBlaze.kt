@@ -1,18 +1,12 @@
 package sharkbound.spigot.miscplugin.commands
 
-import net.minecraft.server.v1_14_R1.NBTTagList
 import org.bukkit.Material
 import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.entity.EntityType
-import org.bukkit.entity.Zombie
 import sharkbound.spigot.miscplugin.shared.builders.ItemBuilder
 import sharkbound.spigot.miscplugin.shared.builders.buildItem
-import sharkbound.spigot.miscplugin.shared.enums.allTags
-import sharkbound.spigot.miscplugin.shared.enums.buildNBTCompound
-import sharkbound.spigot.miscplugin.shared.enums.buildNBTTagList
+import sharkbound.spigot.miscplugin.shared.commands.BaseCommand
 import sharkbound.spigot.miscplugin.shared.extensions.*
 import kotlin.contracts.ExperimentalContracts
 
