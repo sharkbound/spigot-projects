@@ -57,7 +57,7 @@ if (final := target / file.name).exists():
     except Exception as e:
         print(f'error trying to remove "{final}":/n/t{e}')
 
-os.system('gradlew jar')
+# os.system('gradlew jar')
 
 shutil.copy(file, target)
 print(f'copied "{file}" to "{final}"')

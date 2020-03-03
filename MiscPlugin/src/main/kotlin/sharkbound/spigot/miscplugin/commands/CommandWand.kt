@@ -15,7 +15,7 @@ object CommandWand : BaseCommand("wand") {
     private const val SHULKER_WAND = "shulker"
     private const val PHANTOM_PORTAL = "phantomportal"
     private const val ARROW_WAND = "arrow"
-    private const val LEVITATION_WAND = "levitation"
+    private const val TESTING_WAND = "testingwand"
 
     @ExperimentalContracts
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
@@ -32,7 +32,7 @@ object CommandWand : BaseCommand("wand") {
                     SHULKER_WAND -> ShulkerWand.create()
                     PHANTOM_PORTAL -> PhantomPortal.create()
                     ARROW_WAND -> ArrowWand.create()
-                    LEVITATION_WAND -> LevitationWand.create()
+                    TESTING_WAND -> TestingWand.create()
                     else -> return false
                 })
 
@@ -45,6 +45,6 @@ object CommandWand : BaseCommand("wand") {
         alias: String,
         args: Array<out String>
     ): MutableList<String> =
-        sequenceOf(SHULKER_PORTAL, SHULKER_WAND, PHANTOM_PORTAL, ARROW_WAND, LEVITATION_WAND)
+        sequenceOf(SHULKER_PORTAL, SHULKER_WAND, PHANTOM_PORTAL, ARROW_WAND, TESTING_WAND)
             .filter { args[0] in it }.toMutableList()
 }
