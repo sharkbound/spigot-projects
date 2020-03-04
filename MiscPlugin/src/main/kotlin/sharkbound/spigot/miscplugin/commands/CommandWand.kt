@@ -15,7 +15,7 @@ object CommandWand : BaseCommand("wand") {
         "shulker" to { ShulkerWand.create() },
         "phantomportal" to { PhantomPortal.create() },
         "arrow" to { ArrowWand.create() },
-        "testingwand" to { TestingWand.create() }
+        "firewand" to { FireWand.create() }
     )
 
     @ExperimentalContracts
