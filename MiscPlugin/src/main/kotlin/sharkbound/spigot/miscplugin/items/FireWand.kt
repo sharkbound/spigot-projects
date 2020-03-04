@@ -3,6 +3,7 @@ package sharkbound.spigot.miscplugin.items
 import dev.esophose.playerparticles.particles.ParticleEffect
 import org.bukkit.ChatColor
 import org.bukkit.Material
+import org.bukkit.block.BlockFace
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerInteractEvent
@@ -13,13 +14,14 @@ import sharkbound.spigot.miscplugin.shared.builders.buildItem
 import sharkbound.spigot.miscplugin.shared.extensions.*
 import sharkbound.spigot.miscplugin.shared.listeners.BaseListener
 import sharkbound.spigot.miscplugin.shared.utils.cancellingRepeatingSyncTask
+import sharkbound.spigot.miscplugin.utils.showParticle
 
-object FireWand {
-    const val nbtId = "firewand"
+object FireWand : Wand {
+    override val nbtId = "firewand"
 
-    fun create() =
+    override fun create() =
         buildItem(Material.STICK) {
-            name = "${ChatColor.RED}Fire Wand"
+            name = "&4Fire Wand"
             enchant(Enchantment.PROTECTION_FIRE, 1)
             hideEnchants()
             nbt {
@@ -40,23 +42,20 @@ object FireWandListener : BaseListener() {
             val origin = eyeLocation.clone()
             var loc = origin.clone()
 
-            cancellingRepeatingSyncTask(intervalTicks = 1) {
+            cancellingRepeatingSyncTask(intervalTicks = 2) {
                 loc = loc.add(dir.clone().multiply(2))
-                ParticleEffect.FLAME.spawn(loc, 1, .05)
+                showParticle(ParticleEffect.FLAME, loc, 1, .05)
 
                 loc.chunk.entities.living().filter {
                     it.uniqueId != uniqueId && it.location dist loc <= 5
                 }.forEach { it.fireTicks = 20 * 20 }
 
                 loc.blocksInRadius(5).filter { it.type.isFlammable && randDouble(0.0, 1.0) < .02 }.forEach {
-                    it.location.add(1.y)
-                        .block
-                        .type = Material.FIRE
+                    it.getRelative(BlockFace.UP).type = Material.FIRE
                 }
-                loc.block.filterIfNotNull { it.type.isFlammable }
-                    ?.let { it.type = Material.FIRE }
 
-                if (loc.block.type.isSolid || origin dist loc > fireBallRange) {
+                if (!loc.block.type.isAir || origin dist loc > fireBallRange) {
+                    showParticle(ParticleEffect.FLAME, loc.subtract(dir.multiply(2)), 30, .25)
                     cancel()
                 }
             }

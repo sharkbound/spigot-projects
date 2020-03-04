@@ -4,10 +4,10 @@ import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import sharkbound.spigot.miscplugin.shared.builders.buildItem
 
-object ShulkerPortal {
-    const val nbtId = "shulkerportal"
+object ShulkerPortal : Wand {
+    override val nbtId = "shulkerportal"
 
-    fun create() =
+    override fun create() =
         buildItem(Material.BLAZE_ROD) {
             name = "&2Shulker Portal Wand"
             enchant(Enchantment.PROTECTION_FIRE, 1)
