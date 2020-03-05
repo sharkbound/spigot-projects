@@ -1,4 +1,4 @@
-package sharkbound.spigot.miscplugin.items
+package sharkbound.spigot.miscplugin.wands
 
 import dev.esophose.playerparticles.particles.ParticleEffect
 import org.bukkit.Material
@@ -30,7 +30,7 @@ object FireWandListener : BaseListener() {
     fun onFireWandInteract(e: PlayerInteractEvent) {
         val fireBallRange = 60
         e.player.apply {
-            if (WandUtil.wandIdFrom(inventory.itemInMainHand) != FireWand.nbtId)
+            if (WandUtil.idFrom(inventory.itemInMainHand) != FireWand.nbtId)
                 return
 
             val dir = direction

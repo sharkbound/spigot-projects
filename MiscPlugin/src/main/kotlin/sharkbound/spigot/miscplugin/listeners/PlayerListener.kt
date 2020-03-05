@@ -4,15 +4,14 @@ import org.bukkit.Location
 import org.bukkit.entity.*
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.block.Action
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.util.Vector
 import sharkbound.commonutils.util.randInt
-import sharkbound.spigot.miscplugin.items.ArrowWand
-import sharkbound.spigot.miscplugin.items.PhantomPortal
-import sharkbound.spigot.miscplugin.items.ShulkerPortal
-import sharkbound.spigot.miscplugin.items.ShulkerWand
+import sharkbound.spigot.miscplugin.wands.ArrowWand
+import sharkbound.spigot.miscplugin.wands.PhantomPortal
+import sharkbound.spigot.miscplugin.wands.ShulkerPortal
+import sharkbound.spigot.miscplugin.wands.ShulkerWand
 import sharkbound.spigot.miscplugin.shared.extensions.*
 import sharkbound.spigot.miscplugin.shared.utils.cancellingRepeatingSyncTask
 import sharkbound.spigot.miscplugin.shared.utils.vector
@@ -35,7 +34,7 @@ object PlayerListener : Listener {
 
     @EventHandler
     fun onInteract(e: PlayerInteractEvent) {
-        when (WandUtil.wandIdFrom(e.item ?: return)) {
+        when (WandUtil.idFrom(e.item ?: return)) {
             ShulkerWand.nbtId -> shulkerDeathBeam(e, 100.0)
             ShulkerPortal.nbtId -> shulkerPortal(e)
             PhantomPortal.nbtId -> phantomPortal(e)

@@ -5,6 +5,6 @@ import sharkbound.spigot.miscplugin.shared.extensions.nbt
 
 object WandUtil {
     val id = "wandtype"
-    fun wandIdFrom(itemStack: ItemStack) =
+    fun idFrom(itemStack: ItemStack) =
         itemStack.nbt.getString(id) ?: ""
 }

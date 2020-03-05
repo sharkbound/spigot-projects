@@ -1,4 +1,4 @@
-package sharkbound.spigot.miscplugin.items
+package sharkbound.spigot.miscplugin.wands
 
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment

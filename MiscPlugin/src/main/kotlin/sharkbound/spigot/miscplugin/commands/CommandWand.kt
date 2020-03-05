@@ -3,19 +3,19 @@ package sharkbound.spigot.miscplugin.commands
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import sharkbound.commonutils.extensions.len
-import sharkbound.spigot.miscplugin.items.*
+import sharkbound.spigot.miscplugin.wands.*
 import sharkbound.spigot.miscplugin.shared.commands.BaseCommand
 import sharkbound.spigot.miscplugin.shared.extensions.*
 import kotlin.contracts.ExperimentalContracts
 
-// todo mob speed?
 object CommandWand : BaseCommand("wand") {
     val nameToItem = mapOf(
         "shulkerportal" to { ShulkerPortal.create() },
         "shulker" to { ShulkerWand.create() },
         "phantomportal" to { PhantomPortal.create() },
         "arrow" to { ArrowWand.create() },
-        "fire" to { FireWand.create() }
+        "fire" to { FireWand.create() },
+        "moving" to { MovingWand.create() }
     )
 
     @ExperimentalContracts

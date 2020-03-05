@@ -2,7 +2,7 @@ package sharkbound.spigot.miscplugin.commands
 
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
-import sharkbound.spigot.miscplugin.items.ShulkerWand
+import sharkbound.spigot.miscplugin.wands.ShulkerWand
 import sharkbound.spigot.miscplugin.shared.commands.BaseCommand
 import sharkbound.spigot.miscplugin.shared.extensions.isPlayer
 import sharkbound.spigot.miscplugin.shared.extensions.replaceHeldItem
