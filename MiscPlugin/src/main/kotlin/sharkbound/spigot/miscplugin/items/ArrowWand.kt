@@ -12,8 +12,5 @@ object ArrowWand : Wand {
             name = "&2Arrow Wand"
             enchant(Enchantment.PROTECTION_FIRE, 1)
             hideEnchants()
-            nbt {
-                setString("type", nbtId)
-            }
-        }
+        }.applyNBT()
 }

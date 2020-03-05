@@ -1,19 +1,17 @@
 package sharkbound.spigot.miscplugin.items
 
 import dev.esophose.playerparticles.particles.ParticleEffect
-import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.block.BlockFace
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerInteractEvent
-import sharkbound.commonutils.extensions.filterIfNotNull
 import sharkbound.commonutils.util.randDouble
-import sharkbound.spigot.miscplugin.extensions.spawn
 import sharkbound.spigot.miscplugin.shared.builders.buildItem
 import sharkbound.spigot.miscplugin.shared.extensions.*
 import sharkbound.spigot.miscplugin.shared.listeners.BaseListener
 import sharkbound.spigot.miscplugin.shared.utils.cancellingRepeatingSyncTask
+import sharkbound.spigot.miscplugin.utils.WandUtil
 import sharkbound.spigot.miscplugin.utils.showParticle
 
 object FireWand : Wand {
@@ -24,10 +22,7 @@ object FireWand : Wand {
             name = "&4Fire Wand"
             enchant(Enchantment.PROTECTION_FIRE, 1)
             hideEnchants()
-            nbt {
-                setString("type", nbtId)
-            }
-        }
+        }.applyNBT()
 }
 
 object FireWandListener : BaseListener() {
@@ -35,7 +30,7 @@ object FireWandListener : BaseListener() {
     fun onFireWandInteract(e: PlayerInteractEvent) {
         val fireBallRange = 60
         e.player.apply {
-            if (inventory.itemInMainHand.nbt.getString("type") != FireWand.nbtId)
+            if (WandUtil.wandIdFrom(inventory.itemInMainHand) != FireWand.nbtId)
                 return
 
             val dir = direction

@@ -12,8 +12,5 @@ object ShulkerWand : Wand {
             name = "&2Shulker Seeker Wand"
             enchant(Enchantment.PROTECTION_FIRE, 1)
             hideEnchants()
-            nbt {
-                setString("type", nbtId)
-            }
-        }
+        }.applyNBT()
 }

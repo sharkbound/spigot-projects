@@ -12,8 +12,5 @@ object ShulkerPortal : Wand {
             name = "&2Shulker Portal Wand"
             enchant(Enchantment.PROTECTION_FIRE, 1)
             hideEnchants()
-            nbt {
-                setString("type", nbtId)
-            }
-        }
+        }.applyNBT()
 }

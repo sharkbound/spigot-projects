@@ -16,6 +16,7 @@ import sharkbound.spigot.miscplugin.items.ShulkerWand
 import sharkbound.spigot.miscplugin.shared.extensions.*
 import sharkbound.spigot.miscplugin.shared.utils.cancellingRepeatingSyncTask
 import sharkbound.spigot.miscplugin.shared.utils.vector
+import sharkbound.spigot.miscplugin.utils.WandUtil
 
 data class ArrowSpawnInfo(val spawn: Location, val velocity: Vector, val speed: Float, val spread: Float)
 
@@ -24,8 +25,6 @@ object PlayerListener : Listener {
     init {
         registerEvents()
     }
-
-    private val leftClicks = setOf(Action.LEFT_CLICK_AIR, Action.LEFT_CLICK_BLOCK)
 
     @EventHandler
     fun arrowHit(e: ProjectileHitEvent) {
@@ -36,7 +35,7 @@ object PlayerListener : Listener {
 
     @EventHandler
     fun onInteract(e: PlayerInteractEvent) {
-        when (e.item?.nbt?.getString("type")) {
+        when (WandUtil.wandIdFrom(e.item ?: return)) {
             ShulkerWand.nbtId -> shulkerDeathBeam(e, 100.0)
             ShulkerPortal.nbtId -> shulkerPortal(e)
             PhantomPortal.nbtId -> phantomPortal(e)
@@ -75,7 +74,7 @@ object PlayerListener : Listener {
             phantomPortals.clear()
         }
 
-        if (e.action in leftClicks) {
+        if (e.isLeftClick) {
             reset()
             e.player.send("&aKilled all phantoms")
             return
@@ -103,7 +102,7 @@ object PlayerListener : Listener {
         get() = vector(x = randInt(-20, 20), y = randInt(-25, 25), z = randInt(-20, 20))
 
     private fun shulkerPortal(e: PlayerInteractEvent) {
-        if (e.action in leftClicks) {
+        if (e.isLeftClick) {
             shulkerPortals.clear()
             e.player.send("&acleared all shulker portals")
             e.player.world.entities.filterIsInstance<ShulkerBullet>().forEach { it.target = null }
