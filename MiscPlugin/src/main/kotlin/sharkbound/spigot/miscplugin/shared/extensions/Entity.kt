@@ -4,6 +4,7 @@ import net.minecraft.server.v1_14_R1.NBTTagCompound
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
+import java.util.*
 import net.minecraft.server.v1_14_R1.Entity as ServerEntity
 
 val Entity.nms
@@ -45,3 +46,31 @@ val Entity.id
 
 val Entity.eid
     get() = entityId
+
+// id match
+
+infix fun Entity.idIs(other: UUID): Boolean =
+    uniqueId == other
+
+infix fun Entity.idIs(other: Entity): Boolean =
+    uniqueId == other.uniqueId
+
+infix fun Entity.entityIdIs(other: Int): Boolean =
+    entityId == other
+
+infix fun Entity.entityIdIs(other: Entity): Boolean =
+    entityId == other.entityId
+
+// inverted id match, aka, not matches
+
+infix fun Entity.idIsNot(other: UUID): Boolean =
+    uniqueId != other
+
+infix fun Entity.idIsNot(other: Entity): Boolean =
+    uniqueId != other.uniqueId
+
+infix fun Entity.entityIdIsNot(other: Int): Boolean =
+    entityId != other
+
+infix fun Entity.entityIdIsNot(other: Entity): Boolean =
+    entityId != other.entityId
