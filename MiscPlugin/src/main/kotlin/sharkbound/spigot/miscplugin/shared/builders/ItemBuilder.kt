@@ -98,7 +98,7 @@ class ItemBuilder(private val material: Material) {
     }
 
     inline fun meta(block: ItemMeta.() -> Unit) {
-        item = item.meta(block)
+        item = item.modifyMeta(block)
     }
 
     fun enchant(enchantment: Enchantment, level: Int) {
@@ -106,7 +106,7 @@ class ItemBuilder(private val material: Material) {
     }
 
     fun flags(vararg flags: ItemFlag) {
-        item.meta { addItemFlags(*flags) }
+        item.modifyMeta { addItemFlags(*flags) }
     }
 
     fun unbreakable() {

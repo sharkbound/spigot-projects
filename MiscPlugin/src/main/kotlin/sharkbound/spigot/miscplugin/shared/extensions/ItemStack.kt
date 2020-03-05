@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import net.minecraft.server.v1_14_R1.ItemStack as ServerStack
 
-inline infix fun ItemStack.meta(block: ItemMeta.() -> Unit): ItemStack =
+inline infix fun ItemStack.modifyMeta(block: ItemMeta.() -> Unit): ItemStack =
     apply {
         itemMeta = itemMeta?.also(block)
     }

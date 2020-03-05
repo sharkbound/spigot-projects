@@ -1,7 +1,6 @@
 package sharkbound.spigot.miscplugin.wands
 
 import org.bukkit.Material
-import org.bukkit.enchantments.Enchantment
 import sharkbound.spigot.miscplugin.shared.builders.buildItem
 
 object ArrowWand : Wand {
@@ -10,7 +9,6 @@ object ArrowWand : Wand {
     override fun create() =
         buildItem(Material.STICK) {
             name = "&2Arrow Wand"
-            enchant(Enchantment.PROTECTION_FIRE, 1)
-            hideEnchants()
-        }.applyNBT()
+            setWandData()
+        }
 }

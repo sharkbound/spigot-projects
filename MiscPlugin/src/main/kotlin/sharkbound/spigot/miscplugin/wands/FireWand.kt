@@ -3,7 +3,6 @@ package sharkbound.spigot.miscplugin.wands
 import dev.esophose.playerparticles.particles.ParticleEffect
 import org.bukkit.Material
 import org.bukkit.block.BlockFace
-import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerInteractEvent
 import sharkbound.commonutils.util.randDouble
@@ -20,12 +19,13 @@ object FireWand : Wand {
     override fun create() =
         buildItem(Material.STICK) {
             name = "&4Fire Wand"
-            enchant(Enchantment.PROTECTION_FIRE, 1)
-            hideEnchants()
-        }.applyNBT()
+            setWandData()
+        }
 }
 
 object FireWandListener : BaseListener() {
+    private const val FIRE_CHANCE = .02
+
     @EventHandler
     fun onFireWandInteract(e: PlayerInteractEvent) {
         val fireBallRange = 60
@@ -38,19 +38,19 @@ object FireWandListener : BaseListener() {
             var loc = origin.clone()
 
             cancellingRepeatingSyncTask(intervalTicks = 2) {
-                loc = loc.add(dir.clone().multiply(2))
+                loc = loc.add(dir.clone { multiply(2) })
                 showParticle(ParticleEffect.FLAME, loc, 1, .05)
 
                 loc.chunk.entities.living().filter {
                     it.uniqueId != uniqueId && it.location dist loc <= 5
                 }.forEach { it.fireTicks = 20 * 20 }
 
-                loc.blocksInRadius(5).filter { it.type.isFlammable && randDouble(0.0, 1.0) < .02 }.forEach {
+                loc.blocksInRadius(5).filter { it.type.isFlammable && randDouble(0.0, 1.0) < FIRE_CHANCE }.forEach {
                     it.getRelative(BlockFace.UP).type = Material.FIRE
                 }
 
-                if (!loc.block.type.isAir || origin dist loc > fireBallRange) {
-                    showParticle(ParticleEffect.FLAME, loc.subtract(dir.multiply(2)), 30, .25)
+                if (loc.block.type != Material.AIR || origin dist loc > fireBallRange) {
+                    showParticle(ParticleEffect.FLAME, loc.subtract(dir.multiply(1.5)), 30, .25)
                     cancel()
                 }
             }

@@ -1,7 +1,6 @@
 package sharkbound.spigot.miscplugin.wands
 
 import org.bukkit.Material
-import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerInteractEvent
 import sharkbound.spigot.miscplugin.shared.builders.buildItem
@@ -15,9 +14,8 @@ object MovingWand : Wand {
     override fun create() =
         buildItem(Material.STICK) {
             name = "&2Moving Wand"
-            enchant(Enchantment.PROTECTION_FIRE, 1)
-            hideEnchants()
-        }.applyNBT()
+            setWandData()
+        }
 }
 
 object MovingWandListener : BaseListener() {
