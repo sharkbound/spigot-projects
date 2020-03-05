@@ -25,10 +25,13 @@ object FireWand : Wand {
 
 object FireWandListener : BaseListener() {
     private const val FIRE_CHANCE = .02
+    const val burstDamage = 10.0
+    const val burstRange = 10.0
+    const val burnTime = 20 * 2
+    const val fireBallRange = 60
 
     @EventHandler
     fun onFireWandInteract(e: PlayerInteractEvent) {
-        val fireBallRange = 60
         e.player.apply {
             if (WandUtil.idFrom(inventory.itemInMainHand) != FireWand.nbtId)
                 return
@@ -43,7 +46,7 @@ object FireWandListener : BaseListener() {
 
                 loc.chunk.entities.living().filter {
                     it.uniqueId != uniqueId && it.location dist loc <= 5
-                }.forEach { it.fireTicks = 20 * 20 }
+                }.forEach { it.fireTicks = burnTime }
 
                 loc.blocksInRadius(5).filter { it.type.isFlammable && randDouble(0.0, 1.0) < FIRE_CHANCE }.forEach {
                     it.getRelative(BlockFace.UP).type = Material.FIRE
@@ -51,6 +54,11 @@ object FireWandListener : BaseListener() {
 
                 if (loc.block.type != Material.AIR || origin dist loc > fireBallRange) {
                     showParticle(ParticleEffect.FLAME, loc.subtract(dir.multiply(1.5)), 30, .25)
+                    loc.world?.livingEntities?.filter { it.id != id && it.location dist loc <= burstRange }
+                        ?.forEach {
+                            it.damage(burstDamage)
+                            it.fireTicks = burnTime
+                        }
                     cancel()
                 }
             }

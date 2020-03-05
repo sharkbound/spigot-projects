@@ -39,3 +39,9 @@ inline infix fun <T : Entity> T.modifyNBT(block: NBTTagCompound.() -> Unit): T =
 fun LivingEntity.kill() {
     damage(health)
 }
+
+val Entity.id
+    get() = uniqueId
+
+val Entity.eid
+    get() = entityId

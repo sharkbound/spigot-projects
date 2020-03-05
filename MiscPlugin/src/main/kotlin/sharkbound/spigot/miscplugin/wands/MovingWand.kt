@@ -19,6 +19,8 @@ object MovingWand : Wand {
 }
 
 object MovingWandListener : BaseListener() {
+    val radius = 20
+
     @EventHandler
     fun interact(e: PlayerInteractEvent) {
         e.player.apply {
@@ -26,15 +28,13 @@ object MovingWandListener : BaseListener() {
                 return
             }
 
-            val offset = 10
             val look = target()
 
-            world.livingEntities.filter { it.location dist look <= 10 }
-                .forEach { it.teleport(it.location.clone { y += offset * 2 + 2 }) }
-
-            look.locationsInRadius(10).filter { it.block.type.isBlock }.forEach {
-                it.clone { y += offset }.block.type = it.block.type
-                it.block.type = Material.AIR
+            look.locationsInRadius(radius).filter { it.block.type.isBlock }.sortedByDescending { it.y }.forEach {
+                if (it.block.type != Material.AIR) {
+                    it.clone { y += radius }.block.type = it.block.type
+                    it.block.type = Material.AIR
+                }
             }
 
         }
