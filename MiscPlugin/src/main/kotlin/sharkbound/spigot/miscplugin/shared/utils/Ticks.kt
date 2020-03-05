@@ -13,3 +13,12 @@ fun ticks(value: Double, unit: TickUnit): Long =
 fun ticks(value: Float, unit: TickUnit): Long =
     (value * unit.multiplayer).toLong()
 
+fun ticksInt(value: Long, unit: TickUnit): Int =
+    (value * unit.multiplayer).toInt()
+
+fun ticksInt(value: Double, unit: TickUnit): Int =
+    (value * unit.multiplayer).toInt()
+
+fun ticksInt(value: Float, unit: TickUnit): Int =
+    (value * unit.multiplayer).toInt()
+

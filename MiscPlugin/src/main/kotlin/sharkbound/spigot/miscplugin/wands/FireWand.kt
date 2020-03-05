@@ -10,8 +10,7 @@ import sharkbound.commonutils.util.randDouble
 import sharkbound.spigot.miscplugin.shared.builders.buildItem
 import sharkbound.spigot.miscplugin.shared.extensions.*
 import sharkbound.spigot.miscplugin.shared.listeners.BaseListener
-import sharkbound.spigot.miscplugin.shared.utils.cancellingRepeatingSyncTask
-import sharkbound.spigot.miscplugin.shared.utils.delaySyncTask
+import sharkbound.spigot.miscplugin.shared.utils.*
 import sharkbound.spigot.miscplugin.utils.WandUtil
 import sharkbound.spigot.miscplugin.utils.showParticle
 import kotlin.math.PI
@@ -30,8 +29,8 @@ object FireWandListener : BaseListener() {
     private const val FIRE_CHANCE = .02
     const val burstDamage = 10.0
     const val burstRange = 10.0
-    const val burnTime = 20 * 2
     const val fireBallRange = 60
+    val burnTime = ticksInt(2, TickUnit.SECONDS)
 
     @EventHandler
     fun onFireWandInteract(e: PlayerInteractEvent) {
