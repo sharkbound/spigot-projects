@@ -8,3 +8,4 @@ val PlayerInteractEvent.isLeftClick
 
 val PlayerInteractEvent.isRightClick
     get() = action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR
+
