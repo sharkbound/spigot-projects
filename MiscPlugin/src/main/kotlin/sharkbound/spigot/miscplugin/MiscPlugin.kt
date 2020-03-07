@@ -5,6 +5,7 @@ import sharkbound.spigot.miscplugin.commands.*
 import sharkbound.spigot.miscplugin.wands.FireWandListener
 import sharkbound.spigot.miscplugin.listeners.MobListener
 import sharkbound.spigot.miscplugin.listeners.PlayerListener
+import sharkbound.spigot.miscplugin.listeners.TestingListener
 import sharkbound.spigot.miscplugin.shared.instance
 import sharkbound.spigot.miscplugin.wands.MovingWandListener
 
@@ -27,5 +28,6 @@ class MiscPlugin : JavaPlugin() {
         MovingWandListener
         PlayerListener
         MobListener
+        TestingListener
     }
 }

@@ -1,10 +1,13 @@
 package sharkbound.spigot.miscplugin.shared.extensions
 
 import net.minecraft.server.v1_14_R1.NBTTagCompound
+import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import java.util.*
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 import net.minecraft.server.v1_14_R1.Entity as ServerEntity
 
 val Entity.nms
@@ -38,7 +41,7 @@ inline infix fun <T : Entity> T.modifyNBT(block: NBTTagCompound.() -> Unit): T =
     apply { handle.modifyNBT(block) }
 
 fun LivingEntity.kill() {
-    damage(health)
+    health = 0.0
 }
 
 val Entity.id
@@ -74,3 +77,18 @@ infix fun Entity.entityIdIsNot(other: Int): Boolean =
 
 infix fun Entity.entityIdIsNot(other: Entity): Boolean =
     entityId != other.entityId
+
+infix fun Entity.dist(other: Entity): Double =
+    location dist other.location
+
+infix fun Entity.dist(other: Location): Double =
+    location dist other
+
+@ExperimentalContracts
+fun Entity.isLiving(): Boolean {
+    contract {
+        returns(true) implies (this@isLiving is LivingEntity)
+    }
+
+    return this is LivingEntity
+}

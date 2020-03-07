@@ -66,20 +66,24 @@ object FireWandListener : BaseListener() {
         task: CancellableTask
     ) {
         if (hitPoint.block.type != Material.AIR || origin dist hitPoint > fireBallRange) {
-            sphere(hitPoint, 150, burstRange - 3).forEach {
-                showParticle(ParticleEffect.FLAME, it, 1)
-            }
-
-            hitPoint.world?.livingEntities?.filter { it idIsNot player.id && it.location dist hitPoint <= burstRange }
-                ?.forEach {
-                    it.fireTicks = burnTime
-                    it.damage(burstDamage)
-                }
+            explode(hitPoint, player)
             task.cancel()
         }
     }
 
-    fun sphere(center: Location, density: Int, radius: Double): Sequence<Location> =
+    private fun explode(hitPoint: Location, player: Player) {
+        sphere(hitPoint, 150, burstRange - 3).forEach {
+            showParticle(ParticleEffect.FLAME, it, speed = .02)
+        }
+
+        hitPoint.world?.livingEntities?.filter { it idIsNot player.id && it.location dist hitPoint <= burstRange }
+            ?.forEach {
+                it.fireTicks = burnTime
+                it.damage(burstDamage)
+            }
+    }
+
+    private fun sphere(center: Location, density: Int, radius: Double) =
         sequence {
             (0 until density).forEach { _ ->
                 val u = Math.random()
