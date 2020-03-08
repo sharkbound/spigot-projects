@@ -28,3 +28,6 @@ fun Location.blocksInRadius(radius: Int) =
 
 inline infix fun Location.clone(block: Location.() -> Unit) =
     clone().apply(block)
+
+val Location.vector: Vector
+    get() = toVector()
