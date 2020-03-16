@@ -19,16 +19,16 @@ object TestingListener : BaseListener() {
     @ExperimentalContracts
     @EventHandler
     fun playerInteract(e: PlayerInteractEvent) {
-        e player {
-            if (inventory.itemInMainHand.type == Material.GOLDEN_SWORD) {
-                val start = eyeLocation
-                val end = start.clone { add(direction.multiply(KILL_RAY_RANGE)) }
-                particleLine(ParticleEffect.FLAME, start, end)
-
-                world.livingEntities.filter { it idIsNot id && nearLine(it.location, start, end) }
-                    .forEach(LivingEntity::kill)
-            }
-        }
+//        e player {
+//            if (inventory.itemInMainHand typeIs Material.GOLDEN_SWORD) {
+//                val start = eyeLocation
+//                val end = start.clone { add(direction.multiply(KILL_RAY_RANGE)) }
+//                particleLine(ParticleEffect.FLAME, start, end)
+//
+//                world.livingEntities.filter { it idIsNot id && nearLine(it.location, start, end) }
+//                    .forEach(LivingEntity::kill)
+//            }
+//        }
     }
 
     @EventHandler
